@@ -1,0 +1,63 @@
+== Name
+
+Nagira -- Nagios RESTful API
+
+== Description
+
+This is an attempt to create light-weight API for fetching status of
+Nagios application objects:
+
+* Objects file
+  - hosts
+  - services
+  - contacts
+  - (host|service|contact)groups
+  - escalations
+  - etc.
+
+* Status file
+  - hoststatus
+  - servicestatus
+  - etc.
+
+== How and why?
+
+At this moment I am thinking about implementing RO access to the
+objects/object states by parsing 2 status files in Nagios: status.dat
+and objects.cache. 
+
+Objects.cache file keeps information about Nagios configuration (lists
+of servers, services, groups etc), while status.dat file is file that
+stores information about current state of the objects (hosts and
+services).
+
+Probably at a later stages this can be implemented using Nagios' NEB
+inteface, but from what I've read on the Net, NEB is blocking, and can
+in some cases introduce latencies in Nagios; file parsing while is
+obviously havier, if you want to parse file for each request (like in
+CGI mode), does not  constitutes a problem when we are talking about
+application like Rails or similar. We can force to parse file
+infrequently enough and only if it changed since the last parse.
+
+== First stage
+
+Read only (GET) interface to access lists of monitored objects and
+states of the objects. This can provide foundation for developing
+well-defined, modular, distributed Nagios. 
+
+There are examples of various Nagios interfaces: NDOUTILS, IdoUtils,
+MK_Livestatus. THis is an attempt to do similar things using web
+services API.
+
+== Later on
+
+Still not sure how to implement this, but next will be POST/PUT/DELETE
+intrfaces for configuring Nagios.
+
+This is still far away...
+
+== Author
+
+Dmytro Kovalov, dmytro.kovalov@gmail.com
+
+2011, Dec, 26th  - started

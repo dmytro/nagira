@@ -25,7 +25,7 @@ DEFAULT_FORMAT = :xml
 # file paring on each HTTP request.
 before do 
   $nagios ||= Nagios::Status.new("/Users/dmytro/Development/nagira/lib/ruby-nagios/test/data/status.dat")
-  $nagios.parse if $nagios.need_parsing?
+  $nagios.parse
   @data   = $nagios.status['hosts']
 end
 

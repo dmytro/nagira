@@ -16,7 +16,8 @@ module Nagios
     def initialize(file, parse_interval=MIN_PARSE_INTERVAL)
       constructor(file)
 
-      # Time when status file was last time parsed, set it to 0 secs epoch to make sure it will be parsed
+      # Time when status file was last time parsed, set it to 0 secs
+      # epoch to make sure it will be parsed
       @last_parsed = Time.at(0)
 
       # Last time file was changed
@@ -24,17 +25,20 @@ module Nagios
       @parse_interval = parse_interval
     end
 
-    alias_method :original_parse, :parse
+    alias_method :parse!, :parse
 
-    # Extend original parse method: set time of parser run to current time.
+    # Extend original parse method: parse file only if it needs
+    # parsing and set time of parser run to current time.
     def parse
-      original_parse
-      self.last_parsed = Time.now
+      if need_parsing?
+        parse!
+        last_parsed = Time.now
+      end
     end
 
     attr_accessor :last_parsed, :last_changed, :parse_interval
 
-    # Return true if file is changed since it was parsed last time 
+    # Return true if file is changed since it was parsed last time
     def changed?
       last_changed > last_parsed
     end

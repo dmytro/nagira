@@ -3,6 +3,8 @@ $: << File.dirname(__FILE__)
 require 'sinatra'
 require "sinatra/reloader" if development?
 require 'lib/ruby-nagios/nagios'
+require 'lib/nagira'
+
 require 'active_support' # for Hash.extract!
 
 require 'json'
@@ -22,8 +24,9 @@ DEFAULT_FORMAT = :xml
 # TODO: Add check for file changed? and min parsing interval to avoid
 # file paring on each HTTP request.
 before do 
-  @nagios = Nagios::Status.new("/Users/dmytro/Development/nagira/lib/ruby-nagios/test/data/status.dat").parse
-  @data   = @nagios.status['hosts']
+  $nagios ||= Nagios::Status.new("/Users/dmytro/Development/nagira/lib/ruby-nagios/test/data/status.dat")
+  $nagios.parse if $nagios.need_parsing?
+  @data   = $nagios.status['hosts']
 end
 
 # Strip extension (@format) from HTTP route
@@ -131,14 +134,14 @@ end
 # Other resources in parsed status file. Supported are => ["hosts",
 # "info", "process", "contacts"]
 get "/:resource" do |resource|
-  respond_with @nagios.status[resource], @format
+  respond_with $nagios.status[resource], @format
 end
 
 
 # Process informaton, same as get /process above. With default format
 # only.
 get '/' do
-  respond_with @nagios.status['process'], nil
+  respond_with $nagios.status['process'], nil
 end
 
 

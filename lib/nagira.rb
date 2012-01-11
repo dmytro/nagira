@@ -1,2 +1,3 @@
 $: << File.dirname(__FILE__)
-require 'nagira/status'
+require 'nagira/timed_parse'
+require 'nagira/nagios'

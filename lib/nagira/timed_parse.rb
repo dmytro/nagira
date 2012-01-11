@@ -9,6 +9,7 @@ module Nagios
 
     MIN_PARSE_INTERVAL = 60
 
+    # Form http://www.ruby-forum.com/topic/969161
     def self.included(base)
       base.class_eval do
         alias_method :parse!, :parse

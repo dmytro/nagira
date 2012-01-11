@@ -24,9 +24,15 @@ DEFAULT_FORMAT = :xml
 # TODO: Add check for file changed? and min parsing interval to avoid
 # file paring on each HTTP request.
 before do 
-  $nagios ||= Nagios::Status.new("/Users/dmytro/Development/nagira/test/data/status.dat")
-  $nagios.parse
-  @data   = $nagios.status['hosts']
+  $nagios = { :config => nil, :status => nil, :objects => nil }
+  
+  $nagios[:status] ||= Nagios::Status.new("/Users/dmytro/Development/nagira/test/data/status.dat")
+  $nagios[:objects] ||= Nagios::Objects.new("/Users/dmytro/Development/nagira/test/data/objects.cache")
+  $nagios[:status].parse
+  $nagios[:objects].parse
+
+  @status   = $nagios[:status].status['hosts']
+  @objects   = $nagios[:objects].objects
 end
 
 # Strip extension (@format) from HTTP route
@@ -46,6 +52,56 @@ end
 after do
   if response.body.empty?
     halt [404, {:message => "Object not found or bad request", :error => "HTTP::Notfound"}.send("to_#{@format}")]
+  end
+end
+
+=begin rdoc
+
+== Routes for configured objects in the system
+
+Namespace for object configuration starts from "/objects". Route may
+be appended by /list to get short list of objects or object classes.
+
+All routes can be followed by format specifier: .(xml|yaml|json)
+
+Following routes are impplemented:
+
+* /objects - all configured and parsed objects, groupped by class.
+
+* /objects/list - list all configured and parsed object types
+
+* /objects/<object_class> - full configuration of all objects in the
+  given class. <object_class> is one of: 'host', 'hostgroup',
+  'servicegroup', etc. Any of the acceptable configuration options for
+  Nagios. Note, object of the specific class must exist in
+  objects.cache file, or it will not appear on the list.
+
+* /objects/<object_class>/list - short list of all names of configured
+  objects
+
+* /objects/<object_class>/<object_name>
+
+=end
+
+get "/objects" do
+  body (@output == :list ? @objects.keys.send("to_#{@format}") : @objects.send("to_#{@format}")) rescue NoMethodError nil
+end
+
+get "/objects/:type" do |type|
+  begin
+    data = @objects[type.to_sym]
+    data = data.keys if @output == :list
+    body (  data ? data : nil ).send("to_#{@format}")
+  rescue NoMethodError
+    nil
+  end
+end
+
+get "/objects/:type/:name" do |type,name|
+  begin
+    body @objects[type.to_sym][name].send("to_#{@format}")
+  rescue NoMethodError
+    nil
   end
 end
 
@@ -75,12 +131,15 @@ Service
 
 =end
 
-
+# === GET /status/:hostname/services/:service_name
+# Full or short status information for particular service on single
+# host
+# /list option is ignored
 get "/status/:hostname/services/:service_name" do |hostname,service|
   body (if @output == :state
-          @data[hostname]['servicestatus'][service].extract!("hostname", "service_description", "current_state")
+          @status[hostname]['servicestatus'][service].extract!("hostname", "service_description", "current_state")
         else
-          @data[hostname]['servicestatus'][service]
+          @status[hostname]['servicestatus'][service]
         end).send("to_#{@format}")
 end
 
@@ -89,11 +148,11 @@ end
 get "/status/:hostname/services" do |hostname|
   data = case @output
          when :list
-           @data[hostname]['servicestatus'].keys
+           @status[hostname]['servicestatus'].keys
          when :state
-           @data.each { |k,v| @data[k] = v.extract!("host_name", "service_description", "current_state") }
+           @status.each { |k,v| @status[k] = v.extract!("host_name", "service_description", "current_state") }
          else
-           @data[hostname]['servicestatus']
+           @status[hostname]['servicestatus']
          end
   body data.send("to_#{@format}")
 end
@@ -103,9 +162,9 @@ end
 # - :full  - full hoststatus
 get "/status/:hostname" do |hostname|
   body (if @output == :state
-          @data[hostname]['hoststatus'].extract!("host_name", "current_state")
+          @status[hostname]['hoststatus'].extract!("host_name", "current_state")
         else
-          @data[hostname]['hoststatus']
+          @status[hostname]['hoststatus']
         end).send("to_#{@format}")
 end
 
@@ -118,11 +177,11 @@ end
 get "/status" do
   case @output 
   when :state
-    @data.each { |k,v| @data[k] = v['hoststatus'].extract!("host_name", "current_state") }
+    @status.each { |k,v| @status[k] = v['hoststatus'].extract!("host_name", "current_state") }
   when :list
-    @data = @data.keys
+    @status = @status.keys
   end
-  body @data.send("to_#{@format}")
+  body @status.send("to_#{@format}")
 end
 
 
@@ -133,15 +192,15 @@ end
 
 # Other resources in parsed status file. Supported are => ["hosts",
 # "info", "process", "contacts"]
-get "/:resource" do |resource|
-  respond_with $nagios.status[resource], @format
-end
+# get "/:resource" do |resource|
+#   respond_with $nagios.status[resource], @format
+# end
 
 
-# Process informaton, same as get /process above. With default format
-# only.
-get '/' do
-  respond_with $nagios.status['process'], nil
-end
+# # Process informaton, same as get /process above. With default format
+# # only.
+# get '/' do
+#   respond_with $nagios.status['process'], nil
+# end
 
 

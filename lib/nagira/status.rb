@@ -32,7 +32,7 @@ module Nagios
     def parse
       if need_parsing?
         parse!
-        last_parsed = Time.now
+        @last_parsed = Time.now
       end
     end
 
@@ -40,14 +40,14 @@ module Nagios
 
     # Return true if file is changed since it was parsed last time
     def changed?
-      last_changed > last_parsed
+      @last_changed > @last_parsed
     end
 
     # Check if:
     # - file changed?
     # - was it parsed recently?
     def need_parsing?
-      changed? && ((Time.now - last_parsed) > parse_interval)
+      changed? && ((Time.now - @last_parsed) > @parse_interval)
     end
 
   end

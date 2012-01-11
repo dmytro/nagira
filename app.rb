@@ -24,7 +24,7 @@ DEFAULT_FORMAT = :xml
 # TODO: Add check for file changed? and min parsing interval to avoid
 # file paring on each HTTP request.
 before do 
-  $nagios ||= Nagios::Status.new("/Users/dmytro/Development/nagira/lib/ruby-nagios/test/data/status.dat")
+  $nagios ||= Nagios::Status.new("/Users/dmytro/Development/nagira/test/data/status.dat")
   $nagios.parse
   @data   = $nagios.status['hosts']
 end

@@ -1,0 +1,7 @@
+app.rb
+lib/**/*.rb
+- 
+README.rdoc
+docs/FEATURES.rdoc
+History.rdoc
+version.txt

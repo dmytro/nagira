@@ -1,0 +1,9 @@
+* 2011-12-25 @dmytro
+  - Started Github project
+* 2012-01-02 @dmytro
+  - First Sinatra application to return service state information
+* 2012-01-12 @dmytro
+  - History.rdoc and version.txt files
+  - Routes for objects configuration GET's
+  - FEATURES.rdoc
+  - YARD documentation 

@@ -9,15 +9,26 @@ module Nagios
 
     MIN_PARSE_INTERVAL = 60
 
-    # Form http://www.ruby-forum.com/topic/969161
+    # Override constructor and parse method from ::Nagios::Objects or
+    # ::Nagios::Status classes, add instance variables to handle
+    # modification and parseing times of status file.
+    # Original methods are aliased:
+    # - initialize -> constructor
+    # - parse -> parse!
+    # See also
+    # http://www.ruby-forum.com/topic/969161
     def self.included(base)
       base.class_eval do
         alias_method :parse!, :parse
         alias_method :constructor, :initialize
 
-        # Extend current constructor with some additional data to track file change time
+        # @method initialize
+        # Extend current constructor with some additional data to
+        # track file change time
+        #
         # @param [String] file Path to status file
-        # @param [Fixnum] parse_interval Number of seconds between re-parsing of the file
+        # @param [Fixnum] parse_interval Number of seconds between
+        #     re-parsing of the file
         def initialize(file, parse_interval=MIN_PARSE_INTERVAL)
           constructor(file)
 
@@ -39,23 +50,22 @@ module Nagios
             @last_parsed = Time.now
           end
         end
-
-        attr_accessor :last_parsed, :last_changed, :parse_interval
-
-        # Return true if file is changed since it was parsed last time
-        def changed?
-          @last_changed > @last_parsed
-        end
-
-        # Check if:
-        # - file changed?
-        # - was it parsed recently?
-        def need_parsing?
-          changed? && ((Time.now - @last_parsed) > @parse_interval)
-        end
-
       end
     end
 
+      attr_accessor :last_parsed, :last_changed, :parse_interval
+      
+      # Return true if file is changed since it was parsed last time
+      def changed?
+        @last_changed > @last_parsed
+      end
+      
+      # Check if:
+      # - file changed?
+      # - was it parsed recently?
+      def need_parsing?
+        changed? && ((Time.now - @last_parsed) > @parse_interval)
+      end
+      
   end
 end

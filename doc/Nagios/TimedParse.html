@@ -1,0 +1,681 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Module: Nagios::TimedParse
+  
+    &mdash; Documentation by YARD 0.7.4
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '..';
+  if (relpath != '') relpath += '/';
+</script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (T)</a> &raquo; 
+    <span class='title'><span class='object_link'><a href="../Nagios.html" title="Nagios (module)">Nagios</a></span></span>
+     &raquo; 
+    <span class="title">TimedParse</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a id="class_list_link" href="#">Class List</a>
+  
+    <a id="method_list_link" href="#">Method List</a>
+  
+    <a id="file_list_link" href="#">File List</a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Module: Nagios::TimedParse
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+  
+  
+    <dt class="r1">Included in:</dt>
+    <dd class="r1"><span class='object_link'><a href="Objects.html" title="Nagios::Objects (class)">Objects</a></span>, <span class='object_link'><a href="Status.html" title="Nagios::Status (class)">Status</a></span></dd>
+    
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/nagira/timed_parse.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Keep track of last parsed time and last changed time of the status/cache
+file to avoid parsing on each HTTP request.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="MIN_PARSE_INTERVAL-constant" class="">MIN_PARSE_INTERVAL =
+          <div class="docstring">
+  <div class="discussion">
+    
+<p>Set some minimum interval for re-parsing of the status file: even if file
+changes often, we do not want to parse it more often, then this number of
+seconds.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+        </dt>
+        <dd><pre class="code"><span class='int'>60</span></pre></dd>
+      
+    </dl>
+  
+
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#last_changed-instance_method" title="#last_changed (instance method)">- (Object) <strong>last_changed</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute last_changed.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#last_parsed-instance_method" title="#last_parsed (instance method)">- (Object) <strong>last_parsed</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute last_parsed.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#parse_interval-instance_method" title="#parse_interval (instance method)">- (Object) <strong>parse_interval</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute parse_interval.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#included-class_method" title="included (class method)">+ (Object) <strong>included</strong>(base) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Override constructor and parse method from ::Nagios::Objects or
+::Nagios::Status classes, add instance variables to handle modification and
+parseing times of status file.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#changed%3F-instance_method" title="#changed? (instance method)">- (Boolean) <strong>changed?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return true if file is changed since it was parsed last time.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#need_parsing%3F-instance_method" title="#need_parsing? (instance method)">- (Boolean) <strong>need_parsing?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Check if:</p>
+<ul><li>
+<p>file changed?</p>
+</li><li>
+<p>was it parsed recently?.</p>
+</li></ul>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="last_changed=-instance_method"></span>
+      <span id="last_changed-instance_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="last_changed-instance_method">
+  
+    - (<tt>Object</tt>) <strong>last_changed</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute last_changed</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+56
+57
+58</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/nagira/timed_parse.rb', line 56</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_last_changed'>last_changed</span>
+  <span class='ivar'>@last_changed</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="last_parsed=-instance_method"></span>
+      <span id="last_parsed-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="last_parsed-instance_method">
+  
+    - (<tt>Object</tt>) <strong>last_parsed</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute last_parsed</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+56
+57
+58</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/nagira/timed_parse.rb', line 56</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_last_parsed'>last_parsed</span>
+  <span class='ivar'>@last_parsed</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="parse_interval=-instance_method"></span>
+      <span id="parse_interval-instance_method"></span>
+      <div class="method_details ">
+  <p class="signature " id="parse_interval-instance_method">
+  
+    - (<tt>Object</tt>) <strong>parse_interval</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute parse_interval</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+56
+57
+58</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/nagira/timed_parse.rb', line 56</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_parse_interval'>parse_interval</span>
+  <span class='ivar'>@parse_interval</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="included-class_method">
+  
+    + (<tt>Object</tt>) <strong>included</strong>(base) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>Override constructor and parse method from ::Nagios::Objects or
+::Nagios::Status classes, add instance variables to handle modification and
+parseing times of status file. Original methods are aliased:</p>
+<ul><li>
+<p>initialize -&gt; constructor</p>
+</li><li>
+<p>parse -&gt; parse!</p>
+</li></ul>
+
+<p>See also <a
+href="http://www.ruby-forum.com/topic/969161">www.ruby-forum.com/topic/969161</a></p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/nagira/timed_parse.rb', line 20</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_included'>included</span><span class='lparen'>(</span><span class='id identifier rubyid_base'>base</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_base'>base</span><span class='period'>.</span><span class='id identifier rubyid_class_eval'>class_eval</span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_alias_method'>alias_method</span> <span class='symbol'>:parse!</span><span class='comma'>,</span> <span class='symbol'>:parse</span>
+    <span class='id identifier rubyid_alias_method'>alias_method</span> <span class='symbol'>:constructor</span><span class='comma'>,</span> <span class='symbol'>:initialize</span>
+
+    <span class='comment'># @method initialize
+</span>    <span class='comment'># Extend current constructor with some additional data to
+</span>    <span class='comment'># track file change time
+</span>    <span class='comment'>#
+</span>    <span class='comment'># @param [String] file Path to status file
+</span>    <span class='comment'># @param [Fixnum] parse_interval Number of seconds between
+</span>    <span class='comment'>#     re-parsing of the file
+</span>    <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_file'>file</span><span class='comma'>,</span> <span class='id identifier rubyid_parse_interval'>parse_interval</span><span class='op'>=</span><span class='const'>MIN_PARSE_INTERVAL</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_constructor'>constructor</span><span class='lparen'>(</span><span class='id identifier rubyid_file'>file</span><span class='rparen'>)</span>
+
+      <span class='comment'># Time when status file was last time parsed, set it to 0 secs
+</span>      <span class='comment'># epoch to make sure it will be parsed
+</span>      <span class='ivar'>@last_parsed</span> <span class='op'>=</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_at'>at</span><span class='lparen'>(</span><span class='int'>0</span><span class='rparen'>)</span>
+
+      <span class='comment'># Last time file was changed
+</span>      <span class='ivar'>@last_changed</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_mtime'>mtime</span><span class='lparen'>(</span><span class='id identifier rubyid_file'>file</span><span class='rparen'>)</span>
+      <span class='ivar'>@parse_interval</span> <span class='op'>=</span> <span class='id identifier rubyid_parse_interval'>parse_interval</span>
+    <span class='kw'>end</span>
+
+
+    <span class='comment'># Extend original parse method: parse file only if it needs
+</span>    <span class='comment'># parsing and set time of parser run to current time.
+</span>    <span class='kw'>def</span> <span class='id identifier rubyid_parse'>parse</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_need_parsing?'>need_parsing?</span>
+        <span class='id identifier rubyid_parse!'>parse!</span>
+        <span class='ivar'>@last_parsed</span> <span class='op'>=</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="changed?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>changed?</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>Return true if file is changed since it was parsed last time</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+59
+60
+61</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/nagira/timed_parse.rb', line 59</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_changed?'>changed?</span>
+  <span class='ivar'>@last_changed</span> <span class='op'>&gt;</span> <span class='ivar'>@last_parsed</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="need_parsing?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>need_parsing?</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    
+<p>Check if:</p>
+<ul><li>
+<p>file changed?</p>
+</li><li>
+<p>was it parsed recently?</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+66
+67
+68</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/nagira/timed_parse.rb', line 66</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_need_parsing?'>need_parsing?</span>
+  <span class='id identifier rubyid_changed?'>changed?</span> <span class='op'>&amp;&amp;</span> <span class='lparen'>(</span><span class='lparen'>(</span><span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span> <span class='op'>-</span> <span class='ivar'>@last_parsed</span><span class='rparen'>)</span> <span class='op'>&gt;</span> <span class='ivar'>@parse_interval</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Thu Jan 12 11:40:31 2012 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.7.4 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

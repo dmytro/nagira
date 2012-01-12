@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.7.4
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '';
+  if (relpath != '') relpath += '/';
+</script>
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html" title="Index">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a id="class_list_link" href="#">Class List</a>
+  
+    <a id="method_list_link" href="#">Method List</a>
+  
+    <a id="file_list_link" href="#">File List</a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><div id='filecontents'>
+<h2>Name</h2>
+
+<p>Nagira – Nagios RESTful API</p>
+
+<p>Version 0.1</p>
+
+<h2>Description</h2>
+
+<p>Light-weight web services API for fetching status of Nagios application
+objects:</p>
+<ul><li>
+<p>Objects file: hosts, services, contacts, (host|service|contact)groups,
+escalations, etc.</p>
+</li><li>
+<p>Status file: hoststatus, servicestatus, etc.</p>
+</li></ul>
+
+<h2>USAGE</h2>
+<ol><li>
+<p>Run Sinatra application ./app.rb</p>
+</li><li>
+<p>Use HTTP client to get information:</p>
+
+<p>curl <a
+href="http://localhost:4567/objects/contact/list">localhost:4567/objects/contact/list</a></p>
+
+<p>curl <a
+href="http://localhost:4567/status/list">localhost:4567/status/list</a></p>
+</li></ol>
+
+<p>See more in <a href="file.FEATURES.html" title="FEATURES">FEATURES</a></p>
+
+<h2>How and why?</h2>
+
+<h3>Provide simple and consistent way for information exchange with Nagios</h3>
+
+<p>First goal is to provide read-only access to the objects/object states by
+parsing 2 status files in Nagios: status.dat and objects.cache, later add
+check result submission interface (as in NSCA) and Nagios configuration.</p>
+
+<p><tt>objects.cache</tt> file keeps information about Nagios configuration
+(lists of servers, services, groups etc), while <tt>status.dat</tt> file is
+file that stores information about current state of the objects (hosts and
+services) and Nagios process itself.</p>
+
+<p>If necessary at a later stages this could be implemented using Nagios’ NEB
+inteface, but the disadvantage of the NEB API is that it could block Nagios
+process and introduce latencies in Nagios.</p>
+
+<p>File parsing obviously takes resources for each single parse, however if
+application – Rails, Sinatra or similar – is able to keep state of the
+parser, is not a problem. IF application can keep track of file parse times
+and file modification time it is possible to parse file only if it was
+changed and infrequently enough.</p>
+
+<h1>Roadmap blueprint</h1>
+
+<p>When implemented API could provide foundation for development of
+well-defined, modular, distributed Nagios monitoring: distributed Nagios
+nodes communicating with each other, retrieving status and submitting check
+results, distributed, load-balanced, fault tolerant configuration.</p>
+
+<p>Web GUI (IMHO weakest part of the Nagios) could be completely de-coupled
+from Nagios core and is not required to run on the Nagios core host.</p>
+
+<h2>First stage</h2>
+
+<p>Read-only (GET) routes to access lists of monitored objects and states of
+the objects.</p>
+
+<p>There are examples of various Nagios interfaces: NDOUTILS, IdoUtils,
+MK_Livestatus. This is an attempt to do similar things using web services
+API.</p>
+
+<h2>Second stage</h2>
+
+<p>Replace NCSA passive checks submission mechanism with HTTP(S).</p>
+
+<h2>Later stages</h2>
+
+<p>Still not sure how to implement this (requires Nagios restarts/reloads)
+POST/PUT/DELETE interfaces for configuring Nagios.</p>
+
+<p>This is still far away…</p>
+
+<h2>Author</h2>
+
+<p>Dmytro Kovalov, dmytro.kovalov@gmail.com</p>
+
+<p>2011, Dec, 26th  - started</p>
+</div></div>
+    
+    <div id="footer">
+  Generated on Thu Jan 12 11:40:30 2012 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.7.4 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

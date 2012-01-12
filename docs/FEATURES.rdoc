@@ -1,0 +1,96 @@
+
+= FEATURES
+
+* GET requests for configuration and status information retrieval
+
+* Multiple output formats: add format extension at the end of the
+  route (+.xml+, +.json+, +.yaml+)
+
+* Named routes (_hostname_, _service_name_), not ID's
+
+* Full or short host/service state information (for short summary add
+  +/state+ at the end of the route)
+
+* Lists of objects (hosts, services, configured objects) where
+  applicable: add +/list+ at the end of the route
+
+== Routes for configured objects in the system
+
+Namespace for object configuration starts from "/objects". Route may
+be appended by +/list+ to get short list of objects or object classes.
+
+All routes can be followed by format specifier: +.(xml|yaml|json)+
+
+Following routes are implemented (all +GET+):
+
+* +/objects+ - all configured and parsed objects, groupped by class.
+
+* +/objects/list+ - list all configured and parsed object types
+
+* +/objects/_object_class_+ - full configuration of all objects in the
+  given class. _object_class_ is one of: _host_, _hostgroup_,
+  _servicegroup_, etc. Any of the acceptable configuration options for
+  Nagios. Note, object of the specific class must exist in
+  objects.cache file, or it will not appear on the list.
+
+* +/objects/_object_class_/list+ - short list of all names of configured
+  objects
+
+* +/objects/_object_class_/_object_name_+ - full configuration of the
+  object.
+
+== Routes to get service status information
+
+Every route can optionally end with "/list" or "/state" and format
+specifier +\.(xml|json|yaml)+
+
+* +/list+ option produces only list of hosts/services
+* +/state+ - gives short status of host or service
+* if none are provided, then will print out full parsed hash 
+
+
+=== Hosts
+* +/status+ - full list of all hosts with service(s) information
+* +/status.xml+
+* +/status/list+ - list of hosts
+* +/status/list.xml+
+
+=== Services
+
+* +/status/_hostname_+
+* +/status/_hostname_/services(/(list|state).FORMAT_EXTENSION?)?+
+* +/status/_hostname_/services/_service name_+
+
+= Examples
+
+== Status file
+
+        curl http://localhost:4567/status
+
+        curl http://localhost:4567/status/viy/state
+
+        curl http://localhost:4567/status/viy/services/list
+        curl http://localhost:4567/status/viy/services/list.json
+
+        curl http://localhost:4567/status/viy/services/state
+        curl http://localhost:4567/status/viy/services/state.yaml
+
+        curl http://localhost:4567/status/viy/services/SSH
+        curl http://localhost:4567/status/viy/services/SSH/state.yaml
+
+== Objects cache file
+
+        curl   http://localhost:4567/objects/command
+        curl   http://localhost:4567/objects/command/list
+        curl   http://localhost:4567/objects/command.json
+
+        curl   http://localhost:4567/objects/command/traffic-average
+        curl   http://localhost:4567/objects/command/traffic_average.yaml
+
+        curl   http://localhost:4567/objects/contact
+        curl   http://localhost:4567/objects/contact/list
+        curl   http://localhost:4567/objects/contact/list.yaml
+
+        curl   http://localhost:4567/objects/host/list.yaml
+        curl   http://localhost:4567/objects/host/viy
+

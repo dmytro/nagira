@@ -55,48 +55,25 @@ after do
   end
 end
 
-=begin rdoc
+# Routes for configured objects in the system
 
-== Routes for configured objects in the system
-
-Namespace for object configuration starts from "/objects". Route may
-be appended by /list to get short list of objects or object classes.
-
-All routes can be followed by format specifier: .(xml|yaml|json)
-
-Following routes are impplemented:
-
-* /objects - all configured and parsed objects, groupped by class.
-
-* /objects/list - list all configured and parsed object types
-
-* /objects/<object_class> - full configuration of all objects in the
-  given class. <object_class> is one of: 'host', 'hostgroup',
-  'servicegroup', etc. Any of the acceptable configuration options for
-  Nagios. Note, object of the specific class must exist in
-  objects.cache file, or it will not appear on the list.
-
-* /objects/<object_class>/list - short list of all names of configured
-  objects
-
-* /objects/<object_class>/<object_name>
-
-=end
-
+# Full list
 get "/objects" do
   body (@output == :list ? @objects.keys.send("to_#{@format}") : @objects.send("to_#{@format}")) rescue NoMethodError nil
 end
 
+# Single type
 get "/objects/:type" do |type|
   begin
     data = @objects[type.to_sym]
     data = data.keys if @output == :list
-    body (  data ? data : nil ).send("to_#{@format}")
+    body ( data ? data : nil ).send("to_#{@format}")
   rescue NoMethodError
     nil
   end
 end
 
+# Single object
 get "/objects/:type/:name" do |type,name|
   begin
     body @objects[type.to_sym][name].send("to_#{@format}")
@@ -106,30 +83,7 @@ get "/objects/:type/:name" do |type,name|
 end
 
 
-=begin rdoc
-
-Routes to get service information.
-Every route can optionally end with "/list" or "/state" and format specifier <.FORMAT_EXTENSION>
-
-* /list option produces only list of hosts/sevices
-* /state - gives short status of host or service
-* if none are provided, then will print out full parsed hash 
-
-
-Following routes are implemented
-
-== Hosts
-/status - full list of all hosts with service(s) information
-/status.xml
-/status/list - list of hosts
-/status/list.xml
-
-Service
-/status/<hostname>
-/status/<hostname>/services(/(list|state).FORMAT_EXTENSION?)?
-/status/<hostname>/services/<service name>
-
-=end
+# Routes for service information
 
 # === GET /status/:hostname/services/:service_name
 # Full or short status information for particular service on single

@@ -2,57 +2,81 @@
 
 Nagira -- Nagios RESTful API
 
+Version {include:file:version.txt}
+
 == Description
 
-This is an attempt to create light-weight API for fetching status of
-Nagios application objects:
+Light-weight web services API for fetching status of Nagios application objects:
 
-* Objects file
-  - hosts
-  - services
-  - contacts
-  - (host|service|contact)groups
-  - escalations
-  - etc.
+* Objects file: hosts, services, contacts,
+  (host|service|contact)groups, escalations, etc.
 
-* Status file
-  - hoststatus
-  - servicestatus
-  - etc.
+* Status file: hoststatus, servicestatus, etc.
+
+== USAGE
+
+1. Run Sinatra application ./app.rb
+2. Use HTTP client to get information:
+
+   curl http://localhost:4567/objects/contact/list
+
+   curl http://localhost:4567/status/list
+
+See more in {file:FEATURES.rdoc}
 
 == How and why?
 
-At this moment I am thinking about implementing RO access to the
-objects/object states by parsing 2 status files in Nagios: status.dat
-and objects.cache. 
+=== Provide simple and consistent way for information exchange with Nagios
 
-Objects.cache file keeps information about Nagios configuration (lists
-of servers, services, groups etc), while status.dat file is file that
-stores information about current state of the objects (hosts and
-services).
+First goal is to provide read-only access to the objects/object states
+by parsing 2 status files in Nagios: status.dat and objects.cache,
+later add check result submission interface (as in NSCA) and Nagios
+configuration.
 
-Probably at a later stages this can be implemented using Nagios' NEB
-inteface, but from what I've read on the Net, NEB is blocking, and can
-in some cases introduce latencies in Nagios; file parsing while is
-obviously havier, if you want to parse file for each request (like in
-CGI mode), does not  constitutes a problem when we are talking about
-application like Rails or similar. We can force to parse file
-infrequently enough and only if it changed since the last parse.
++objects.cache+ file keeps information about Nagios configuration
+(lists of servers, services, groups etc), while +status.dat+ file is
+file that stores information about current state of the objects (hosts
+and services) and Nagios process itself.
+
+If necessary at a later stages this could be implemented using Nagios'
+NEB inteface, but the disadvantage of the NEB API is that it could
+block Nagios process and introduce latencies in Nagios.
+
+File parsing obviously takes resources for each single parse, however
+if application -- Rails, Sinatra or similar -- is able to keep state
+of the parser, is not a problem. IF application can keep track of file
+parse times and file modification time it is possible to parse file
+only if it was changed and infrequently enough.
+
+= Roadmap blueprint
+
+When implemented API could provide foundation for development of
+well-defined, modular, distributed Nagios monitoring: distributed
+Nagios nodes communicating with each other, retrieving status and
+submitting check results, distributed, load-balanced, fault tolerant
+configuration.
+
+Web GUI (IMHO weakest part of the Nagios) could be completely
+de-coupled from Nagios core and is not required to run on the Nagios
+core host.
 
 == First stage
 
-Read only (GET) interface to access lists of monitored objects and
-states of the objects. This can provide foundation for developing
-well-defined, modular, distributed Nagios. 
+Read-only (GET) routes to access lists of monitored objects and states
+of the objects.
 
 There are examples of various Nagios interfaces: NDOUTILS, IdoUtils,
-MK_Livestatus. THis is an attempt to do similar things using web
+MK_Livestatus. This is an attempt to do similar things using web
 services API.
 
-== Later on
+== Second stage
 
-Still not sure how to implement this, but next will be POST/PUT/DELETE
-intrfaces for configuring Nagios.
+Replace NCSA passive checks submission mechanism with HTTP(S).
+
+== Later stages
+
+Still not sure how to implement this (requires Nagios
+restarts/reloads) POST/PUT/DELETE interfaces for configuring Nagios.
 
 This is still far away...
 

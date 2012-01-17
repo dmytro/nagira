@@ -24,6 +24,12 @@ Light-weight web services API for fetching status of Nagios application objects:
 
 See more in {file:FEATURES.rdoc}
 
+== Documenation
+
+YARD documentation included with project, run +./jardoc+ in project's
+root. Generatied YARD docs are available at
+http://dmytro.github.com/nagira/doc
+
 == How and why?
 
 === Provide simple and consistent way for information exchange with Nagios

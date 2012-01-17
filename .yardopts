@@ -1,3 +1,4 @@
+--output-dir ../dmytro.github.com/nagira/doc
 app.rb
 lib/**/*.rb
 - 

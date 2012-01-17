@@ -20,14 +20,21 @@ FORMAT_EXTENSION = '\.(json|yaml|xml)$'
 DEFAULT_FORMAT = :xml
 
 
-# Parse status file.
-# TODO: Add check for file changed? and min parsing interval to avoid
-# file paring on each HTTP request.
+# Parse status file.  
+#
+# Note: *.parse methods are monkey-patched here (if you have required
+# 'lib/nagira' above) to set min parsing interval to avoid file paring
+# on each HTTP request. File is parsed only if it was changed and if
+# it was parsed more then 60 (default) seconds ago.
 before do 
   $nagios = { :config => nil, :status => nil, :objects => nil }
-  
-  $nagios[:status] ||= Nagios::Status.new("/Users/dmytro/Development/nagira/test/data/status.dat")
-  $nagios[:objects] ||= Nagios::Objects.new("/Users/dmytro/Development/nagira/test/data/objects.cache")
+ 
+  $nagios[:config] ||= Nagios::Config.new   "/Users/dmytro/Development/nagira/test/data/nagios.cfg"
+  $nagios[:config].parse
+
+  $nagios[:status] ||= Nagios::Status.new   $nagios[:config].status_file
+  $nagios[:objects] ||= Nagios::Objects.new $nagios[:config].object_cache_file
+
   $nagios[:status].parse
   $nagios[:objects].parse
 
@@ -35,7 +42,8 @@ before do
   @objects   = $nagios[:objects].objects
 end
 
-# Strip extension (@format) from HTTP route
+# Strip extension (@format) from HTTP route and set it as instance
+# variable @format
 before do 
   request.path_info.sub!(/#{FORMAT_EXTENSION}/, '')
   @format = ($1 || DEFAULT_FORMAT).to_sym

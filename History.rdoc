@@ -7,3 +7,8 @@
   - Routes for objects configuration GET's
   - FEATURES.rdoc
   - YARD documentation 
+
+* 2012-05-22 dmytro
+
+  - start using Gemfile 
+  - INSTALL.rdoc - simple description of installation procedure

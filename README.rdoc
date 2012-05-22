@@ -13,11 +13,15 @@ Light-weight web services API for fetching status of Nagios application objects:
 
 * Status file: hoststatus, servicestatus, etc.
 
-== INSTALLATION
+== Source Code
+
+Source code available from Github https://github.com/dmytro/nagira
+
+== Installation
 
 See {file:INSTALL.rdoc}
 
-== USAGE
+== Usage
 
 1. Run Sinatra application ./app.rb
 2. Use HTTP client to get information:
@@ -95,3 +99,7 @@ This is still far away...
 Dmytro Kovalov, dmytro.kovalov@gmail.com
 
 2011, Dec, 26th  - started
+
+== License
+
+MIT, see {file:LICENSE.rdoc}

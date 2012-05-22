@@ -3,6 +3,7 @@ app.rb
 lib/**/*.rb
 - 
 README.rdoc
+LICENSE
 docs/FEATURES.rdoc
 docs/INSTALL.rdoc
 History.rdoc

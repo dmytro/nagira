@@ -1,0 +1,24 @@
+
+== Installation procedure
+
+- Clone from Github:
+
+  git clone https://github.com/dmytro/nagira.git
+
+- Initialize submodules
+
+  cd nagira
+  git module init
+  git module update
+
+- Install bundle
+
+  bundle install
+
+- Run application
+
+  bundle exec ./app.rb
+
+- Access 
+  
+Go to URL: http://localhost:4567/status

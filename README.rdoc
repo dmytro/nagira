@@ -13,6 +13,10 @@ Light-weight web services API for fetching status of Nagios application objects:
 
 * Status file: hoststatus, servicestatus, etc.
 
+== INSTALLATION
+
+See {file:INSTALL.rdoc}
+
 == USAGE
 
 1. Run Sinatra application ./app.rb

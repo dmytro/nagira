@@ -25,7 +25,9 @@ DEFAULT_FORMAT = :xml
 # Note: *.parse methods are monkey-patched here (if you have required
 # 'lib/nagira' above) to set min parsing interval to avoid file paring
 # on each HTTP request. File is parsed only if it was changed and if
-# it was parsed more then 60 (default) seconds ago.
+# it was parsed more then 60 (default) seconds ago. See
+# +lib/nagira/timed_parse.rb+ for mor more info.
+
 before do 
   $nagios = { :config => nil, :status => nil, :objects => nil }
  

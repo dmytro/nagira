@@ -4,6 +4,8 @@ gem 'sinatra', '>= 1.3.1'
 
 group :development,:test do 
   gem 'sinatra-contrib', '>= 1.3.1'
+  gem 'rake'
+  gem 'yard'
 end
 
 # for Hash.extract!

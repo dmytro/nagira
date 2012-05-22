@@ -4,5 +4,6 @@ lib/**/*.rb
 - 
 README.rdoc
 docs/FEATURES.rdoc
+docs/INSTALL.rdoc
 History.rdoc
 version.txt

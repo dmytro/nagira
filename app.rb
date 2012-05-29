@@ -1,7 +1,14 @@
 #!/usr/bin/env ruby
 $: << File.dirname(__FILE__)
 require 'sinatra'
-require "sinatra/reloader" if development?
+require 'config/defaults'
+require 'config/environment'
+
+if development?
+  require 'sinatra/reloader'
+  also_reload File.dirname(__FILE__)+'/config/*.rb'
+end
+
 require 'lib/ruby-nagios/nagios'
 require 'lib/nagira'
 
@@ -15,9 +22,6 @@ require 'active_model/serializers/xml' # for Hash.to_xml
 
 disable :protection
 
-#  Regex for available formats: xml, json, yaml
-FORMAT_EXTENSION = '\.(json|yaml|xml)$'
-DEFAULT_FORMAT = :xml
 
 
 # Parse status file.  
@@ -31,11 +35,11 @@ DEFAULT_FORMAT = :xml
 before do 
   $nagios = { :config => nil, :status => nil, :objects => nil }
  
-  $nagios[:config] ||= Nagios::Config.new   "/Users/dmytro/Development/nagira/test/data/nagios.cfg"
+  $nagios[:config]  ||= Nagios::Config.new settings.nagios_cfg
   $nagios[:config].parse
 
-  $nagios[:status] ||= Nagios::Status.new   $nagios[:config].status_file
-  $nagios[:objects] ||= Nagios::Objects.new $nagios[:config].object_cache_file
+  $nagios[:status]  ||= Nagios::Status.new   $nagios[:config].status_file
+  $nagios[:objects] ||= Nagios::Objects.new  $nagios[:config].object_cache_file
 
   $nagios[:status].parse
   $nagios[:objects].parse
@@ -45,10 +49,10 @@ before do
 end
 
 # Strip extension (@format) from HTTP route and set it as instance
-# variable @format
+# variable @format`
 before do 
-  request.path_info.sub!(/#{FORMAT_EXTENSION}/, '')
-  @format = ($1 || DEFAULT_FORMAT).to_sym
+  request.path_info.sub!(/#{DEFAULT[:format_extensions]}/, '')
+  @format = ($1 || DEFAULT[:format]).to_sym
   content_type "application/#{@format.to_s}"
 end
 
@@ -136,7 +140,7 @@ end
 # All hosts status
 # - :state - only hostname and current_state
 # - :list  - list of hostnames
-# - :full status of all hosts and services
+# - :full status of all hosts and services (TODO)
 # 
 get "/status" do
   case @output 
@@ -149,7 +153,7 @@ get "/status" do
 end
 
 
-# TODO: provide informatiuon about API routes
+# TODO: provide information about API routes
 get "/api" do 
   [501, "TODO: Not implemented"]
 end

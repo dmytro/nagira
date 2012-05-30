@@ -23,7 +23,7 @@ require 'active_model/serializers/xml' # for Hash.to_xml
 disable :protection
 
 
-
+##
 # Parse status file.  
 #
 # Note: *.parse methods are monkey-patched here (if you have required
@@ -31,6 +31,15 @@ disable :protection
 # on each HTTP request. File is parsed only if it was changed and if
 # it was parsed more then 60 (default) seconds ago. See
 # +lib/nagira/timed_parse.rb+ for mor more info.
+#
+# In development mode use files located under +./test/data+
+# directory. This allows to do development on the host where Nagios is
+# notinstalled. If you want to change this edit configuration in
+# config/environment.rb file.
+#
+# See also comments in config/default.rb file regarding nagios_cfg,
+# status_cfg, objects_cfg.
+
 
 before do 
   $nagios = { :config => nil, :status => nil, :objects => nil }
@@ -38,9 +47,12 @@ before do
   $nagios[:config]  ||= Nagios::Config.new settings.nagios_cfg
   $nagios[:config].parse
 
-  $nagios[:status]  ||= Nagios::Status.new   $nagios[:config].status_file
-  $nagios[:objects] ||= Nagios::Objects.new  $nagios[:config].object_cache_file
-
+  $nagios[:status]  ||= Nagios::Status.new(  settings.status_cfg || 
+                                             $nagios[:config].status_file
+                                             )
+  $nagios[:objects] ||= Nagios::Objects.new( settings.objects_cfg || 
+                                             $nagios[:config].object_cache_file
+                                             )
   $nagios[:status].parse
   $nagios[:objects].parse
 

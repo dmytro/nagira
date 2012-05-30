@@ -1,7 +1,12 @@
 
 
 configure :development do 
-  set :nagios_cfg, File.expand_path(File.dirname(__FILE__) + '/../test/data/nagios.cfg')
+
+  dir = File.expand_path(File.dirname(__FILE__) + '/../test/data/')
+
+  set :nagios_cfg => "#{dir}/nagios.cfg",
+      :status_cfg => "#{dir}/status.dat",
+      :object_cfg => "#{dir}/objects.cache"
 end
 
 

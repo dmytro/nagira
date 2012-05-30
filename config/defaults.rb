@@ -14,13 +14,22 @@ DEFAULT = {
                 # format is not specified
 
 
-  nagios_cfg_glob: '/etc/nagios*/nagios.cfg', # Dir.glob pattern to
-                                              # search for nagios.cfg
-                                              # file buy default
+  nagios_cfg_glob: '/etc/nagios*/nagios.cfg', # Default Dir.glob
+                                              # pattern to search for
+                                              # nagios.cfg file.
 
-  nagios_cfg: nil # No path to file by default
+  # No path to file configuration file by default. Main nagios config
+  # is defined by +nagios_cfg_glob+ or by Sintra's
+  # +settings.nagios_cfg+ variable. 
+  #
+  # status_cfg and objects_cfg are defined by parsing of nagios_cfg
+  # file. Sinatra's setting override parsed values.
+  nagios_cfg: nil, 
+  status_cfg: nil,
+  objects_cfg: nil
 }
 
+##
 # For every key in the DEFAULT hash create setting with the same name
 # and value. Values can be overrriden in environment.rb file if
 # required.

@@ -2,6 +2,8 @@ source 'http://rubygems.org'
 
 gem 'sinatra', '>= 1.3.1'
 
+gem 'rspec-core'
+
 group :development,:test do 
   gem 'sinatra-contrib', '>= 1.3.1'
   gem 'rake'

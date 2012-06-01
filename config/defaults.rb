@@ -1,4 +1,5 @@
 
+
 ##
 # This file sets some constants, that are used as defaults in Nagira
 # application. Instead of changin this please modify
@@ -14,10 +15,6 @@ DEFAULT = {
                 # format is not specified
 
 
-  nagios_cfg_glob: '/etc/nagios*/nagios.cfg', # Default Dir.glob
-                                              # pattern to search for
-                                              # nagios.cfg file.
-
   # No path to file configuration file by default. Main nagios config
   # is defined by +nagios_cfg_glob+ or by Sintra's
   # +settings.nagios_cfg+ variable. 
@@ -29,13 +26,18 @@ DEFAULT = {
   objects_cfg: nil
 }
 
+class Nagira < Sinatra::Base
+
 ##
 # For every key in the DEFAULT hash create setting with the same name
 # and value. Values can be overrriden in environment.rb file if
 # required.
 
 configure do
-  DEFAULT.each do |key,val|
+  ::DEFAULT.each do |key,val|
     set key,val
   end
+end
+
+
 end

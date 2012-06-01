@@ -1,0 +1,33 @@
+
+= Checking your configuration
+
+There is a spec file that allows to check your current
+configuration. It checks whether your Nagios files exist and can be
+parses by the Nagira.
+
+Configurarion checker is environment dependent. To check files are OK
+for particular environment run check as:
+
+    RACK_ENV=<environment> rspec -fd spec/configuration_spec.rb
+
+In development (by default) it will check presence of files under
+./test/data subdirectory. In other environments it checks actual
+configuration and validity of files in your Nagios installation.
+
+With no errors check should produce output as following:
+
+  Nagira
+    nagios.cfg file
+      should exist
+      should be parseable
+      parsed file
+        should have PATH to objects file
+        should have PATH to status file
+        objects file
+          should exist
+          should be parseable
+        status file
+          should exist
+          should be parseable
+
+  Finished in 0.1727 seconds

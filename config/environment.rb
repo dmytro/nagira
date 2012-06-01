@@ -1,14 +1,17 @@
 
+class Nagira < Sinatra::Base
 
-configure :development do 
 
-  dir = File.expand_path(File.dirname(__FILE__) + '/../test/data/')
+  configure :development do 
+    
+    dir = File.expand_path(File.dirname(__FILE__) + '/../test/data/')
+    
+    set :nagios_cfg => "#{dir}/nagios.cfg",
+        :status_cfg => "#{dir}/status.dat",
+        :object_cfg => "#{dir}/objects.cache"
 
-  set :nagios_cfg => "#{dir}/nagios.cfg",
-      :status_cfg => "#{dir}/status.dat",
-      :object_cfg => "#{dir}/objects.cache"
-end
-
+  end
+  
 
 # configure :production do
 #   # If your nagios.cfg file is in 'standard' location (in RH and
@@ -17,3 +20,4 @@ end
 #   set :nagios_cfg, nil
 # end
 
+end

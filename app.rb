@@ -7,6 +7,8 @@ require 'lib/nagira'
 
 class Nagira < Sinatra::Base
 
+  set :app_file, __FILE__
+
   disable :protection
 
   if development?
@@ -181,6 +183,8 @@ class Nagira < Sinatra::Base
   #   respond_with $nagios.status['process'], nil
   # end
 
+  # Start Sinatra application when not running from rack
   run! if app_file == $0
-
 end
+
+

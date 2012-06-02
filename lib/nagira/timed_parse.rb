@@ -1,3 +1,5 @@
+require 'ruby-nagios/nagios'
+
 module Nagios
   # Keep track of last parsed time and last changed time of the
   # status/cache file to avoid parsing on each HTTP request.
@@ -7,7 +9,7 @@ module Nagios
     # even if file changes often, we do not want to parse it more
     # often, then this number of seconds.
 
-    MIN_PARSE_INTERVAL = 60
+    MIN_PARSE_INTERVAL = ::DEFAULT[:min_parse_interval]
 
     # Override constructor and parse method from ::Nagios::Objects or
     # ::Nagios::Status classes, add instance variables to handle
@@ -53,19 +55,19 @@ module Nagios
       end
     end
 
-      attr_accessor :last_parsed, :last_changed, :parse_interval
+    attr_accessor :last_parsed, :last_changed, :parse_interval
       
-      # Return true if file is changed since it was parsed last time
-      def changed?
-        @last_changed > @last_parsed
-      end
-      
-      # Check if:
-      # - file changed?
-      # - was it parsed recently?
-      def need_parsing?
-        changed? && ((Time.now - @last_parsed) > @parse_interval)
-      end
-      
+    # Return true if file is changed since it was parsed last time
+    def changed?
+      @last_changed > @last_parsed
+    end
+    
+    # Check if:
+    # - file changed?
+    # - was it parsed recently?
+    def need_parsing?
+      changed? && ((Time.now - @last_parsed) > @parse_interval)
+    end
+    
   end
 end

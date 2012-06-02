@@ -2,7 +2,7 @@
 
 ##
 # This file sets some constants, that are used as defaults in Nagira
-# application. Instead of changin this please modify
+# application. Instead of changing this please modify
 # config/environment.rb file to match your requirements. Settings in
 # environment.rb file override these defaults
 
@@ -23,7 +23,20 @@ DEFAULT = {
   # file. Sinatra's setting override parsed values.
   nagios_cfg: nil, 
   status_cfg: nil,
-  objects_cfg: nil
+  objects_cfg: nil,
+  
+  ##
+  # min_parse_interval used in Nagios::TimedParse module - extension
+  # to Nagios modules.
+  #
+  # @see Nagios::TimedParse
+  #
+  # Set some minimum interval for re-parsing of the status file: even
+  # if file changes often, we do not want to parse it more often, then
+  # this number of seconds. To disable timed parsing, set
+  # min_parse_interval to 0 or negative number.
+  
+  min_parse_interval: 60
 }
 
 class Nagira < Sinatra::Base

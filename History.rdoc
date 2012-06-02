@@ -1,14 +1,18 @@
-* 2011-12-25 @dmytro
-  - Started Github project
-* 2012-01-02 @dmytro
-  - First Sinatra application to return service state information
-* 2012-01-12 @dmytro
+* 2012-06-2 Dmytro Kovalov - v. 0.1.2
+  - spec for configuration files 
+  - spec for basic responses from Sinatra (GET /objects, GET /status)
+  - CONFIGURATION.rdoc
+  - configuration cleanup
+* 2012-05-22 Dmytro Kovalov
+  - start using Gemfile 
+  - INSTALL.rdoc - simple description of installation procedure
+* 2012-01-12 Dmytro Kovalov
   - History.rdoc and version.txt files
   - Routes for objects configuration GET's
   - FEATURES.rdoc
   - YARD documentation 
+* 2012-01-02 Dmytro Kovalov
+  - First Sinatra application to return service state information
+* 2011-12-25 @dmytro
+  - Started Github project
 
-* 2012-05-22 dmytro
-
-  - start using Gemfile 
-  - INSTALL.rdoc - simple description of installation procedure

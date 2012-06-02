@@ -1,8 +1,17 @@
 
 class Nagira < Sinatra::Base
 
+  disable :protection
+  
+  if development?
+    require 'sinatra/reloader'
+    also_reload File.dirname(__FILE__)+'/*.rb'
+  end
 
-  configure :development do 
+  ##
+  # Development and test environments use local files localted in the
+  # development tree: ./test/data.
+  configure :development, :test do 
     
     dir = File.expand_path(File.dirname(__FILE__) + '/../test/data/')
     

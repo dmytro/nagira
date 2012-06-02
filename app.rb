@@ -9,13 +9,6 @@ class Nagira < Sinatra::Base
 
   set :app_file, __FILE__
 
-  disable :protection
-
-  if development?
-    require 'sinatra/reloader'
-    also_reload File.dirname(__FILE__)+'/config/*.rb'
-  end
-  
   ##
   # Parse nagios files.
   #
@@ -55,7 +48,7 @@ class Nagira < Sinatra::Base
   end
 
   # Strip extension (@format) from HTTP route and set it as instance
-  # variable @format`
+  # variable @format
   before do 
     request.path_info.sub!(/#{DEFAULT[:format_extensions]}/, '')
     @format = ($1 || DEFAULT[:format]).to_sym

@@ -39,6 +39,7 @@ DEFAULT = {
   min_parse_interval: 60
 }
 
+require 'sinatra'
 class Nagira < Sinatra::Base
 
 ##

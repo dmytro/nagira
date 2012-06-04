@@ -43,4 +43,20 @@ describe Nagira do
       end
     end
   end
+
+  context "data format check" do
+    %{ objects status}.each do |page|
+      FORMATS.each do |format|
+        
+        it "#{page} should be in #{format}" do
+          get "/#{page}.#{format}"
+          pp last_response.keys
+          pending
+        end
+
+      end
+    end
+  end
+
+  
 end

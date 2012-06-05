@@ -2,7 +2,13 @@ source 'http://rubygems.org'
 
 gem 'sinatra', '>= 1.3.1'
 
+#
+# RSpec modules should be in all environments - to be able to test prod config
+# too
+# 
 gem 'rspec-core'
+gem 'rspec-mocks'
+gem 'rspec-expectations'
 
 group :development,:test do 
   gem 'sinatra-contrib', '>= 1.3.1'

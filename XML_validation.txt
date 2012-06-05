@@ -1,0 +1,13 @@
+
+Need to add validation for these rules:
+
+Element names are case sensitive. 
+Must begin with letter or underscore(_).
+After initial character following are allowed 
+digits
+period(.)
+hyphen(-)
+underscore(_)
+colon(  - legal but should be used except for namespaces
+NO other characters are allowed like #, @, $, % 
+Element names cannot begin with xml, Xml, XMl, XmL, xML, xMl

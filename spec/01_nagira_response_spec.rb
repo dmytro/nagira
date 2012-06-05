@@ -1,5 +1,6 @@
 require_relative '../app.rb'
 require 'rack/test'
+require 'xmlsimple'
 
 describe Nagira do 
 
@@ -64,11 +65,8 @@ describe Nagira do
               when 'json'
                 JSON.parse(last_response.body).should be_a_kind_of Hash
               when 'xml'
-                # File.open(page, "w") {  |f| f.print(last_response.body); f.close } # if page == 'objects'
-		pending "Need to fix to_xmli. It breaks on 24x7" if page == 'objects'
                 Hash.from_xml(last_response.body).should be_a_kind_of Hash
               else 
-#                pending
                  YAML.load(last_response.body).should be_a_kind_of Hash
              end
 

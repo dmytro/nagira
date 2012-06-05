@@ -8,7 +8,7 @@
 ########################################
 
 define timeperiod {
-	timeperiod_name	_24x7
+	timeperiod_name	24x7
 	alias	24 Hours A Day, 7 Days A Week
 	sunday	00:00-24:00
 	monday	00:00-24:00
@@ -868,8 +868,8 @@ define hostgroup {
 define contact {
 	contact_name	root
 	alias	Root
-	service_notification_period	_24x7
-	host_notification_period	_24x7
+	service_notification_period	24x7
+	host_notification_period	24x7
 	service_notification_options	w,u,c,r
 	host_notification_options	d,r
 	service_notification_commands	notify-service-by-email
@@ -887,7 +887,7 @@ define host {
 	address	airport.sakae
 	check_command	check-host-alive
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -919,7 +919,7 @@ define host {
 	address	192.168.2.72
 	check_command	check-host-alive
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -956,7 +956,7 @@ define host {
 	address	0.0.0.0
 	check_command	check-host-alive
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -988,7 +988,7 @@ define host {
 	address	192.168.2.208
 	check_command	check-host-alive
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -1024,7 +1024,7 @@ define host {
 	address	tv.sakae
 	check_command	check-host-alive
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -1056,7 +1056,7 @@ define host {
 	address	192.168.2.11
 	check_command	check-host-alive
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -1092,7 +1092,7 @@ define host {
 	address	yarylo.sakae
 	check_command	check-host-alive
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -1121,10 +1121,10 @@ define host {
 define service {
 	host_name	airport
 	service_description	PING
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_ping!100.0,20%!500.0,60%
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	1.000000
 	retry_interval	1.000000
@@ -1155,10 +1155,10 @@ define service {
 define service {
 	host_name	archive
 	service_description	Check time
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_time!${HOSTNAME}
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -1189,10 +1189,10 @@ define service {
 define service {
 	host_name	archive
 	service_description	PING
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_ping!100.0,20%!500.0,60%
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	1.000000
 	retry_interval	1.000000
@@ -1223,10 +1223,10 @@ define service {
 define service {
 	host_name	archive
 	service_description	SSH
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_ssh
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -1257,10 +1257,10 @@ define service {
 define service {
 	host_name	kurobka
 	service_description	Check time
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_time!${HOSTNAME}
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -1291,10 +1291,10 @@ define service {
 define service {
 	host_name	kurobka
 	service_description	PING
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_ping!100.0,20%!500.0,60%
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	1.000000
 	retry_interval	1.000000
@@ -1325,10 +1325,10 @@ define service {
 define service {
 	host_name	kurobka
 	service_description	SSH
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_ssh
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -1359,10 +1359,10 @@ define service {
 define service {
 	host_name	tv
 	service_description	PING
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_ping!100.0,20%!500.0,60%
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	1.000000
 	retry_interval	1.000000
@@ -1393,10 +1393,10 @@ define service {
 define service {
 	host_name	tv
 	service_description	SSH
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_ssh
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -1427,10 +1427,10 @@ define service {
 define service {
 	host_name	viy
 	service_description	Check time
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_time!${HOSTNAME}
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -1461,7 +1461,7 @@ define service {
 define service {
 	host_name	viy
 	service_description	Current Load
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_load!5.0!4.0!3.0!10.0!6.0!4.0
 	contact_groups	admins
 	notification_period	not_backup_time
@@ -1495,10 +1495,10 @@ define service {
 define service {
 	host_name	viy
 	service_description	Current Users
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_users!20!50
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -1529,10 +1529,10 @@ define service {
 define service {
 	host_name	viy
 	service_description	DNS service
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_dns!viy
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -1563,10 +1563,10 @@ define service {
 define service {
 	host_name	viy
 	service_description	Disk Space
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_disk!500m!200m!/www_dk
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	30.000000
 	retry_interval	1.000000
@@ -1597,10 +1597,10 @@ define service {
 define service {
 	host_name	viy
 	service_description	Exim queue
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_mailq_exim!10!20
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	2.000000
 	retry_interval	1.000000
@@ -1631,10 +1631,10 @@ define service {
 define service {
 	host_name	viy
 	service_description	HTTP
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_http
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -1665,10 +1665,10 @@ define service {
 define service {
 	host_name	viy
 	service_description	High Load
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_load!10.0!8.0!6.0!20.0!12.0!8.0
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -1699,10 +1699,10 @@ define service {
 define service {
 	host_name	viy
 	service_description	PING
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_ping!100.0,20%!500.0,60%
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	1.000000
 	retry_interval	1.000000
@@ -1733,10 +1733,10 @@ define service {
 define service {
 	host_name	viy
 	service_description	SSH
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_ssh
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -1767,10 +1767,10 @@ define service {
 define service {
 	host_name	viy
 	service_description	Total Processes
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_procs!250!400
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000
@@ -1801,10 +1801,10 @@ define service {
 define service {
 	host_name	yarylo
 	service_description	PING
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_ping!100.0,20%!500.0,60%
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	1.000000
 	retry_interval	1.000000
@@ -1835,10 +1835,10 @@ define service {
 define service {
 	host_name	yarylo
 	service_description	SSH
-	check_period	_24x7
+	check_period	24x7
 	check_command	check_ssh
 	contact_groups	admins
-	notification_period	_24x7
+	notification_period	24x7
 	initial_state	o
 	check_interval	5.000000
 	retry_interval	1.000000

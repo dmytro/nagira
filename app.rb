@@ -1,15 +1,12 @@
 #!/usr/bin/env ruby
 
-
 $: << File.dirname(__FILE__)
-
 require 'lib/nagira'
 
 class Nagira < Sinatra::Base
 
   set :app_file, __FILE__
 
-  @to_xml_opts = {:skip_types => false}
   ##
   # Parse nagios files.
   #
@@ -75,6 +72,7 @@ class Nagira < Sinatra::Base
 
   # Full list
   get "/objects" do
+    
     body (@output == :list ? 
           @objects.keys.send("to_#{@format}") : 
           @objects.send("to_#{@format}")) rescue NoMethodError nil

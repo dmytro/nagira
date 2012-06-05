@@ -9,6 +9,7 @@ class Nagira < Sinatra::Base
 
   set :app_file, __FILE__
 
+  @to_xml_opts = {:skip_types => false}
   ##
   # Parse nagios files.
   #
@@ -25,8 +26,6 @@ class Nagira < Sinatra::Base
   #
   # See also comments in config/default.rb file regarding nagios_cfg,
   # status_cfg, objects_cfg.
-
-
   before do 
 
     $nagios ||= { :config => nil, :status => nil, :objects => nil }
@@ -179,5 +178,3 @@ class Nagira < Sinatra::Base
   # Start Sinatra application when not running from rack
   run! if app_file == $0
 end
-
-

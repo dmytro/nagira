@@ -45,15 +45,36 @@ describe Nagira do
   end
 
   context "data format check" do
-    %{ objects status}.each do |page|
-      FORMATS.each do |format|
-        
-        it "#{page} should be in #{format}" do
-          get "/#{page}.#{format}"
-          pp last_response.keys
-          pending
-        end
 
+    %w{ objects status}.each do |page|
+      context page do
+        
+        FORMATS.each do |format|
+        context format do
+          
+            it "header should have #{format} content-type" do
+              get "/#{page}.#{format}"
+              last_response.header['Content-Type'].should =~ /^application\/#{format}.*/
+            end
+
+            it "body should be in #{format}" do
+
+              get "/#{page}.#{format}"
+              case format
+              when 'json'
+                JSON.parse(last_response.body).should be_a_kind_of Hash
+              when 'xml'
+                File.open(page, "w") {  |f| f.print(last_response.body); f.close } # if page == 'objects'
+                Hash.from_xml(last_response.body).should be_a_kind_of Hash
+              else 
+#                pending
+                 YAML.load(last_response.body).should be_a_kind_of Hash
+             end
+
+            end
+
+          end
+        end
       end
     end
   end

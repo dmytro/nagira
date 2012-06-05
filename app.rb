@@ -23,6 +23,8 @@ class Nagira < Sinatra::Base
   #
   # See also comments in config/default.rb file regarding nagios_cfg,
   # status_cfg, objects_cfg.
+
+
   before do 
 
     $nagios ||= { :config => nil, :status => nil, :objects => nil }

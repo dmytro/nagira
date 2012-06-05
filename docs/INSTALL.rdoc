@@ -3,22 +3,59 @@
 
 - Clone from Github:
 
-  git clone https://github.com/dmytro/nagira.git
+
+    git clone https://github.com/dmytro/nagira.git
+
 
 - Initialize submodules
 
-  cd nagira
-  git module init
-  git module update
+
+    cd nagira
+    git module init
+    git module update
+
 
 - Install bundle
 
-  bundle install
+
+    bundle install
+
+
+- Run test suite
+
+  - First to test your package
+
+    Run rspec tests in +development+ and/or +test+ environments. In
+    this case Nagira will use proven to work files included with the
+    distribution (in test/data directory).
+
+
+        RACK_ENV=<development|test> rspec -fd 
+
+
+  - Test production
+
+        RACK_ENV=production rspec -fd 
+
 
 - Run application
 
-  bundle exec ./app.rb
+
+    bundle exec ./app.rb 
+    
+or
+
+    rackup -p <port>
+
 
 - Access 
   
 Go to URL: http://localhost:4567/status
+
+
+== See also
+
+* See more on {file:CONFIGURATION.rdoc}
+
+* If you are getting misformed XML errors, please look at
+  {file:nagios_objects.rdoc}

@@ -1,0 +1,31 @@
+
+=== Nagios objects naming
+
+When using Nagira API in XML mode, please pay attention to names of
+your Nagios objects. XML is much stricter in the tag  naming than YAML
+or JSON, or than Nagios in respect to its object names.
+
+For example, having timeperiod named '24x7' (by defaults coming with
+most Nagios installations as example) will break all XML
+validators. Nagira will still produce XML output on +GET /objects+ but
+most of validators and parsers (including web browsers) will not
+process this XML.
+
+REXML reports following:
+
+     REXML::ParseException:
+       #<REXML::ParseException: malformed XML: missing tag start
+
+Both JSON and YAML both producers and consumers work OK with such
+names.
+
+So, basically you have two possible solutions:
+
+- switch to JSON or YAML for your API or
+
+- fix all objects names in Nagios.
+
+RSpec tests can help to identify your problems. Just run +rspec+ at
+the top of project tree (or <tt>RACK_ENV=production rspec</tt> if
+you're resting your production installation) to see any errors
+reported.

@@ -48,8 +48,8 @@ class Nagira < Sinatra::Base
   # Strip extension (@format) from HTTP route and set it as instance
   # variable @format
   before do 
-    request.path_info.sub!(/#{DEFAULT[:format_extensions]}/, '')
-    @format = ($1 || DEFAULT[:format]).to_sym
+    request.path_info.sub!(/#{settings.format_extensions}/, '')
+    @format = ($1 || settings.format).to_sym
     content_type "application/#{@format.to_s}"
   end
 

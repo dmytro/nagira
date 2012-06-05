@@ -2,7 +2,11 @@
 class Nagira < Sinatra::Base
 
   disable :protection
-  
+
+  configure do 
+    set :format, :json
+  end
+
   if development?
     require 'sinatra/reloader'
     also_reload File.dirname(__FILE__)+'/*.rb'

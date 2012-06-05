@@ -4,7 +4,11 @@
 # This file sets some constants, that are used as defaults in Nagira
 # application. Instead of changing this please modify
 # config/environment.rb file to match your requirements. Settings in
-# environment.rb file override these defaults
+# environment.rb file override these defaults.
+#
+# Exception is ::DEFAULT[:min_parse_interval] which i not overriden by
+# environment.rb and should be changed here.
+
 
 DEFAULT = {
    

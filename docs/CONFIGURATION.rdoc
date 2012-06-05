@@ -1,18 +1,41 @@
 
-= Checking your configuration
+= Nagira configuration
 
-There is a spec file that allows to check your current
+== Configuration files
+
+Nagira configured by adjusting settings in files +defaults.rb+ and
++environment.rb+ in the directory +config+ in Nagira tree. In most
+cases +defaults.rb+ file should not be changed, usually only editing
+environment.rb file is enough.
+
+In most cases you don't need to change anything in shipped Nagira
+configuration. The main thing that needs tuning is location of main
+Nagios configuration file +nagios.cfg+.
+
+However, if you are using canned distribution of Nagios -- for example
+shipped with RedHat/CentOS or Debian/Ubuntu -- there are chances, that
+your +nagios.cfg+ file is in /etc/nagios<N> or /etc/nagios directory
+where N - is Nagios major version. In this case Nagira will be OK with
+default configuration.
+
+Please see comments in both file for more details about
+configuration. 
+
+
+== Verifying your configuration
+
+There is a RSpec file that allows to check your current
 configuration. It checks whether your Nagios files exist and can be
 parses by the Nagira.
 
-Configurarion checker is environment dependent. To check files are OK
-for particular environment run check as:
+Configurarion checker is environment dependent. To check files for
+particular environment run check as:
 
     RACK_ENV=<environment> rspec -fd spec/configuration_spec.rb
 
-In development (by default) it will check presence of files under
-./test/data subdirectory. In other environments it checks actual
-configuration and validity of files in your Nagios installation.
+In development and test (by default) it will check presence of files
+under ./test/data subdirectory. In production it checks actual Nagios
+files and validity of files in your Nagios installation.
 
 With no errors check should produce output as following:
 

@@ -1,14 +1,56 @@
 #!/usr/bin/env ruby
 
+# @!macro  [attach] sinatra.get
+#
+#    @overload get "$1"
+#
+#    @return HTTP response. Hash formatted in the format defined by
+#         requested output type(XML, YAML or JSON).
+#
+#
+#
+# @!macro [new] type
+#     @param [String] :type Type is one of Nagios objects like  hosts, hostgroupsroups, etc.
+#
+# @!macro [new] name
+#       @param [String] :name
+#
+# @!macro [new] hostname
+#   @param [String] :hostname Configured Nagios hostname
+#
+# @!macro [new] service_name
+#   @param [String] :service_name Configured Nagios service for the host
+#
+# @!macro [new] accepted 
+#
+#    <b>Accepted output type modifiers:</b>
+#
+# @!macro [new] list 
+#
+#     - +/list+ : Short list of available objects, depending on the
+#       current request context: hosts, services, etc.
+#
+# @!macro [new] state 
+#
+#     - +/state+ - Instead of full status information send only
+#       current state. For hosts up/down, for services OK, Warn,
+#       Critical, Unknown (0,1,2-1)
+#
+# @!macro [new] full
+#
+#     - +/full+ - Show full status information
+#       TODO Not implemented
+#
+
+
+
+
 $: << File.dirname(__FILE__)
 require 'lib/nagira'
 
 ##
-#
-# Note:: Mostly methods with comments Sinatra DSL :before method are not actually
-#        method definitions. They are Sinatra DSL methods
-#        calls. Looking for better means to document DSL methods with
-#        YARD.
+# Main class of Nagira application implementing RESTful API for
+# Nagios.
 #
 class Nagira < Sinatra::Base
 
@@ -31,10 +73,8 @@ class Nagira < Sinatra::Base
   # See also comments in config/default.rb file regarding nagios_cfg,
   # status_cfg, objects_cfg.
   #
-  # @method parse_nagios_files  
-  #
-  # Sinatra DSL :before method
-  #
+  # @method   parse_nagios_files
+  # @overload before("parse Nagios files")
 
   before do 
 
@@ -57,9 +97,10 @@ class Nagira < Sinatra::Base
   end
 
   ##
-  # @method BEFORE_strip_extensions 
+  # @method     strip_extensions  
+  # @overload before("detect format")
   #
-  # Sinatra DSL :before method
+  # Detect and strip output format extension
   #
   # Strip extension (@format) from HTTP route and set it as instance
   # variable @format. Valid formats are .xml, .json, .yaml. If format
@@ -74,43 +115,46 @@ class Nagira < Sinatra::Base
   #     GET /objects.json        # => :json
   #     GET /status/list.yaml    # default format
   # 
-  before do 
+ before do 
     request.path_info.sub!(/#{settings.format_extensions}/, '')
     @format = ($1 || settings.format).to_sym
     content_type "application/#{@format.to_s}"
   end
 
   ##
-  # @method BEFORE_strip_output_type 
+  # @method   strip_output_type 
+  # @overload before('detect output mode')
   #
-  # Sinatra DSL :before method
+  # Detect output mode modifier
   #
-  # Detect and strip output type (@output) from HTTP route if it is
-  # provided. Full list of output tuypes is :list, :state or
-  # :full. 
+  # Detect and strip output type from HTTP route. Full list of
+  # output types is +:list+, +:state+ or +:full+, corresponding to
+  # (+/list, +/state+, +/full+ routes).
   #
-  # Output type in HTTP route can be 'list' or 'state'. If no output
-  # type specfied it is set to :full.
+  # Output type defined by route modifier appended to the end of HTTP
+  # route. If no output type specfied it is set to +:full+. Output
+  # mode can be followed by format extension (+.json+, +.xml+ or
+  # +.yaml+).
   #
   # = Examples
   #
   #     GET /objects/list     # => :list
   #     GET /status/state     # => :state
   #     GET /status/:hostname # => :full
+  #     GET /status           # => :full
   #
-  # @see API
   before do
     request.path_info.sub!(/\/(list|state)$/, '')
     @output = ($1 || :full).to_sym
   end
 
   ##
-  # @method AFTER_object_not_found
-  # Sinatra :after DSL method
+  # @method   object_not_found
+  # @overload after("Object not found or bad request")
   #
-  # If result-set of object/status search is empty return HTTP
-  # 404. This can happen when you are requesting status for not
-  # existing host and/or service.
+  # If result-set of object/status search is empty return HTTP 404 .
+  # This can happen when you are requesting status for not existing
+  # host and/or service.
   #
   #
   after do
@@ -123,27 +167,43 @@ class Nagira < Sinatra::Base
     end
   end
 
-  ##
-  # @method GET_config
-  # 
-  # Nagira API
-  # TODO: Not implemented
+
+  # Config routes
+  # ============================================================
+
+  # @!macro  [attach] sinatra.get
   #
-  # Retrieves Nagios configuration hash.
-  # @see API
+  #    @overload get "$1"
+  #
+  #    @return HTTP response. Hash formatted in the format defined by
+  #         requested output type(XML, YAML or JSON).
+  #
+  #
+  # @method get_config
+  # Get Nagios configuration.
+  #
+  # @todo Not implemented
+  #
+  # Get Nagios configuration hash form parsing main Nagios
+  # configuration file nagios.cfg
   get "/config" do 
 
   end
-
+  
+  #
+  # Objects routes
+  # ============================================================
 
   ##
-  # @method GET_objects
+  # @method get_objects
   #
-  # Get full list of Nagios objects. Returns hash containin all
+  # Get full list of Nagios objects. Returns hash containing all
   # configured objects in Nagios: hosts, hostgroups, services,
   # contacts. etc.
   #
-  # Nagira API
+  # @macro accepted
+  # @macro list
+  #
   get "/objects" do
     
     body (@output == :list ? 
@@ -151,7 +211,16 @@ class Nagira < Sinatra::Base
           @objects.send("to_#{@format}")) rescue NoMethodError nil
   end
 
-  # Single type
+  ##
+  # @method   get_object_type
+  # @!macro type
+  #
+  # Get all objects of type :type
+  #
+  # @!macro accepted
+  # @!macro list
+  # 
+  #
   get "/objects/:type" do |type|
     begin
       data = @objects[type.to_sym]
@@ -162,7 +231,17 @@ class Nagira < Sinatra::Base
     end
   end
 
-  # Single object
+  ##
+  # @method get_1_object
+  #
+  # Get single Nagios object.
+  #
+  # @!macro type
+  # @!macro name
+  #
+  # @!macro accepted
+  # * none
+  #
   get "/objects/:type/:name" do |type,name|
     begin
       body @objects[type.to_sym][name].send("to_#{@format}")
@@ -172,12 +251,21 @@ class Nagira < Sinatra::Base
   end
 
 
-  # Routes for service information
+  # Status routes
+  # ============================================================
 
-  # === GET /status/:hostname/services/:service_name
-  # Full or short status information for particular service on single
-  # host
-  # /list option is ignored
+  ##
+  # @method get_status_hostname_services_service_name
+  #
+  # @!macro hostname
+  # @!macro service_name
+  #
+  # Full or short status information for single service on single
+  # host.
+  #
+  # @!macro accepted
+  # @!macro state
+  #
   get "/status/:hostname/services/:service_name" do |hostname,service|
     body (if @output == :state
             @status[hostname]['servicestatus'][service].extract!("hostname", "service_description", "current_state")
@@ -186,8 +274,16 @@ class Nagira < Sinatra::Base
           end).send("to_#{@format}")
   end
 
-  # All services for single host: 
-  # :full, :state or :list
+  ##
+  # @method get_status_hostname_services
+  # @!macro hostname
+  #
+  # All services for single host.
+  #
+  # @!macro accepted
+  # @!macro state
+  # @!macro list
+  # @!macro full
   get "/status/:hostname/services" do |hostname|
     data = case @output
            when :list
@@ -201,8 +297,14 @@ class Nagira < Sinatra::Base
   end
   
   # Hoststatus for single host
-  # - :state - hostname and current_state
-  # - :full  - full hoststatus
+  #
+  # @method get_status_hostname
+  #
+  # @!macro hostname
+  #
+  # @!macro accepted
+  # @!macro state
+  #
   get "/status/:hostname" do |hostname|
     body (if @output == :state
             @status[hostname]['hoststatus'].extract!("host_name", "current_state")
@@ -211,11 +313,17 @@ class Nagira < Sinatra::Base
           end).send("to_#{@format}")
   end
 
+  ##
+  # @method get_status
   #
-  # All hosts status
-  # - :state - only hostname and current_state
-  # - :list  - list of hostnames
-  # - :full status of all hosts and services (TODO)
+  # All hosts status.
+  #
+  # @!macro accepted
+  # @!macro state
+  # @!macro list
+  # @!macro full
+  #
+  # @todo Not implemented yet
   # 
   get "/status" do
     case @output 
@@ -228,7 +336,12 @@ class Nagira < Sinatra::Base
   end
 
 
-  # TODO: provide information about API routes
+  ##
+  # @method get_api
+  #
+  # Provide information about API routes 
+  #
+  # @todo Not implemented yet
   get "/api" do 
     [501, "TODO: Not implemented"]
   end

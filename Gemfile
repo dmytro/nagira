@@ -13,7 +13,7 @@ gem 'rspec-expectations'
 group :development,:test do 
   gem 'sinatra-contrib', '>= 1.3.1'
   gem 'rake'
-  gem 'yard'
+  gem 'yard', "~> 0.8"
 end
 
 # for Hash.extract!

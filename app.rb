@@ -187,7 +187,7 @@ class Nagira < Sinatra::Base
   # Get Nagios configuration hash form parsing main Nagios
   # configuration file nagios.cfg
   get "/config" do 
-
+    body $nagios[:config].configuration.send("to_#{@format}")
   end
   
   #

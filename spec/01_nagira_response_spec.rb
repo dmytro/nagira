@@ -14,7 +14,8 @@ describe Nagira do
 
   TOP_PAGES = %w{ config objects status }
   FORMATS = %w{ xml yaml json}
-  TYPES   = %w{ state list}
+  DEFAULT_FORMAT = ::Nagira.settings.format
+  TYPES   = %w{state list}
 
   context "simple page load" do
     TOP_PAGES.each do |page|
@@ -43,7 +44,7 @@ describe Nagira do
         
         FORMATS.each do |format|
         context format do
-          
+            
             it "header should have #{format} content-type" do
               get "/#{page}.#{format}"
               last_response.header['Content-Type'].should =~ /^application\/#{format}.*/
@@ -59,15 +60,31 @@ describe Nagira do
                 Hash.from_xml(last_response.body).should be_a_kind_of Hash
               else 
                  YAML.load(last_response.body).should be_a_kind_of Hash
-             end
+              end
+            end
 
+            it "/#{page}.#{format} response should be the same as /#{page}" do
+              pending
             end
 
           end
         end
       end
     end
-  end
 
-  
+    context "/config" do 
+      context "check some important keys in Nagios configuration" do
+        check_keys = %w{log_file cfg_file object_cache_file}
+        
+        check_keys.each do |key|
+          it "attribute #{key} should exist" do
+            pending
+          end
+        end
+
+      end
+
+      
+    end
+  end
 end

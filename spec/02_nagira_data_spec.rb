@@ -39,22 +39,28 @@ describe Nagira do
       @data = JSON.parse last_response.body
 
       # make sure these exist
+      # Painful.... don't kow how to make it work
       # $allkeys =  (%w{host service contact timeperiod} + @data.keys).uniq
     end
 
-    (%w{host service contact timeperiod} + @data.keys).uniq.each do |obj|
       
-      it "objects[#{obj}] should exist" do 
-        @data[obj].should be_a_kind_of Hash
-      end
-      
-      it "route /objects/#{obj} should respond" do 
-        get "/objects/#{obj}.json"
-        last_response.should be ok
-        #        JSON.parse(last_response.body).should be_a_kind_of Hash
+    context 'hash key' do
+      %w{host service contact timeperiod}.each do |obj|
+        it "objects[#{obj}] should exist" do 
+          @data[obj].should be_a_kind_of Hash
+        end
       end
     end
-    
+      
+    context 'HTTP route' do
+      %w{host service contact timeperiod}.each do |obj|
+        it "/objects/#{obj} should respond" do 
+          get "/objects/#{obj}.json"
+          last_response.should be_ok
+          #        JSON.parse(last_response.body).should be_a_kind_of Hash
+        end
+      end
+    end
   end 
   # /objects --------------------
   

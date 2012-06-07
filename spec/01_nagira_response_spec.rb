@@ -2,6 +2,7 @@ require_relative '../app.rb'
 require 'rack/test'
 require 'pp'
 
+
 describe Nagira do 
 
   set :environment, ENV['RACK_ENV'] || :test
@@ -63,15 +64,27 @@ describe Nagira do
               end
             end
 
-            it "/#{page}.#{format} response should be the same as /#{page}" do
-              pending
-            end
 
           end
+
+          end
+
+        context 'default format' do 
+          it "/#{page}.#{Nagira.settings.format} response should be the same as /#{page}" do
+            get "/#{page}.#{Nagira.settings.format}"
+            a = last_response.body
+            get "/#{page}"            
+            b = last_response.body
+            a.should === b
+          end
         end
+
       end
     end
 
+    #
+    # GET /config
+    # ----------------------------------------
     context "/config" do 
 
       before do
@@ -79,19 +92,21 @@ describe Nagira do
         @data = JSON.parse last_response.body
       end
 
-      context "check some important keys in Nagios configuration" do
+      context "important items in Nagios configuration" do
 
-        string_keys = %w{ log_file object_cache_file
-        resource_file status_file nagios_user nagios_group }
+        # Configuration strings
 
-        string_keys.each do |key| it "attribute #{key} should be string" do
+        %w{ log_file object_cache_file resource_file status_file
+         nagios_user nagios_group }.each do |key|
+
+          it "attribute #{key} should be a String" do
             @data[key].should be_a_kind_of String
           end 
         end
 
-        array_keys = %w{  cfg_file cfg_dir }
-
-        array_keys.each do |key| it "attribute #{key} should be array" do
+        # Congiration arrays
+        %w{cfg_file cfg_dir}.each do |key| 
+          it "attribute #{key} should be an Array" do
             @data[key].should be_a_kind_of Array
           end 
         end
@@ -99,29 +114,6 @@ describe Nagira do
       end
     end # /config
 
-    context "/objects" do
-      context "objects existense" do 
-        before do 
-          get "/objects"
-          @data = JSON.parse last_response.body
-        end
 
-        %w{  hosts services contacts timeperiods }.each do |obj|
-          it "#{obj} should exist" do 
-            @data[obj].should be_a_kind_of Array
-          end
-        end
-
-          context "individual route for" do
-          %w{  hosts services contacts timeperiods }.each do |obj|
-            
-            it "#{obj} should exist" do 
-              get "/objects/#{obj}.json"
-              JSON.parse(last_response.body).should be_a_kind_of Array
-            end
-          end
-        end
-      end
-    end
   end
 end

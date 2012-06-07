@@ -224,6 +224,7 @@ class Nagira < Sinatra::Base
   get "/objects/:type" do |type|
     begin
       data = @objects[type.to_sym]
+pp data
       data = data.keys if @output == :list
       body ( data ? data : nil ).send("to_#{@format}")
     rescue NoMethodError

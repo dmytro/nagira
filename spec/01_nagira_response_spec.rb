@@ -1,6 +1,6 @@
 require_relative '../app.rb'
 require 'rack/test'
-require 'xmlsimple'
+require 'pp'
 
 describe Nagira do 
 
@@ -73,18 +73,55 @@ describe Nagira do
     end
 
     context "/config" do 
+
+      before do
+        get "/config.json"
+        @data = JSON.parse last_response.body
+      end
+
       context "check some important keys in Nagios configuration" do
-        check_keys = %w{log_file cfg_file object_cache_file}
-        
-        check_keys.each do |key|
-          it "attribute #{key} should exist" do
-            pending
-          end
+
+        string_keys = %w{ log_file object_cache_file
+        resource_file status_file nagios_user nagios_group }
+
+        string_keys.each do |key| it "attribute #{key} should be string" do
+            @data[key].should be_a_kind_of String
+          end 
+        end
+
+        array_keys = %w{  cfg_file cfg_dir }
+
+        array_keys.each do |key| it "attribute #{key} should be array" do
+            @data[key].should be_a_kind_of Array
+          end 
         end
 
       end
+    end # /config
 
-      
+    context "/objects" do
+      context "objects existense" do 
+        before do 
+          get "/objects"
+          @data = JSON.parse last_response.body
+        end
+
+        %w{  hosts services contacts timeperiods }.each do |obj|
+          it "#{obj} should exist" do 
+            @data[obj].should be_a_kind_of Array
+          end
+        end
+
+          context "individual route for" do
+          %w{  hosts services contacts timeperiods }.each do |obj|
+            
+            it "#{obj} should exist" do 
+              get "/objects/#{obj}.json"
+              JSON.parse(last_response.body).should be_a_kind_of Array
+            end
+          end
+        end
+      end
     end
   end
 end

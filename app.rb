@@ -341,6 +341,14 @@ class Nagira < Sinatra::Base
     body self.api.send("to_#{@format}")
   end
 
+  # 
+  get "/" do
+    body({ 
+           :application => self.class,
+           :version => VERSION,
+           :url => GITHUB
+         }).send("to_#{@format}")
+  end
   # Other resources in parsed status file. Supported are => ["hosts",
   # "info", "process", "contacts"]
   # get "/:resource" do |resource|

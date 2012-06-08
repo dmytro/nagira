@@ -13,7 +13,7 @@ describe Nagira do
     @app ||= Nagira
   end
 
-  TOP_PAGES = %w{ config objects status }
+  TOP_PAGES = %w{ config objects status api }
   FORMATS = %w{ xml yaml json}
   DEFAULT_FORMAT = ::Nagira.settings.format
   TYPES   = %w{state list}

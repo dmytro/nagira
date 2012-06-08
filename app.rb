@@ -343,7 +343,8 @@ class Nagira < Sinatra::Base
   #
   # @todo Not implemented yet
   get "/api" do 
-    [501, "TODO: Not implemented"]
+    #[501, "TODO: Not implemented"]
+    body self.api.send("to_#{@format}")
   end
 
   # Other resources in parsed status file. Supported are => ["hosts",

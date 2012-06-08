@@ -22,17 +22,30 @@ describe Nagira do
     end
 
     it "should be array" do 
-      @data.should be_a_kind_of Array
+      @data.should be_a_kind_of Hash
     end
 
-    METHODS = %w{ get put post delete}
+    METHODS = %w{ GET PUT POST DELETE}
 
     context "routes" do 
       
-      it "should be valid HTTP route" do
-        pending
+      METHODS.each do |method|
+        
+        context method do 
+          it "routes should be an Array" do
+            @data[method].should be_a_kind_of Array if @data[method]
+          end
+          
+          it "should star with slash" do
+            if @data[method]
+              @data[method].each do |path|
+                path.should =~ /^\//
+              end
+            end
+          end
+
+        end
       end
     end
-
   end
 end

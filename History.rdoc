@@ -1,3 +1,9 @@
+* 2012-06-8 Dmytro Kovalov - v. 0.1.3
+  - specs for /config, /status, /objects - simple page loads and data
+    checks;
+  - /api route;
+  - bugfixes;
+  - YARD documentation;
 * 2012-06-2 Dmytro Kovalov - v. 0.1.2
   - spec for configuration files 
   - spec for basic responses from Sinatra (GET /objects, GET /status)

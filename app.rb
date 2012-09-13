@@ -182,8 +182,6 @@ class Nagira < Sinatra::Base
   # @method get_config
   # Get Nagios configuration.
   #
-  # @todo Not implemented
-  #
   # Get Nagios configuration hash form parsing main Nagios
   # configuration file nagios.cfg
   get "/config" do 
@@ -323,8 +321,6 @@ class Nagira < Sinatra::Base
   # @!macro list
   # @!macro full
   #
-  # @todo Not implemented yet
-  # 
   get "/status" do
     case @output 
     when :state
@@ -341,12 +337,18 @@ class Nagira < Sinatra::Base
   #
   # Provide information about API routes 
   #
-  # @todo Not implemented yet
   get "/api" do 
-    #[501, "TODO: Not implemented"]
     body self.api.send("to_#{@format}")
   end
 
+  # 
+  get "/" do
+    body({ 
+           :application => self.class,
+           :version => VERSION,
+           :url => GITHUB
+         }).send("to_#{@format}")
+  end
   # Other resources in parsed status file. Supported are => ["hosts",
   # "info", "process", "contacts"]
   # get "/:resource" do |resource|

@@ -18,6 +18,9 @@ require 'nagira/nagios'
 
 class Nagira < Sinatra::Base
 
+  VERSION  = File.read(File.expand_path(File.dirname(__FILE__)) + '/../version.txt').strip
+  GITHUB   = "http://dmytro.github.com/nagira/"
+
   # Get all routes that Nagira provides. 
   def api 
     api = { }

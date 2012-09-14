@@ -1,3 +1,0 @@
-[submodule "lib/ruby-nagios"]
-	path = lib/ruby-nagios
-	url = https://github.com/dmytro/nagira.git

@@ -4,16 +4,7 @@
 - Clone from Github:
 
 
-    git clone https://github.com/dmytro/nagira.git
-
-
-- Initialize submodules
-
-
-    cd nagira
-    git module init
-    git module update
-
+     git clone --recursive git@github.com:dmytro/nagira.git
 
 - Install bundle
 

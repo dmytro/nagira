@@ -149,6 +149,30 @@ class Nagira < Sinatra::Base
   end
 
   ##
+  # @method find_jsonp_callback
+  # @overload before('find callback name')
+  # 
+  # Detects if request is using jQuery JSON-P and sets @callback
+  # variable. @callback variable is used if after method and prepends
+  # JSON data with callback function name.
+  #
+  # = Example
+  #
+  # GET /api?callback=jQuery12313123123 # @callback == jQuery12313123123
+  #
+  # JSONP support is based on the code from +sinatra/jsonp+ Gem
+  # https://github.com/shtirlic/sinatra-jsonp.
+  #
+  before do
+    @callback = nil
+    if @format == :json
+      ['callback','jscallback','jsonp','jsoncallback'].each do |x|
+        @callback = params.delete(x) unless @callback
+      end
+    end
+  end
+
+  ##
   # @method   object_not_found
   # @overload after("Object not found or bad request")
   #
@@ -167,6 +191,21 @@ class Nagira < Sinatra::Base
     end
   end
 
+  ##
+  # @method   return_jsonp_data
+  # @overload after("Return JSON-P formatted data")
+  #
+  # If it's a JSON-P request, return its data with prepended @callback
+  # function name. JSONP request is detected by +before+ method.
+  #
+  # = Example
+  #
+  #     $ curl  'http://localhost:4567/?callback=test'
+  #         test(["{\"application\":\"Nagira\",\"version\":\"0.1.3\",\"url\":\"http://dmytro.github.com/nagira/\"}"])
+  #
+  after do
+    halt "#{@callback.to_s}(#{response.body})" if @callback
+  end
 
   # Config routes
   # ============================================================
@@ -343,11 +382,11 @@ class Nagira < Sinatra::Base
 
   # 
   get "/" do
-    body({ 
-           :application => self.class,
-           :version => VERSION,
-           :url => GITHUB
-         }).send("to_#{@format}")
+    body ({
+            :application => self.class,
+            :version => VERSION,
+            :url => GITHUB
+          }).send("to_#{@format}")
   end
   # Other resources in parsed status file. Supported are => ["hosts",
   # "info", "process", "contacts"]

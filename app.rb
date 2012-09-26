@@ -396,6 +396,12 @@ class Nagira < Sinatra::Base
       @data.each { |k,v| @data[k] = v['hoststatus'].slice("host_name", "current_state") }
     when :list
       @data = @data.keys
+# TODO
+#     when :full
+#       @data
+    else
+
+      @data = @data.map { |x| x[1]['hoststatus']}
     end
 
     nil

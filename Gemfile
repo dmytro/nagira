@@ -14,6 +14,9 @@ group :development,:test do
   gem 'sinatra-contrib', '>= 1.3.1'
   gem 'rake'
   gem 'yard', "~> 0.8"
+  gem "growl", "~> 1.0.3"
+  gem "guard-brakeman", "~> 0.5.0"
+  gem "guard-rspec", "~> 1.2.1"
 end
 
 # for Hash.extract!

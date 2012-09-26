@@ -124,9 +124,9 @@ class Nagira < Sinatra::Base
   #
   # = Examples
   # 
-  #     GET /objects             # => default format
-  #     GET /objects.json        # => :json
-  #     GET /status/list.yaml    # => :yaml
+  #     GET /_objects              # => default format
+  #     GET /_objects.json         # => :json
+  #     GET /_status/_list.yaml    # => :yaml
   # 
  before do 
     request.path_info.sub!(/#{settings.format_extensions}/, '')
@@ -171,7 +171,7 @@ class Nagira < Sinatra::Base
   #
   # = Example
   #
-  # GET /api?callback=jQuery12313123123 # @callback == jQuery12313123123
+  # GET /_api?callback=jQuery12313123123 # @callback == jQuery12313123123
   #
   # JSONP support is based on the code from +sinatra/jsonp+ Gem
   # https://github.com/shtirlic/sinatra-jsonp.
@@ -205,10 +205,13 @@ class Nagira < Sinatra::Base
 
   ##
   # @method   return_jsonp_data
-  # @overload after("Return JSON-P formatted data")
+  # @overload after("Return formatted data")
   #
   # If it's a JSON-P request, return its data with prepended @callback
   # function name. JSONP request is detected by +before+ method.
+  #
+  # If no callback paramete given, then simply return formatted data
+  # as XML, JSON, or YAML in response body.
   #
   # = Example
   #

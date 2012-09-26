@@ -17,7 +17,7 @@ describe Nagira do
 
   context "API data" do
     before :all do 
-      get "/api.json"
+      get "/_api.json"
       @data = JSON.parse last_response.body
     end
 

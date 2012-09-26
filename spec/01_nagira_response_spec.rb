@@ -13,7 +13,7 @@ describe Nagira do
     @app ||= Nagira
   end
 
-  TOP_PAGES = %w{ config objects status api }
+  TOP_PAGES = %w{ _config _objects _status _api }
   FORMATS = %w{ xml yaml json}
   DEFAULT_FORMAT = ::Nagira.settings.format
   TYPES   = %w{state list}
@@ -88,7 +88,7 @@ describe Nagira do
     context "/config" do 
 
       before do
-        get "/config.json"
+        get "/_config.json"
         @data = JSON.parse last_response.body
       end
 

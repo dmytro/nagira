@@ -35,7 +35,7 @@ describe Nagira do
   context "/objects" do
 
     before :all do 
-      get "/objects"
+      get "/_objects"
       @data = JSON.parse last_response.body
 
       # make sure these exist
@@ -53,15 +53,15 @@ describe Nagira do
     end
       
       %w{host service contact timeperiod}.each do |obj|
-      context "/objects/#{obj}" do
+      context "/_objects/#{obj}" do
         
         it "should respond to HTTP resuest" do 
-          get "/objects/#{obj}.json"
+          get "/_objects/#{obj}.json"
           last_response.should be_ok
         end
         
         it "response to /objects/#{obj} should be Hash" do 
-          get "/objects/#{obj}.json"
+          get "/_objects/#{obj}.json"
           JSON.parse(last_response.body).should be_a_kind_of Hash
         end
       end
@@ -76,13 +76,13 @@ describe Nagira do
 
   context '/status' do 
     before :all do 
-      get "/status"
+      get "/_status"
       @data = JSON.parse last_response.body
 
-      get "/status/list"
+      get "/_status/_list"
       @list = JSON.parse last_response.body
 
-      get "/status/state"
+      get "/_status/_state"
       @state = JSON.parse last_response.body
     end
     

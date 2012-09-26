@@ -27,18 +27,18 @@
 #
 # @!macro [new] list 
 #
-#     - +/list+ : Short list of available objects, depending on the
+#     - +/_list+ : Short list of available objects, depending on the
 #       current request context: hosts, services, etc.
 #
 # @!macro [new] state 
 #
-#     - +/state+ - Instead of full status information send only
+#     - +/_state+ - Instead of full status information send only
 #       current state. For hosts up/down, for services OK, Warn,
 #       Critical, Unknown (0,1,2-1)
 #
 # @!macro [new] full
 #
-#     - +/full+ - Show full status information
+#     - +/_full+ - Show full status information
 #       TODO Not implemented
 #
 
@@ -99,7 +99,10 @@ class Nagira < Sinatra::Base
   end
 
   ##
-  # TODO
+  # @method     clear_instance_data
+  # @overload before("clear data")
+  #
+  # Clear values onf instance variables before start.
   #
   before do 
     @data = []
@@ -148,13 +151,13 @@ class Nagira < Sinatra::Base
   #
   # = Examples
   #
-  #     GET /objects/list     # => :list
-  #     GET /status/state     # => :state
-  #     GET /status/:hostname # => :full
-  #     GET /status           # => :full
+  #     GET /_objects/_list     # => :list
+  #     GET /_status/_state     # => :state
+  #     GET /_status/:hostname  # => :full
+  #     GET /_status            # => :full
   #
   before do
-    request.path_info.sub!(/\/(list|state)$/, '')
+    request.path_info.sub!(/\/_(list|state)$/, '')
     @output = ($1 || :full).to_sym
   end
 
@@ -232,7 +235,7 @@ class Nagira < Sinatra::Base
   #
   # Get Nagios configuration hash form parsing main Nagios
   # configuration file nagios.cfg
-  get "/config" do
+  get "/_config" do
     @data = $nagios[:config].configuration
     nil
   end
@@ -251,7 +254,7 @@ class Nagira < Sinatra::Base
   # @macro accepted
   # @macro list
   #
-  get "/objects" do
+  get "/_objects" do
     
     @data = begin
               @output == :list ? @objects.keys : @objects
@@ -271,7 +274,7 @@ class Nagira < Sinatra::Base
   # @!macro list
   # 
   #
-  get "/objects/:type" do |type|
+  get "/_objects/:type" do |type|
     begin
       @data = @objects[type.to_sym]
       @data = @data.keys if @output == :list
@@ -293,7 +296,7 @@ class Nagira < Sinatra::Base
   # @!macro accepted
   # * none
   #
-  get "/objects/:type/:name" do |type,name|
+  get "/_objects/:type/:name" do |type,name|
     begin
       @data = @objects[type.to_sym][name]
     rescue NoMethodError
@@ -319,7 +322,7 @@ class Nagira < Sinatra::Base
   # @!macro accepted
   # @!macro state
   #
-  get "/status/:hostname/services/:service_name" do |hostname,service|
+  get "/_status/:hostname/_services/:service_name" do |hostname,service|
 
     if @output == :state
       @data = @status[hostname]['servicestatus'][service].slice("hostname", "service_description", "current_state")
@@ -339,7 +342,7 @@ class Nagira < Sinatra::Base
   # @!macro state
   # @!macro list
   # @!macro full
-  get "/status/:hostname/services" do |hostname|
+  get "/_status/:hostname/_services" do |hostname|
 
     case @output
     when :list
@@ -362,7 +365,7 @@ class Nagira < Sinatra::Base
   # @!macro accepted
   # @!macro state
   #
-  get "/status/:hostname" do |hostname|
+  get "/_status/:hostname" do |hostname|
     @data = @status[hostname]['hoststatus'].dup
 
     if @output == :state
@@ -382,7 +385,7 @@ class Nagira < Sinatra::Base
   # @!macro list
   # @!macro full
   #
-  get "/status" do
+  get "/_status" do
     @data = @status.dup
 
     case @output 
@@ -401,7 +404,7 @@ class Nagira < Sinatra::Base
   #
   # Provide information about API routes 
   #
-  get "/api" do 
+  get "/_api" do 
     @data = self.api
     nil
   end

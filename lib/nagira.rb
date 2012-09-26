@@ -1,10 +1,12 @@
 
-require 'active_support' # for Hash.extract!
+require 'active_support' # for Hash.slice
 require 'json'
 require 'yaml'
 require 'active_model/serialization'
 require 'active_model/serializers/xml' # for Hash.to_xml
 require 'sinatra'
+require 'sinatra/reloader'
+require 'pp'
 
 $: << File.dirname(__FILE__) << File.dirname(File.dirname(__FILE__))
 

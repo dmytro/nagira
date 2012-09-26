@@ -43,8 +43,6 @@
 #
 
 
-
-
 $: << File.dirname(__FILE__)
 require 'lib/nagira'
 
@@ -53,6 +51,10 @@ require 'lib/nagira'
 # Nagios.
 #
 class Nagira < Sinatra::Base
+
+  configure :development do
+    register Sinatra::Reloader
+  end
 
   set :app_file, __FILE__
 
@@ -93,7 +95,15 @@ class Nagira < Sinatra::Base
     $nagios[:objects].parse
 
     @status   = $nagios[:status].status['hosts']
-    @objects   = $nagios[:objects].objects
+    @objects  = $nagios[:objects].objects
+  end
+
+  ##
+  # TODO
+  #
+  before do 
+    @data = []
+    @format = @output = nil
   end
 
   ##
@@ -113,7 +123,7 @@ class Nagira < Sinatra::Base
   # 
   #     GET /objects             # => default format
   #     GET /objects.json        # => :json
-  #     GET /status/list.yaml    # default format
+  #     GET /status/list.yaml    # => :yaml
   # 
  before do 
     request.path_info.sub!(/#{settings.format_extensions}/, '')
@@ -164,7 +174,6 @@ class Nagira < Sinatra::Base
   # https://github.com/shtirlic/sinatra-jsonp.
   #
   before do
-    @callback = nil
     if @format == :json
       ['callback','jscallback','jsonp','jsoncallback'].each do |x|
         @callback = params.delete(x) unless @callback
@@ -182,7 +191,7 @@ class Nagira < Sinatra::Base
   #
   #
   after do
-    if response.body.empty?
+    if ! @data || @data.empty?
       halt [404, {
               :message => "Object not found or bad request", 
               :error => "HTTP::Notfound"
@@ -204,7 +213,7 @@ class Nagira < Sinatra::Base
   #         test(["{\"application\":\"Nagira\",\"version\":\"0.1.3\",\"url\":\"http://dmytro.github.com/nagira/\"}"])
   #
   after do
-    halt "#{@callback.to_s}(#{response.body})" if @callback
+    body( @callback ? "#{@callback.to_s} (#{@data})" : @data.send("to_#{@format}") )
   end
 
   # Config routes
@@ -223,8 +232,9 @@ class Nagira < Sinatra::Base
   #
   # Get Nagios configuration hash form parsing main Nagios
   # configuration file nagios.cfg
-  get "/config" do 
-    body $nagios[:config].configuration.send("to_#{@format}")
+  get "/config" do
+    @data = $nagios[:config].configuration
+    nil
   end
   
   #
@@ -243,9 +253,12 @@ class Nagira < Sinatra::Base
   #
   get "/objects" do
     
-    body (@output == :list ? 
-          @objects.keys.send("to_#{@format}") : 
-          @objects.send("to_#{@format}")) rescue NoMethodError nil
+    @data = begin
+              @output == :list ? @objects.keys : @objects
+            rescue NoMethodError 
+              nil
+            end
+    nil
   end
 
   ##
@@ -260,12 +273,13 @@ class Nagira < Sinatra::Base
   #
   get "/objects/:type" do |type|
     begin
-      data = @objects[type.to_sym]
-      data = data.keys if @output == :list
-      body ( data ? data : nil ).send("to_#{@format}")
+      @data = @objects[type.to_sym]
+      @data = @data.keys if @output == :list
     rescue NoMethodError
       nil
     end
+
+    nil
   end
 
   ##
@@ -281,10 +295,12 @@ class Nagira < Sinatra::Base
   #
   get "/objects/:type/:name" do |type,name|
     begin
-      body @objects[type.to_sym][name].send("to_#{@format}")
+      @data = @objects[type.to_sym][name]
     rescue NoMethodError
       nil
     end
+
+    nil
   end
 
 
@@ -304,11 +320,13 @@ class Nagira < Sinatra::Base
   # @!macro state
   #
   get "/status/:hostname/services/:service_name" do |hostname,service|
-    body (if @output == :state
-            @status[hostname]['servicestatus'][service].extract!("hostname", "service_description", "current_state")
-          else
-            @status[hostname]['servicestatus'][service]
-          end).send("to_#{@format}")
+
+    if @output == :state
+      @data = @status[hostname]['servicestatus'][service].slice("hostname", "service_description", "current_state")
+    else
+      @data = @status[hostname]['servicestatus'][service]
+    end
+    nil
   end
 
   ##
@@ -322,15 +340,17 @@ class Nagira < Sinatra::Base
   # @!macro list
   # @!macro full
   get "/status/:hostname/services" do |hostname|
-    data = case @output
-           when :list
-             @status[hostname]['servicestatus'].keys
-           when :state
-             @status.each { |k,v| @status[k] = v.extract!("host_name", "service_description", "current_state") }
-           else
-             @status[hostname]['servicestatus']
-           end
-    body data.send("to_#{@format}")
+
+    case @output
+    when :list
+      @data = @status[hostname]['servicestatus'].keys
+    when :state
+      @data = @status.each { |k,v| @data[k] = v.slice("host_name", "service_description", "current_state") }
+    else
+      @data = @status[hostname]['servicestatus']
+    end
+
+    nil
   end
   
   # Hoststatus for single host
@@ -343,11 +363,13 @@ class Nagira < Sinatra::Base
   # @!macro state
   #
   get "/status/:hostname" do |hostname|
-    body (if @output == :state
-            @status[hostname]['hoststatus'].extract!("host_name", "current_state")
-          else
-            @status[hostname]['hoststatus']
-          end).send("to_#{@format}")
+    @data = @status[hostname]['hoststatus'].dup
+
+    if @output == :state
+      @data = @data.slice("host_name", "current_state")
+    end
+
+    nil
   end
 
   ##
@@ -361,13 +383,16 @@ class Nagira < Sinatra::Base
   # @!macro full
   #
   get "/status" do
+    @data = @status.dup
+
     case @output 
     when :state
-      @status.each { |k,v| @status[k] = v['hoststatus'].extract!("host_name", "current_state") }
+      @data.each { |k,v| @data[k] = v['hoststatus'].slice("host_name", "current_state") }
     when :list
-      @status = @status.keys
+      @data = @data.keys
     end
-    body @status.send("to_#{@format}")
+
+    nil
   end
 
 
@@ -377,16 +402,19 @@ class Nagira < Sinatra::Base
   # Provide information about API routes 
   #
   get "/api" do 
-    body self.api.send("to_#{@format}")
+    @data = self.api
+    nil
   end
 
   # 
   get "/" do
-    body ({
-            :application => self.class,
-            :version => VERSION,
-            :url => GITHUB
-          }).send("to_#{@format}")
+    @data = {
+      :application => self.class,
+      :version => VERSION,
+      :source => GITHUB,
+      :apiUrl => "/api"
+    }
+    nil
   end
   # Other resources in parsed status file. Supported are => ["hosts",
   # "info", "process", "contacts"]

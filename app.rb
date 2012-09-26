@@ -219,7 +219,7 @@ class Nagira < Sinatra::Base
   #         test(["{\"application\":\"Nagira\",\"version\":\"0.1.3\",\"url\":\"http://dmytro.github.com/nagira/\"}"])
   #
   after do
-    body( @callback ? "#{@callback.to_s} (#{@data})" : @data.send("to_#{@format}") )
+    body( @callback ? "#{@callback.to_s} (#{@data.to_json})" : @data.send("to_#{@format}") )
   end
 
   # Config routes

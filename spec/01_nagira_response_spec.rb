@@ -20,7 +20,7 @@ describe Nagira do
 
   context "simple page load" do
     TOP_PAGES.each do |page|
-      it "should load /#{page} page" do 
+      it "/#{page} should load" do 
         get "/#{page}"
         last_response.should be_ok
       end
@@ -44,31 +44,37 @@ describe Nagira do
       context page do
         
         FORMATS.each do |format|
+
         context format do
-            
-            it "header should have #{format} content-type" do
+
+            before do  
               get "/#{page}.#{format}"
-              last_response.header['Content-Type'].should =~ /^application\/#{format}.*/
+              @header = last_response.header
+              @body = last_response.body
+            end
+            
+            it "Content-type: application/#{format}" do
+              @header['Content-Type'].should =~ /^application\/#{format}.*/ 
             end
 
-            it "body should be in #{format}" do
+            it "body should have content" do
+              @body.should_not be_empty
+            end
 
-              get "/#{page}.#{format}"
+            it "#{format} should be parseable" do
               case format
               when 'json'
-                JSON.parse(last_response.body).should be_a_kind_of Hash
+                lambda { JSON.parse    @body }.should_not raise_error
               when 'xml'
-                Hash.from_xml(last_response.body).should be_a_kind_of Hash
-              else 
-                 YAML.load(last_response.body).should be_a_kind_of Hash
+                lambda { Hash.from_xml @body }.should_not raise_error
+              when 'yaml'
+                lambda { YAML.load     @body }.should_not raise_error
               end
             end
-
-
           end
-
-          end
-
+          
+        end
+        
         context 'default format' do 
           it "/#{page}.#{Nagira.settings.format} response should be the same as /#{page}" do
             get "/#{page}.#{Nagira.settings.format}"

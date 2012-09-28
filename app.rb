@@ -38,8 +38,10 @@
 #
 # @!macro [new] full
 #
-#     - +/_full+ - Show full status information
-#       TODO Not implemented
+#     - +/_full+ - Show full status information. When used in 
+#       /_status/_full call will display full hoststaus and 
+#       servicestatus information for each host.
+#       
 #
 
 
@@ -154,11 +156,11 @@ class Nagira < Sinatra::Base
   #     GET /_objects/_list     # => :list
   #     GET /_status/_state     # => :state
   #     GET /_status/:hostname  # => :full
-  #     GET /_status            # => :full
+  #     GET /_status            # => :normal
   #
   before do
-    request.path_info.sub!(/\/_(list|state)$/, '')
-    @output = ($1 || :full).to_sym
+    request.path_info.sub!(/\/_(list|state|full)$/, '')
+    @output = ($1 || :normal).to_sym
   end
 
   ##
@@ -396,13 +398,10 @@ class Nagira < Sinatra::Base
       @data.each { |k,v| @data[k] = v['hoststatus'].slice("host_name", "current_state") }
     when :list
       @data = @data.keys
-# TODO
-#     when :full
-#       @data
+    when :full
+      @data
     else
-
       @data.each { |k,v| @data[k] = v['hoststatus'] }
-      # @data = @data.map { |x| x[1]['hoststatus']}
     end
 
     nil

@@ -381,7 +381,7 @@ class Nagira < Sinatra::Base
   ##
   # @method get_status
   #
-  # All hosts status.
+  # All hosts status. If no output modifier provided, 
   #
   # @!macro accepted
   # @!macro state
@@ -401,7 +401,8 @@ class Nagira < Sinatra::Base
 #       @data
     else
 
-      @data = @data.map { |x| x[1]['hoststatus']}
+      @data.each { |k,v| @data[k] = v['hoststatus'] }
+      # @data = @data.map { |x| x[1]['hoststatus']}
     end
 
     nil

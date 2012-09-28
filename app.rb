@@ -54,9 +54,6 @@ require 'lib/nagira'
 #
 class Nagira < Sinatra::Base
 
-  configure :development do
-    register Sinatra::Reloader
-  end
 
   set :app_file, __FILE__
 
@@ -87,10 +84,10 @@ class Nagira < Sinatra::Base
     $nagios[:config]  ||= Nagios::Config.new Nagira.settings.nagios_cfg
     $nagios[:config].parse
 
-    $nagios[:status]  ||= Nagios::Status.new(  settings.status_cfg || 
+    $nagios[:status]  ||= Nagios::Status.new(  Nagira.settings.status_cfg || 
                                                $nagios[:config].status_file
                                                )
-    $nagios[:objects] ||= Nagios::Objects.new( settings.objects_cfg || 
+    $nagios[:objects] ||= Nagios::Objects.new( Nagira.settings.objects_cfg || 
                                                $nagios[:config].object_cache_file
                                                )
     $nagios[:status].parse
@@ -98,6 +95,8 @@ class Nagira < Sinatra::Base
 
     @status   = $nagios[:status].status['hosts']
     @objects  = $nagios[:objects].objects
+
+
   end
 
   ##

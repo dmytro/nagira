@@ -1,23 +1,25 @@
 $: << File.dirname(File.dirname(__FILE__))
 require 'lib/nagira'
 
-describe "Nagios config files" do 
+describe "Configuration" do 
 
   set :environment, ENV['RACK_ENV'] || :test
 
-  before { @cfg = Nagios::Config.new Nagira.settings.nagios_cfg }
+  before { 
+    @cfg = Nagios::Config.new(Nagira.settings.nagios_cfg)
+  }
 
-  context "nagios.cfg file" do
+  context "nagios.cfg" do
 
-    it "should exist" do
-      File.exists?(Nagira.settings.nagios_cfg).should be true
+    it "#{@cfg} should exist" do
+      File.exists?(@cfg.path).should be true
     end
     
     it "should be parseable" do
       lambda { @cfg.parse }.should_not raise_error
     end
 
-    context "parsed file" do 
+    context "parsing nagios.cfg file" do 
 
       before { @cfg.parse }
       
@@ -29,21 +31,39 @@ describe "Nagios config files" do
         @cfg.status_file.should be_a_kind_of String 
       end
 
-      %w{ object_cache_file status_file }.each do |file|
+    end # parsing nagios.cfg file
+  end # nagios.cfg
+  
+  context "data files" do 
+    before { @cfg.parse }
+    
+    context Nagios::Status do
+      
+      subject { Nagios::Status.new( Nagira.settings.status_cfg || @cfg.status_file ) }
 
-        context "#{file}" do 
-          before {  @obj = Nagios::Objects.new @cfg.send(file) }
-
-          it "should exist" do
-            File.exist?(@cfg.send(file)).should be true
-          end
-
-          it "should be parseable" do
-            lambda { @obj.parse }.should_not raise_error
-          end
-        end
-
+      it "should exist" do
+        File.exist?( subject.path ).should be true
       end
-    end
-  end
+      
+      it "should be parseable" do
+        lambda { subject.parse }.should_not raise_error
+      end
+    end # Nagios::Status
+
+
+    context Nagios::Objects do
+
+      subject {  Nagios::Objects.new( Nagira.settings.objects_cfg || @cfg.object_cache_file) }
+
+      it "should exist" do
+        File.exist?( subject.path ).should be true
+      end
+      
+      it "should be parseable" do
+        lambda { subject.parse }.should_not raise_error
+      end
+    end # Nagios::Objects
+
+  end # data files
+
 end

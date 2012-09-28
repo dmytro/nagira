@@ -39,7 +39,7 @@ module Nagios
           @last_parsed = Time.at(0)
 
           # Last time file was changed
-          @last_changed = File.mtime(file)
+          @last_changed = File.mtime(@path)
           @parse_interval = parse_interval
         end
 

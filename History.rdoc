@@ -1,6 +1,10 @@
+* 2012-09-28 Dmytro Kovalov - v. 0.1.5
+  - many changes for testing files nagios.cfg, objects, status. Tested to work both in dev/test and production environments. 
+  - more documentation
+  - API: additional modifier for output: _full. By default now /_status returns Hahs with hoststatus only. Use ../_full to get both hoststatus and sevicestatus.
 * 2012-09-26 Dmytro Kovalov - v. 0.1.4
   - added support for JSON-P parameters (?callback=<nam>)
-  - change API to hae all keywords underscored, to avoid clashes with object names
+  - change API to have all keywords underscored, to avoid clashes with object names (/_status, _objects, /_status/_list etc).
 * 2012-06-8 Dmytro Kovalov - v. 0.1.3
   - specs for /config, /status, /objects - simple page loads and data
     checks;

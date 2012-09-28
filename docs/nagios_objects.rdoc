@@ -1,15 +1,36 @@
 
-=== Nagios objects naming
+=== Nagios objects naming and XML
 
 When using Nagira API in XML mode, please pay attention to names of
 your Nagios objects. XML is much stricter in the tag  naming than YAML
 or JSON, or than Nagios in respect to its object names.
 
 For example, having timeperiod named '24x7' (by defaults coming with
-most Nagios installations as example) will break all XML
-validators. Nagira will still produce XML output on +GET /objects+ but
-most of validators and parsers (including web browsers) will not
-process this XML.
+most Nagios installations) will break XML validators. Nagira will
+still produce XML output on +GET /objects+ but most of validators and
+parsers (including web browsers) will not process this XML.
+
+==== RSpec tests fail to parse XML
+
+Accordingly test will fail if your production objects file has
+definition of such an object.
+
+For example running Nagira test with production data file in typical
+Nagios installation produces this error:
+
+    RACK_ENV=production rspec -fd
+
+    [...]
+    
+    Finished in 1.67 seconds
+    99 examples, 1 failure
+    
+    Failed examples:
+    
+    rspec ./spec/01_nagira_response_spec.rb:64 # Nagira data format check _objects xml xml should be parseable
+    
+
+==== Error reproted
 
 REXML reports following:
 
@@ -18,6 +39,8 @@ REXML reports following:
 
 Both JSON and YAML both producers and consumers work OK with such
 names.
+
+=== Workaround
 
 So, basically you have two possible solutions:
 

@@ -90,6 +90,10 @@ class Nagira < Sinatra::Base
     $nagios[:objects] ||= Nagios::Objects.new( Nagira.settings.objects_cfg || 
                                                $nagios[:config].object_cache_file
                                                )
+
+    $nagios[:commands] ||= Nagios::ExternalCommands.new( Nagira.settings.command_file || 
+                                                         $nagios[:config].command_file
+                                                        )
     $nagios[:status].parse
     $nagios[:objects].parse
 
@@ -195,6 +199,7 @@ class Nagira < Sinatra::Base
   #
   #
   after do
+    # return unless request["REQUEST_METHOD"] == 'PUT'
     if ! @data || @data.empty?
       halt [404, {
               :message => "Object not found or bad request", 
@@ -227,6 +232,8 @@ class Nagira < Sinatra::Base
   require_relative "app/routes/get/objects"
   require_relative "app/routes/get/status"
 
+  require_relative "app/routes/put"
+  require_relative "app/routes/put/status"
 
 
 

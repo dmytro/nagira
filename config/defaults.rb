@@ -28,6 +28,7 @@ DEFAULT = {
   nagios_cfg: nil, 
   status_cfg: nil,
   objects_cfg: nil,
+  command_file: nil,
   
   ##
   # min_parse_interval used in Nagios::TimedParse module - extension

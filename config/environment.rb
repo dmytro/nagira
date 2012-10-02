@@ -24,6 +24,7 @@ class Nagira < Sinatra::Base
     set :nagios_cfg, "#{dir}/nagios.cfg"
     set :status_cfg, "#{dir}/status.dat"
     set :objects_cfg, "#{dir}/objects.cache"
+    set :command_file, "/tmp/nagios.cmd"
 
   end
   

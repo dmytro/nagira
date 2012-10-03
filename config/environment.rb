@@ -11,7 +11,9 @@ class Nagira < Sinatra::Base
   if development?
     require 'sinatra/reloader'
     register Sinatra::Reloader
-    also_reload File.dirname(__FILE__)+'/*.rb'
+    also_reload(File.dirname(File.dirname(__FILE__))+"/*.rb")
+    also_reload(File.dirname(File.dirname(__FILE__))+"/{app,lib}/**/*.rb")
+
   end
 
   ##
@@ -26,6 +28,7 @@ class Nagira < Sinatra::Base
     set :objects_cfg, "#{dir}/objects.cache"
     set :command_file, "/tmp/nagios.cmd"
 
+    set :show_exceptions, false
   end
   
 

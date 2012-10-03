@@ -1,27 +1,52 @@
 class Nagira < Sinatra::Base
 
-  # Small helper to submit data to ::Nagios::ExternalCommands
-  # object. For status updates sends external coond via
-  # ::Nagios::ExternalCommands.send method.
-  def update_service_status params
-    put_update :PROCESS_SERVICE_CHECK_RESULT, params
-  end
 
+  # Submit JSON Hash for multiple services,  on multiple hosts.
   put "/_status" do
+    "Not implemented"
   end
 
-  put "/_status/:hostname/_services" do
-  end
-
-  # Submit JSON Hash
-  put "/_status/:hostname/_services/:service_description" do
+  # Update hoststatus information only for the given host.
+  put "/_status/:host_name" do
+    @data = update_host_status @input.first.merge 'host_name' => params['host_name']
   end
 
   
+  # Update multiple services on the same host.
+  #
+  # Hostname from URL always overrides host_name if it's is provided
+  # in the JSON data.
+  #
+  put "/_status/:host_name/_services" do
+
+    data = []
+    @input.each do |datum|
+      # FIXME - this calls update for each service. Should be batching them together
+      data << update_service_status(datum.merge({ 
+                                                  'host_name' => params['host_name']
+                                                }))
+    end
+    @data = data
+    nil
+
+  end
+  
+  # Update single service on a single host by JSON data.
+  put "/_status/:host_name/_services/:service_description" do
+    @data = update_service_status \
+    @input.first.merge({ 
+                         'service_description' => params['service_description'],
+                         'host_name' => params['host_name']
+                       })
+    nil
+  end
+
+
   # @method put_status_as_http_parms
   # @overload put("update_status_http_pramaters")
   # 
-  # Use data provided in RESTful path as parameters.
+  # Update single service status on a single host. Use data provided
+  # in RESTful path as parameters.
   #
   # == Example
   #      curl  -d "test data" \
@@ -32,6 +57,5 @@ class Nagira < Sinatra::Base
     @data = update_service_status params
     nil
   end
-
   
 end

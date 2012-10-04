@@ -9,7 +9,7 @@ module Nagios
     # even if file changes often, we do not want to parse it more
     # often, then this number of seconds.
 
-    MIN_PARSE_INTERVAL = ::DEFAULT[:min_parse_interval]
+    MIN_PARSE_INTERVAL = ::DEFAULT[:min_parse_interval] || 0
 
     # Override constructor and parse method from ::Nagios::Objects or
     # ::Nagios::Status classes, add instance variables to handle
@@ -55,18 +55,22 @@ module Nagios
       end
     end
 
-    attr_accessor :last_parsed, :last_changed, :parse_interval
+    attr_accessor :last_parsed, :parse_interval
       
+    def last_changed
+      @last_changed = File.mtime(@path)
+    end
+
     # Return true if file is changed since it was parsed last time
     def changed?
-      @last_changed > @last_parsed
+      self.last_changed > self.last_parsed
     end
     
     # Check if:
     # - file changed?
     # - was it parsed recently?
     def need_parsing?
-      changed? && ((Time.now - @last_parsed) > @parse_interval)
+      changed? && ((Time.now - self.last_parsed) > @parse_interval)
     end
     
   end

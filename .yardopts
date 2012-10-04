@@ -1,4 +1,5 @@
 app.rb
+app/**/*.rb
 lib/**/*.rb
 - 
 README.rdoc

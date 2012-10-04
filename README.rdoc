@@ -4,6 +4,8 @@ Nagira -- Nagios RESTful API
 
 Version {include:file:version.txt}
 
+{<img src="https://secure.travis-ci.org/dmytro/nagira.png" alt="Build Status" />}[http://travis-ci.org/dmytro/nagira]
+
 == Description
 
 Light-weight web services API for fetching status of Nagios application objects:

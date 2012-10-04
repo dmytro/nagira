@@ -1,7 +1,7 @@
 class Nagira < Sinatra::Base
 
   # @method parse_input_data
-  # @overload before("parse_input_data")
+  # @overload before("Parse PUT request body")
   # 
   # Process the data before on each HTTP request.
   #

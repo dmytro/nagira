@@ -75,7 +75,7 @@ class Nagira < Sinatra::Base
   # status_cfg, objects_cfg.
   #
   # @method   parse_nagios_files
-  # @overload before("parse Nagios files")
+  # @overload before("Parse Nagios files")
 
   before do 
 
@@ -239,6 +239,7 @@ class Nagira < Sinatra::Base
 
   ##
   # @method get_api
+  # @overload get(/_api)
   #
   # Provide information about API routes 
   #
@@ -247,13 +248,16 @@ class Nagira < Sinatra::Base
     nil
   end
 
-  # 
+  # @method get_slash
+  # @overload get(/)
+  #
+  # Returns application information: name, version, github repository. 
   get "/" do
     @data = {
       :application => self.class,
       :version => VERSION,
       :source => GITHUB,
-      :apiUrl => "/api"
+      :apiUrl => request.url.sub(/\/$/,'') + "/_api"
     }
     nil
   end
@@ -264,11 +268,6 @@ class Nagira < Sinatra::Base
   # end
 
 
-  # # Process informaton, same as get /process above. With default format
-  # # only.
-  # get '/' do
-  #   respond_with $nagios.status['process'], nil
-  # end
 
   # Start Sinatra application when not running from rack
   run! if app_file == $0

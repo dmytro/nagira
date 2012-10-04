@@ -3,3 +3,4 @@
 *.swp
 config/db.rb
 doc
+.DS_Store

@@ -41,7 +41,7 @@ DEFAULT = {
   # this number of seconds. To disable timed parsing, set
   # min_parse_interval to 0 or negative number.
   
-  min_parse_interval: 60
+  min_parse_interval: 5
 }
 
 require 'sinatra'

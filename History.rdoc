@@ -1,3 +1,6 @@
+* Thu Oct  4 19:45:00 JST 2012 v.0.2.0
+  - lot of bux fixes
+  - API: first working PUT API for process host status and process service status external commands
 * 2012-09-28 Dmytro Kovalov - v. 0.1.5
   - many changes for testing files nagios.cfg, objects, status. Tested to work both in dev/test and production environments. 
   - more documentation

@@ -4,4 +4,9 @@ rvm:
   - "1.9.3"
   - jruby-19mode # JRuby in 1.9 mode
   - rbx-19mode
+env:
+  - RACK_ENV=test
+branches:
+  only:
+    - master
 script: bundle exec rspec spec

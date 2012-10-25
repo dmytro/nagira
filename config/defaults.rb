@@ -51,7 +51,7 @@ class Nagira < Sinatra::Base
 # For every key in the DEFAULT hash create setting with the same name
 # and value. Values can be overrriden in environment.rb file if
 # required.
-
+# @method define_methods_for_defaults
 configure do
   ::DEFAULT.each do |key,val|
     set key,val

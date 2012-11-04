@@ -46,12 +46,15 @@ class Nagira < Sinatra::Base
     "Not implemented: TODO"
   end
   
+  # @method put_status_host_name_services
+  # @overload put("/_status/:host_name/_services")
+  #
   # Update multiple services on the same host.
   #
   # Hostname from URL always overrides host_name if it's is provided
   # in the JSON data.
   #
-  # == Example
+  # == Example return JSON data
   #
   #   $ curl -i -H "Accept: application/json" -d @dat_m.json -X PUT
   #   http://localhost:4567/_status/svaroh/_services
@@ -66,17 +69,30 @@ class Nagira < Sinatra::Base
   #     "plugin_output":"cwfailedOK",
   #     "action":"PROCESS_SERVICE_CHECK_RESULT"}, "result":true,
   #     "messages":[]}]}]%
-
-  # == Example JSON
   #
-  # [{"host_name":"viy", "service_description":"PING",
-  # "return_code":"0", "plugin_output":"OK"},
+  # == Example JSON for submit
   #
-  # {"host_name":"svaroh", "service_description":"Apache",
-  # "return_code":"r20", "plugin_output":"cwfailedOK"}]
+  # All attributes provided in the example below are requried for host
+  # service status information:
+  # - host_name
+  # - service_description
+  # - return_code
+  # - plugin_output
   #
-  #  @method put_status_host_name_services
-  #  @overload put("/_status/:host_name/_services")
+  #
+  #     [{ "host_name":"viy",
+  #        "service_description":"PING",
+  #        "return_code":"0",
+  #        "plugin_output":"64 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=0.046 ms "
+  #       },
+  #
+  #     {"host_name":"svaroh",
+  #        "service_description":"Apache",
+  #        "return_code":"2",
+  #        "plugin_output":"HTTP GEt failed"
+  #        }
+  #       ]
+  #
   #
   put "/_status/:host_name/_services" do
 

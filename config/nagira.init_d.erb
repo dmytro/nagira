@@ -1,0 +1,81 @@
+#!/bin/bash
+#
+# nagira:       Starts Nagira application monitoring for Nagios
+#
+# Version:      1
+#
+# chkconfig: -  20 99
+# description: Start-up file for Nagira monitoring component, Nagios RESTful API. See also: http://dmytro.github.com/nagira
+# processname: ruby lib/nagira/app.rb
+# config: TBD
+
+# Source function library.
+. /etc/init.d/functions
+
+source /usr/local/rvm/scripts/rvm
+rvm use <%= APP[:rvm] %> --default
+
+process_name="Sinatra Nagira services"
+
+pid_file=/var/run/nagira.pid
+
+
+get_pid () {
+     echo $(ps axo command,pid | awk '$1 ~ /ruby/ && $2 ~ /nagira/ {print $3}')
+}
+
+
+start() {
+    echo -n $"Starting ${process_name}:"
+    # TODO - background using sinatra option?
+    su - <%=  APP[:run_as] %> -c "cd <%= APP[:root] %> && RACK_ENV=production bundle exec ./lib/nagira/app.rb" > <%= APP[:log] %> 2>&1 &
+    RETVAL=$?
+    return $RETVAL
+}
+
+stop() {
+    echo -n $"Shutting down ${process_name}:"
+    # TODO: need testing
+    local process=$(get_pid)
+    kill $process
+    RETVAL=$?
+    return $RETVAL
+}
+
+status () {
+    process=$(get_pid)
+    if [ -z "$process"]; then
+        echo "Process $process_name is not running"
+    else
+        echo "Process $process_name is running with PID: $process"
+    fi
+}
+
+restart() {
+    stop
+    sleep 5
+    start
+}
+
+RETVAL=0
+
+# See how we were called.
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  status)
+        status ypbind
+        ;;
+  restart|reload)
+        restart
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|status|restart}"
+        exit 1
+esac
+
+exit $?

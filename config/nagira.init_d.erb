@@ -6,14 +6,13 @@
 #
 # chkconfig: -  20 99
 # description: Start-up file for Nagira monitoring component, Nagios RESTful API. See also: http://dmytro.github.com/nagira
-# processname: ruby lib/nagira/app.rb
+# processname: ruby ./nagira.rb
 # config: TBD
 
-# Source function library.
-. /etc/init.d/functions
-
-source /usr/local/rvm/scripts/rvm
-rvm use <%= APP[:rvm] %> --default
+init_rvm () {
+    source /usr/local/rvm/scripts/rvm > /dev/null 2>&1 
+    rvm use <%= APP[:rvm] %> --default > /dev/null 2>&1 
+}
 
 process_name="Sinatra Nagira services"
 
@@ -26,25 +25,34 @@ get_pid () {
 
 
 start() {
+    [ ! -z "$(get_pid)" ] && { status; return 1; }
     echo -n $"Starting ${process_name}:"
     # TODO - background using sinatra option?
-    su - <%=  APP[:run_as] %> -c "cd <%= APP[:root] %> && RACK_ENV=production bundle exec ./lib/nagira/app.rb" > <%= APP[:log] %> 2>&1 &
-    RETVAL=$?
-    return $RETVAL
+    su - <%=  APP[:run_as] %> -s /bin/bash -c "cd <%= $nagira_root %> && RACK_ENV=production bundle exec ./nagira.rb" > <%= APP[:log] %> 2>&1 &
+    sleep 5
+    process=$(get_pid)
+    if [ -z "$process" ]; then
+        echo "   [FAIL]"
+    else
+        echo "    OK"
+    fi
 }
 
 stop() {
-    echo -n $"Shutting down ${process_name}:"
+    [ -z "$(get_pid)" ] && { status; return 1; }
+    echo -n $"Shutting down ${process_name}:    "
     # TODO: need testing
     local process=$(get_pid)
     kill $process
     RETVAL=$?
-    return $RETVAL
+    sleep 2
+    [ -z "$(get_pid)" ] && { echo OK; return $RETVAL; }
+    echo FAIL
 }
 
 status () {
     process=$(get_pid)
-    if [ -z "$process"]; then
+    if [ -z "$process" ]; then
         echo "Process $process_name is not running"
     else
         echo "Process $process_name is running with PID: $process"
@@ -53,7 +61,6 @@ status () {
 
 restart() {
     stop
-    sleep 5
     start
 }
 
@@ -62,15 +69,18 @@ RETVAL=0
 # See how we were called.
 case "$1" in
   start)
+        init_rvm
         start
         ;;
   stop)
+        init_rvm
         stop
         ;;
   status)
-        status ypbind
+        status
         ;;
   restart|reload)
+        init_rvm
         restart
         ;;
   *)

@@ -1,6 +1,8 @@
 
 require 'erb'
 
+$nagira_root = File.dirname File.expand_path __FILE__
+
 desc 'Generate YARD documentation'
 task :yard do
   sh 'yardoc'

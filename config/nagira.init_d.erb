@@ -9,11 +9,6 @@
 # processname: ruby ./nagira.rb
 # config: TBD
 
-init_rvm () {
-    source /usr/local/rvm/scripts/rvm > /dev/null 2>&1 
-    rvm use <%= APP[:rvm] %> --default > /dev/null 2>&1 
-}
-
 process_name="Sinatra Nagira services"
 
 pid_file=/var/run/nagira.pid
@@ -26,15 +21,15 @@ get_pid () {
 
 start() {
     [ ! -z "$(get_pid)" ] && { status; return 1; }
-    echo -n $"Starting ${process_name}:"
-    # TODO - background using sinatra option?
-    su - <%=  APP[:run_as] %> -s /bin/bash -c "cd <%= $nagira_root %> && RACK_ENV=production bundle exec ./nagira.rb" > <%= APP[:log] %> 2>&1 &
+    echo -n $"Starting ${process_name}:    "
+    su - <%=  APP[:run_as] %> -s /bin/bash -c "rvm use <%= APP[:rvm] %> && cd <%= $nagira_root %> && RACK_ENV=production bundle exec ./nagira.rb" > <%= APP[:log] %> 2>&1 &
     sleep 5
     process=$(get_pid)
+    echo $process > $pid_file
     if [ -z "$process" ]; then
-        echo "   [FAIL]"
+        echo "[FAIL]"
     else
-        echo "    OK"
+        echo "[OK]"
     fi
 }
 
@@ -44,6 +39,7 @@ stop() {
     # TODO: need testing
     local process=$(get_pid)
     kill $process
+    \rm -f $pid_file
     RETVAL=$?
     sleep 2
     [ -z "$(get_pid)" ] && { echo OK; return $RETVAL; }
@@ -69,18 +65,15 @@ RETVAL=0
 # See how we were called.
 case "$1" in
   start)
-        init_rvm
         start
         ;;
   stop)
-        init_rvm
         stop
         ;;
   status)
         status
         ;;
   restart|reload)
-        init_rvm
         restart
         ;;
   *)

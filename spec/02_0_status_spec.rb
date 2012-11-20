@@ -14,7 +14,7 @@
 #   get "/status" do
 #   get "/api" do 
 
-require_relative '../app.rb'
+require_relative '../nagira.rb'
 require 'rack/test'
 require 'pp'
 

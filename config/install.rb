@@ -1,7 +1,8 @@
 #
 # Installation options for nagira API. All variables are accessible under constall INSTALL
 #
-class Nagira
+require_relative '../lib/nagira'
+class Nagira < Sinatra::Base
   INSTALL = { 
     :run_as => "nagios",
     :use_rvm => true,

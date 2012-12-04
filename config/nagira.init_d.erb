@@ -22,7 +22,7 @@ get_pid () {
 start() {
     [ ! -z "$(get_pid)" ] && { status; return 1; }
     echo -n $"Starting ${process_name}:    "
-    su - <%=  APP[:run_as] %> -s /bin/bash -c "rvm use <%= APP[:rvm] %> && cd <%= $nagira_root %> && RACK_ENV=production bundle exec ./nagira.rb" > <%= APP[:log] %> 2>&1 &
+    su - <%=  Nagira::INSTALL[:run_as] %> -s /bin/bash -c "<% if Nagira::INSTALL[:use_rvm]%> rvm use <%= Nagira::INSTALL[:rvm] %> &&<% end %> cd <%= Nagira::INSTALL[:root] %> && RACK_ENV=production bundle exec ./nagira.rb" > <%= Nagira::INSTALL[:log] %> 2>&1 &
     sleep 5
     process=$(get_pid)
     echo $process > $pid_file
@@ -34,10 +34,11 @@ start() {
 }
 
 stop() {
-    [ -z "$(get_pid)" ] && { status; return 1; }
-    echo -n $"Shutting down ${process_name}:    "
-    # TODO: need testing
     local process=$(get_pid)
+    [ -z "$process" ] && { status; return 1; }
+
+    echo -n $"Shutting down ${process_name}:    "
+
     kill $process
     \rm -f $pid_file
     RETVAL=$?
@@ -47,7 +48,7 @@ stop() {
 }
 
 status () {
-    process=$(get_pid)
+    local process=$(get_pid)
     if [ -z "$process" ]; then
         echo "Process $process_name is not running"
     else

@@ -54,7 +54,6 @@ require 'lib/nagira'
 #
 class Nagira < Sinatra::Base
 
-
   set :app_file, __FILE__
 
   ##

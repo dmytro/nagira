@@ -43,7 +43,6 @@ or
   
 Go to URL: http://localhost:4567/status
 
-
 == See also
 
 * See more on {file:CONFIGURATION.rdoc}

@@ -3,14 +3,11 @@
 
 - Clone from Github:
 
-
      git clone --recursive git@github.com:dmytro/nagira.git
 
 - Install bundle
 
-
     bundle install
-
 
 - Run test suite
 
@@ -20,9 +17,7 @@
     this case Nagira will use proven to work files included with the
     distribution (in test/data directory).
 
-
         RACK_ENV=<development|test> rspec -fd 
-
 
   - Test production
 
@@ -31,13 +26,11 @@
 
 - Run application
 
-
     bundle exec ./app.rb 
     
 or
 
     rackup -p <port>
-
 
 - Access 
   

@@ -1,0 +1,15 @@
+curl http://localhost:4567/_config
+curl http://localhost:4567/_config.yaml
+curl http://localhost:4567/_status
+curl http://localhost:4567/_status/_list
+curl http://localhost:4567/_status/_list.yaml
+curl http://localhost:4567/_status/airport
+curl http://localhost:4567/_status/airport.yaml
+curl http://localhost:4567/_status/airport/_state
+curl http://localhost:4567/_status/airport/_services/_list/_state
+curl http://localhost:4567/_status/airport/_services/_state
+curl http://localhost:4567/_status/airport/_services/
+curl http://localhost:4567/_status/airport/_services
+curl http://localhost:4567/_status/airport/_services/_list
+curl http://localhost:4567/_status/airport/_services/PING
+curl http://localhost:4567/_status/airport/_services/PING/_state

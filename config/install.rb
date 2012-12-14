@@ -1,5 +1,5 @@
 #
-# Installation options for nagira API. All variables are accessible under constall INSTALL
+# Installation options for nagira API. All variables are accessible under constant INSTALL
 #
 require_relative '../lib/nagira'
 class Nagira < Sinatra::Base
@@ -8,6 +8,6 @@ class Nagira < Sinatra::Base
     :use_rvm => true,
     :rvm => '1.9.3',
     :root => File.dirname( File.dirname(__FILE__)),
-    :log => "var/log/nagira.log"
+    :log => "/var/log/nagira.log"
   }
 end

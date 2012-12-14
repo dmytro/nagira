@@ -1,0 +1,5 @@
+ { 
+   "service_description":"PING",
+   "return_code":"0",
+   "plugin_output":"64 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=0.046 ms "
+  }

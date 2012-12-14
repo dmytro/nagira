@@ -6,7 +6,7 @@ README.rdoc
 LICENSE
 docs/FEATURES.rdoc
 docs/INSTALL.rdoc
-docs/CONFIGURATION.rdoc
+docs/CONFIGURATION.md
 docs/nagios_objects.rdoc
 History.rdoc
 version.txt

@@ -94,3 +94,10 @@ specifier +\.(xml|json|yaml)+
         curl   http://localhost:4567/_objects/host/_list.yaml
         curl   http://localhost:4567/_objects/host/viy
 
+
+== More examples
+
+Some examples are included with the distribution in the
+./test/data/json directory. This directory have examples of JSON files
+for HTTP PUT's and sample Curl scritp to be used with JSON files. See
+also README.txt file in thisdiretory.

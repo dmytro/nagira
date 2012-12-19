@@ -1,3 +1,9 @@
+This is list of all Nagios external commands and their
+descriptions. This file is included here only for reference. Athoritative
+list of commands is available from Nagios documentation site:
+http://www.nagios.org/developerinfo/externalcommands
+
+
 ADD_HOST_COMMENT;<host_name>;<persistent>;<author>;<comment>
 
    Adds a comment to a particular host. If the "persistent" field is set to

@@ -2,11 +2,14 @@ app.rb
 app/**/*.rb
 lib/**/*.rb
 - 
-README.rdoc
+README.md
 LICENSE
-docs/FEATURES.rdoc
-docs/INSTALL.rdoc
+docs/FEATURES.md
+docs/INSTALL.md
 docs/CONFIGURATION.md
 docs/nagios_objects.rdoc
+LICENSE
 History.rdoc
 version.txt
+docs/nagios_external_commands_descriptions.txt
+docs/nagios_external_commands_full_list.txt

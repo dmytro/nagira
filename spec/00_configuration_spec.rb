@@ -11,9 +11,7 @@ describe "Configuration" do
 
   context "nagios.cfg" do
 
-    it "#{@cfg} should exist" do
-      File.exists?(@cfg.path).should be true
-    end
+    it { File.should exist @cfg.path }
     
     it "should be parseable" do
       lambda { @cfg.parse }.should_not raise_error
@@ -41,9 +39,7 @@ describe "Configuration" do
       
       subject { Nagios::Status.new( Nagira.settings.status_cfg || @cfg.status_file ) }
 
-      it "should exist" do
-        File.exist?( subject.path ).should be true
-      end
+      it { File.should exist( subject.path ) }
       
       it "should be parseable" do
         lambda { subject.parse }.should_not raise_error
@@ -55,9 +51,7 @@ describe "Configuration" do
 
       subject {  Nagios::Objects.new( Nagira.settings.objects_cfg || @cfg.object_cache_file) }
 
-      it "should exist" do
-        File.exist?( subject.path ).should be true
-      end
+      it { File.should exist subject.path }
       
       it "should be parseable" do
         lambda { subject.parse }.should_not raise_error

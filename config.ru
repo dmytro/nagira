@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'sinatra'
-require File.dirname(__FILE__) + '/app.rb'
+require File.dirname(__FILE__) + '/nagira.rb'
 
 
 class Nagira                   

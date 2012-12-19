@@ -3,10 +3,12 @@ app/**/*.rb
 lib/**/*.rb
 - 
 README.rdoc
-LICENSE
-docs/FEATURES.rdoc
-docs/INSTALL.rdoc
 docs/CONFIGURATION.md
+docs/FEATURES.md
+docs/INSTALL.rdoc
+docs/nagios_external_commands_descriptions.txt
+docs/nagios_external_commands_full_list.txt
 docs/nagios_objects.rdoc
+LICENSE
 History.rdoc
 version.txt

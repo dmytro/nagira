@@ -2,7 +2,7 @@ app.rb
 app/**/*.rb
 lib/**/*.rb
 - 
-README.rdoc
+README.md
 docs/FEATURES.md
 docs/INSTALL.md
 docs/CONFIGURATION.md

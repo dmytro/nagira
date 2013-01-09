@@ -2,6 +2,9 @@ source 'http://rubygems.org'
 
 gem 'sinatra', '>= 1.3.1'
 
+gem 'ruby-nagios',
+    :git => 'https://github.com/dmytro/ruby-nagios.git',
+    :branch => 'merge_from_upstream'
 #
 # RSpec modules should be in all environments - to be able to test prod config
 # too

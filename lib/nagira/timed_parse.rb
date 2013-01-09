@@ -1,4 +1,4 @@
-require 'ruby-nagios/nagios'
+require 'nagios'
 
 module Nagios
   # Keep track of last parsed time and last changed time of the

@@ -96,6 +96,19 @@ By default Nagios data files are not parsed on each HTTP request, instead they a
    set :min_parse_interval, 60
 ```
 
+### Background parsing
+
+When on user request Nagira needs to parse `status.dat` file (when `:min_parse_interval` time passed) for large files there coulde be significant delay in sending data back to user. On average these delays will happen every `:min_parse_interval` seconds. 
+
+If you want to prevent such delays reponding to user requests, it is possible to start background loading and parsing `status.dat` file on regular intervals in separate thread.
+
+For this set value of `:start_background_parser` to `true` and `:min_parse_interval` to at least 1 sec (or more).
+
+```ruby
+   set :min_parse_interval, 60
+   set :start_background_parser, true
+```
+
 ## Verifying your configuration
 
 There is a RSpec file that allows to check your current configuration. It checks whether your Nagios files exist and can be parses by the Nagira.

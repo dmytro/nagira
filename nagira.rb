@@ -74,6 +74,12 @@ class Nagira < Sinatra::Base
                                                             $nagios[:config].command_file
                                                             )
                   })
+
+    puts "[#{Time.now}] -- Starting Nagira allication"
+    $nagios.keys.each do |x|
+      puts "[#{Time.now}] -- Using nagios file #{x}: #{$nagios[x].path}"
+    end
+
     $nagios[:status].parse
     $nagios[:objects].parse
 
@@ -263,6 +269,26 @@ class Nagira < Sinatra::Base
     nil
   end
 
+
+  ##
+  # @method get_runtime_config
+  # @overload get(/_runtime)
+  #
+  # Print out nagira runtime configuration 
+  get "/_runtime" do 
+    @data = {
+      application: self.class,
+      version: VERSION,
+      runtime: { 
+        environment: Nagira.settings.environment,
+        home: ENV['HOME'],
+        user: ENV['LOGNAME'],
+        nagiosFiles: $nagios.keys.map {  |x| {  x =>  $nagios[x].path }}
+      }
+    }
+    nil
+  end
+
   # @method get_slash
   # @overload get(/)
   #
@@ -272,7 +298,7 @@ class Nagira < Sinatra::Base
       :application => self.class,
       :version => VERSION,
       :source => GITHUB,
-      :apiUrl => request.url.sub(/\/$/,'') + "/_api"
+      :apiUrl => request.url.sub(/\/$/,'') + "/_api",
     }
     nil
   end
@@ -283,7 +309,5 @@ class Nagira < Sinatra::Base
   # end
 
   # Start Sinatra application when not running from rack
-  if app_file == $0
-    run!
-  end
+  run! if app_file == $0
 end

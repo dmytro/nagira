@@ -14,6 +14,7 @@ gem 'rspec-mocks'
 gem 'rspec-expectations'
 
 group :development,:test do 
+  gem 'redcarpet'
   gem 'sinatra-contrib', '>= 1.3.1'
   gem 'rake'
   gem 'yard', "~> 0.8"

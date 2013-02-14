@@ -9,7 +9,7 @@ module Nagios
     # even if file changes often, we do not want to parse it more
     # often, then this number of seconds.
 
-    MIN_PARSE_INTERVAL = ::DEFAULT[:min_parse_interval] || 0
+    TTL = ::DEFAULT[:ttl] || 0
 
     # Override constructor and parse method from ::Nagios::Objects or
     # ::Nagios::Status classes, add instance variables to handle
@@ -31,7 +31,7 @@ module Nagios
         # @param [String] file Path to status file
         # @param [Fixnum] parse_interval Number of seconds between
         #     re-parsing of the file
-        def initialize(file, parse_interval=MIN_PARSE_INTERVAL)
+        def initialize(file, parse_interval=TTL)
           constructor(file)
 
           # Time when status file was last time parsed, set it to 0 secs

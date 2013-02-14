@@ -6,8 +6,8 @@
 # config/environment.rb file to match your requirements. Settings in
 # environment.rb file override these defaults.
 #
-# Exception is ::DEFAULT[:min_parse_interval] which i not overriden by
-# environment.rb and should be changed here.
+# Exception is ::DEFAULT[:ttl] which is not overriden by environment.rb
+# and should be changed here.
 
 
 DEFAULT = {
@@ -31,7 +31,7 @@ DEFAULT = {
   command_file: nil,
   
   ##
-  # min_parse_interval used in Nagios::TimedParse module - extension
+  # ttl used in Nagios::TimedParse module - extension
   # to Nagios modules.
   #
   # @see Nagios::TimedParse
@@ -39,9 +39,9 @@ DEFAULT = {
   # Set some minimum interval for re-parsing of the status file: even
   # if file changes often, we do not want to parse it more often, then
   # this number of seconds. To disable timed parsing, set
-  # min_parse_interval to 0 or negative number.
+  # ttl to 0 or negative number.
   
-  min_parse_interval: 5,
+  ttl: 5,
   
   ##
   # start_background_parser used in Nagios::BackgroundParse class.
@@ -50,9 +50,8 @@ DEFAULT = {
   #
   # If set to true then use background parser. This will prevent
   # parsing delays on client request. Background parserruns on
-  # intervals slightly shorter than `min_parse_interval` to ensure
-  # that data are always updated. So, `min_parse_interval` should be
-  # larger than 1.
+  # intervals slightly shorter than `ttl` to ensure that data are
+  # always updated. So, `ttl` should be larger than 1.
   #
   start_background_parser: true
 }

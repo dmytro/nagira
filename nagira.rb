@@ -44,9 +44,7 @@
 #       
 #
 
-
-$: << File.dirname(__FILE__)
-require 'lib/nagira'
+require_relative 'lib/nagira'
 
 ##
 # Main class of Nagira application implementing RESTful API for
@@ -55,6 +53,36 @@ require 'lib/nagira'
 class Nagira < Sinatra::Base
 
   set :app_file, __FILE__
+
+  ##
+  # Do some necessary tasks at start and then run Sinatra app.
+  #
+  configure do 
+    
+    $nagios = { }
+    $nagios[:config]  = Nagios::Config.new Nagira.settings.nagios_cfg
+    $nagios[:config].parse
+
+    $nagios.merge!({ 
+                    status: Nagios::Status.new(  Nagira.settings.status_cfg || 
+                                                 $nagios[:config].status_file
+                                                 ),
+                    objects: Nagios::Objects.new( Nagira.settings.objects_cfg || 
+                                                  $nagios[:config].object_cache_file
+                                                  ),
+                    commands: Nagios::ExternalCommands.new( Nagira.settings.command_file || 
+                                                            $nagios[:config].command_file
+                                                            )
+                  })
+    $nagios[:status].parse
+    $nagios[:objects].parse
+
+    @status   = $nagios[:status].status['hosts']
+    @objects  = $nagios[:objects].objects
+
+    Nagios::BackgroundParser.new
+  end
+
 
   ##
   # Parse nagios files.
@@ -77,28 +105,16 @@ class Nagira < Sinatra::Base
   # @overload before("Parse Nagios files")
 
   before do 
-
-    $nagios ||= { :config => nil, :status => nil, :objects => nil }
-    
-    $nagios[:config]  ||= Nagios::Config.new Nagira.settings.nagios_cfg
     $nagios[:config].parse
-
-    $nagios[:status]  ||= Nagios::Status.new(  Nagira.settings.status_cfg || 
-                                               $nagios[:config].status_file
-                                               )
-    $nagios[:objects] ||= Nagios::Objects.new( Nagira.settings.objects_cfg || 
-                                               $nagios[:config].object_cache_file
-                                               )
-
-    $nagios[:commands] ||= Nagios::ExternalCommands.new( Nagira.settings.command_file || 
-                                                         $nagios[:config].command_file
-                                                        )
     $nagios[:status].parse
     $nagios[:objects].parse
 
     @status   = $nagios[:status].status['hosts']
     @objects  = $nagios[:objects].objects
 
+    if Nagira.settings.start_background_parser and ! $bg.alive?
+      logger.warn "Background Parser is configured to run, but is not active"
+    end
 
   end
 
@@ -266,8 +282,8 @@ class Nagira < Sinatra::Base
   #   respond_with $nagios.status[resource], @format
   # end
 
-
-
   # Start Sinatra application when not running from rack
-  run! if app_file == $0
+  if app_file == $0
+    run!
+  end
 end

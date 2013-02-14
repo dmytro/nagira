@@ -41,7 +41,20 @@ DEFAULT = {
   # this number of seconds. To disable timed parsing, set
   # min_parse_interval to 0 or negative number.
   
-  min_parse_interval: 5
+  min_parse_interval: 5,
+  
+  ##
+  # start_background_parser used in Nagios::BackgroundParse class.
+  #
+  # @see Nagios::BackgroundParse
+  #
+  # If set to true then use background parser. This will prevent
+  # parsing delays on client request. Background parserruns on
+  # intervals slightly shorter than `min_parse_interval` to ensure
+  # that data are always updated. So, `min_parse_interval` should be
+  # larger than 1.
+  #
+  start_background_parser: true
 }
 
 require 'sinatra'

@@ -2,6 +2,7 @@
 class Nagira < Sinatra::Base
 
   disable :protection
+  enable :logging
 
 
   configure do 
@@ -13,7 +14,6 @@ class Nagira < Sinatra::Base
     register Sinatra::Reloader
     also_reload(File.dirname(File.dirname(__FILE__))+"/*.rb")
     also_reload(File.dirname(File.dirname(__FILE__))+"/{app,lib}/**/*.rb")
-
   end
 
   ##

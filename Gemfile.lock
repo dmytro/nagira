@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/dmytro/ruby-nagios.git
-  revision: 82420f6f6eb312a971ff21072a2a55465a2eed78
-  branch: merge_from_upstream
+  revision: 668562ce99cbc5c7bcc0df4ce9fed4dbb1ba6ab7
+  branch: fix/stale_objects_in_statusdat
   specs:
     ruby-nagios (0.0.2)
 

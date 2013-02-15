@@ -75,7 +75,7 @@ class Nagira < Sinatra::Base
                                                             )
                   })
 
-    puts "[#{Time.now}] -- Starting Nagira allication"
+    puts "[#{Time.now}] -- Starting Nagira apllication"
     $nagios.keys.each do |x|
       puts "[#{Time.now}] -- Using nagios file #{x}: #{$nagios[x].path}"
     end

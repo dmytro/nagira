@@ -59,8 +59,8 @@ class Nagira < Sinatra::Base
   # @!macro state
   #
   get "/_status/:hostname" do |hostname|
-    @data = @status[hostname]['hoststatus'].dup
-
+    @data =  @status[hostname]['hoststatus'].dup if @status.has_key? hostname
+    
     if @output == :state
       @data = @data.slice("host_name", "current_state")
     end

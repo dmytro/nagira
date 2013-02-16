@@ -13,16 +13,12 @@ module Nagios
     # background parsing.
     #
     def initialize
-      interval = [::DEFAULT[:ttl]-0.1,1].max || nil
+      interval = [::DEFAULT[:ttl],1].max || nil
       if interval && ::DEFAULT[:start_background_parser]
         puts "[#{Time.now}] Starting background parser thread with interval #{interval} sec"
         $bg = Thread.new {
           loop {
-            # Force parse if file has changed, don't use standard logic
-            if $nagios[:status].changed?
-              $nagios[:status].parse!
-              $nagios[:status].last_parsed = Time.now
-            end
+            $nagios[:status].parse
             sleep interval
           } #loop
         } # thread

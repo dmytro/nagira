@@ -35,7 +35,11 @@ class Nagira < Sinatra::Base
   #
   get "/_objects/:type" do |type|
     begin
-      @data = @objects[type.to_sym]
+      if type.singularize == type
+        @data = @objects[type.to_sym]
+      else
+        @data = Array[@objects[type.to_sym]]
+      end
       @data = @data.keys if @output == :list
     rescue NoMethodError
       nil

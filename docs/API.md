@@ -89,14 +89,15 @@ No nested subroutes/endpoints available.
 
 ### Extensions
 
-`/_objects` and `/_status` family of routes support extensions `_list`, `_state` and use of both plural and singular names of objects. Specifications below show where each one of the extensions can or can not  be used.
+`/_objects` and `/_status` family of routes support extensions `_list`, `_state` and `_fulll` and can use of both plural and singular names of resources. Specifications below show where each one of the extensions can or can not  be used.
 
-#### `_list` and `_state`
+#### `_list`,`_state` and `_full`
 
-Either `/_list` or `/_state` can be appended to the HTTP request path at the end to modify responce as:
+Either `_list`, `_state` oe `_full` keyword can be appended to the HTTP request path at the end to modify responce as:
 
-* `/_list` option produces only list of hosts/services
-* `/_state` - gives short status of host or service
+* `_list` option produces only list of hosts/services
+* `_state` - gives short status of host or service
+* `_full` - provide where available extended status information
 
 As for example:
 
@@ -107,7 +108,7 @@ As for example:
 
 #### Plural and singular resources
 
-Nagira API up to version 0.2.1 used Nagios resources as nouns in singular form ('host', 'hostgroup', 'service', 'contact'). In order to support ActiveResource type of requests, use of pluralized resources has been added. 
+Nagira API up to version 0.2.1 used Nagios resources as nouns in singular form ('host', 'hostgroup', 'service', 'contact'), same way as they are used by Nagios. In order to support ActiveResource type of requests, use of pluralized resources has been added. 
 
 ActiveResource expects JSON output of search result in the form of Array, but Nagira provides results as Hash. So, in order to be ActiveResource compliant without breaking backward compatibility, following rule is used:
 
@@ -141,9 +142,17 @@ List of all possible objects can be obtained from http://nagios.sourceforge.net/
 
 ### `/_status`
 
+- Method GET:
+  Get all hosts status, see {Nagira#get_status}
+
+#### `/_status/:hostname`
 
 - Method GET
+  Hoststatus for single host, see {Nagira#get\_status\_hostname\_services}
 
-- Method PUT
 
+#### `/_status/:hostname/_services`
 
+- Method GET
+  - All services for single host. Not including hoststate information.
+  - see {Nagira#get\_status\_hostname\_services}

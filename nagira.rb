@@ -75,7 +75,7 @@ class Nagira < Sinatra::Base
                                                             )
                   })
 
-    puts "[#{Time.now}] -- Starting Nagira allication"
+    puts "[#{Time.now}] -- Starting Nagira apllication"
     $nagios.keys.each do |x|
       puts "[#{Time.now}] -- Using nagios file #{x}: #{$nagios[x].path}"
     end
@@ -111,16 +111,22 @@ class Nagira < Sinatra::Base
   # @overload before("Parse Nagios files")
 
   before do 
-    $nagios[:config].parse
-    $nagios[:status].parse
-    $nagios[:objects].parse
+
+    if Nagira.settings.start_background_parser
+      unless $bg.alive?
+        logger.warn "Background Parser is configured to run, but is not active"
+        $nagios[:config].parse
+        $nagios[:status].parse
+        $nagios[:objects].parse
+      end
+    else
+      $nagios[:config].parse
+      $nagios[:status].parse
+      $nagios[:objects].parse
+    end
 
     @status   = $nagios[:status].status['hosts']
     @objects  = $nagios[:objects].objects
-
-    if Nagira.settings.start_background_parser and ! $bg.alive?
-      logger.warn "Background Parser is configured to run, but is not active"
-    end
 
   end
 

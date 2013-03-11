@@ -4,7 +4,7 @@ gem 'sinatra', '>= 1.3.1'
 
 gem 'ruby-nagios',
     :git => 'https://github.com/dmytro/ruby-nagios.git',
-    :branch => 'merge_from_upstream'
+    :branch => 'fix/stale_objects_in_statusdat'
 #
 # RSpec modules should be in all environments - to be able to test prod config
 # too
@@ -14,7 +14,7 @@ gem 'rspec-mocks'
 gem 'rspec-expectations'
 
 group :development,:test do 
-  gem 'redcarpet'
+  gem 'redcarpet', :platforms => :ruby
   gem 'sinatra-contrib', '>= 1.3.1'
   gem 'rake'
   gem 'yard', "~> 0.8"

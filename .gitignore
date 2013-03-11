@@ -5,3 +5,4 @@ config/db.rb
 doc
 .DS_Store
 tmp
+.rbx

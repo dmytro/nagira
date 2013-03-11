@@ -35,8 +35,8 @@ Following routes are implemented (all `GET`):
 
 Every route can optionally end with `/_list` or `/_state` and format specifier `\.(xml|json|yaml)`
 
-* `/list` option produces only list of hosts/services
-* `/state` - gives short status of host or service
+* `/_list` option produces only list of hosts/services
+* `/_state` - gives short status of host or service
 * if none are provided, then will print out full parsed hash 
 
 

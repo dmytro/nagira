@@ -1,5 +1,6 @@
 
 require 'active_support' # for Hash.slice
+require 'active_support/inflector' # 
 require 'json'
 require 'yaml'
 require 'active_model/serialization'

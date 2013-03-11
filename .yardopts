@@ -4,6 +4,7 @@ lib/**/*.rb
 - 
 README.md
 docs/FEATURES.md
+docs/API.md
 docs/INSTALL.md
 docs/CONFIGURATION.md
 docs/TROUBLE_SHOOTING.md

@@ -127,6 +127,18 @@ class Nagira < Sinatra::Base
 
     @status   = $nagios[:status].status['hosts']
     @objects  = $nagios[:objects].objects
+    
+    idx = 0
+    @status.keys.uniq.each do |hostname|
+      @status[idx] = @status[hostname]
+      idx += 1
+    end
+    #
+    # Add plural keys to use ActiveResource with Nagira
+    #
+    @objects.keys.each do |singular|
+      @objects[singular.to_s.pluralize.to_sym] = @objects[singular]
+    end
 
   end
 

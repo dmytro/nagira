@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+#
+begin
+  require 'app.rb'
+rescue LoadError => e
+  require 'rubygems'
+  path = File.expand_path '../../lib', __FILE__
+  $:.unshift(path) if File.directory?(path) && !$:.include?(path)
+  require 'app.rb'
+end

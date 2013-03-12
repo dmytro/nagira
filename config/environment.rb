@@ -7,7 +7,6 @@ class Nagira < Sinatra::Base
 
   configure do 
     set :format, :json
-    set :ttl, 20
   end
 
   if development?

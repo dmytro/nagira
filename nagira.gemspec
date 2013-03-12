@@ -24,8 +24,8 @@ server configuration and to Nagios runtime environment
 
 EOF
 
-  s.files = ( %w{ bin/nagira Rakefile version.txt} + 
-              Dir.glob("{app,lib,spec,config}/**/*")
+  s.files = ( %w{ bin/nagira History.txt Rakefile version.txt} + 
+              Dir.glob("{app,lib,spec,config,test}/**/*")
              ).uniq
 
   s.require_paths << 'lib'

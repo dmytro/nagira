@@ -76,8 +76,10 @@ class Nagira < Sinatra::Base
                   })
 
     puts "[#{Time.now}] -- Starting Nagira apllication"
+    puts "[#{Time.now}] -- Version #{Nagira::VERSION}"
+    puts "[#{Time.now}] -- Running in #{Nagira.settings.environment} environment"
     $nagios.keys.each do |x|
-      puts "[#{Time.now}] -- Using nagios file #{x}: #{$nagios[x].path}"
+      puts "[#{Time.now}] -- Using nagios #{x} file: #{$nagios[x].path}"
     end
 
     $nagios[:status].parse
@@ -319,8 +321,6 @@ class Nagira < Sinatra::Base
   #   respond_with $nagios.status[resource], @format
   # end
 
-  # Start Sinatra application when not running from rack
-  #run! if app_file == $0
 end
 
 Nagira.run!

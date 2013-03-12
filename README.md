@@ -8,11 +8,22 @@ Version {include:file:version.txt}
 
 ## Description
 
-Light-weight web services API for fetching status of Nagios application objects:
+- Light-weight web services RESTful API for reading and changing status of Nagios objects:
+  - host status 
+  - service status
+- and for read-only access to:
+* Nagios objects 
+  - hosts
+  - services, 
+  - contacts, 
+  - groups of 
+      - hosts
+      - services
+      - contacts
+      - escalations, etc.
+* Nagios server configuration
+* Nagios runtime environment
 
-* Objects file: hosts, services, contacts, `(host|service|contact)groups`, escalations, etc.
-
-* Status file: hoststatus, servicestatus, etc.
 
 ## Source Code
 

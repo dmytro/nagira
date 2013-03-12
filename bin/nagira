@@ -44,7 +44,7 @@
 #       
 #
 
-require_relative 'lib/nagira'
+require 'nagira'
 
 ##
 # Main class of Nagira application implementing RESTful API for
@@ -266,13 +266,6 @@ class Nagira < Sinatra::Base
   after do
     body( @callback ? "#{@callback.to_s} (#{@data.to_json})" : @data.send("to_#{@format}") )
   end
-
-  require_relative "app/routes/get/config"
-  require_relative "app/routes/get/objects"
-  require_relative "app/routes/get/status"
-
-  require_relative "app/routes/put"
-  require_relative "app/routes/put/status"
 
 
 

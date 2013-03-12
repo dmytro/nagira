@@ -7,11 +7,19 @@ require 'active_model/serialization'
 require 'active_model/serializers/xml' # for Hash.to_xml
 require 'sinatra'
 require 'sinatra/reloader'
-require 'pp'
 
 $: << File.dirname(__FILE__) << File.dirname(File.dirname(__FILE__))
 
 require 'config/defaults'
+
+require "app/routes/get/config"
+require "app/routes/get/objects"
+require "app/routes/get/status"
+
+require "app/routes/put"
+require "app/routes/put/status"
+
+
 #
 # environment file must go after default, some settings override
 # defaults.

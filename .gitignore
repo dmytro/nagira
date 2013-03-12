@@ -6,3 +6,4 @@ doc
 .DS_Store
 tmp
 .rbx
+*.gem

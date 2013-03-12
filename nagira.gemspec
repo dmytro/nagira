@@ -31,6 +31,7 @@ EOF
   s.require_paths << 'lib'
   s.bindir = 'bin'
   s.executables << 'nagira'
+  s.default_executable = 'nagira'
   # GEMS
   
   s.add_dependency 'activemodel'

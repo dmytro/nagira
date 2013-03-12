@@ -320,5 +320,7 @@ class Nagira < Sinatra::Base
   # end
 
   # Start Sinatra application when not running from rack
-  run! if app_file == $0
+  #run! if app_file == $0
 end
+
+Nagira.run!

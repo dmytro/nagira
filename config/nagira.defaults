@@ -1,0 +1,8 @@
+#
+# Defaults configuration file for Nagira to be used together with 
+#
+# RACK_ENV=production
+# NAGIRA_USER=nagios
+# RVM_STRING="rvm use default"
+# NAGIRA_LOG=/var/log/nagios/nagira.log
+# NAGIOS_CFG_FILE=/etc/nagios/nagios.cfg

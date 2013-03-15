@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+#
+
+path = File.expand_path '..', __FILE__
+
+print %x{ cd #{path} && rake #{ARGV[0] || '-T'} }.gsub(/^rake/, File.basename(__FILE__))

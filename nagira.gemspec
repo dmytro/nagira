@@ -24,32 +24,33 @@ server configuration and to Nagios runtime environment
 
 EOF
 
-  s.files = ( %w{ bin/nagira History.txt Rakefile version.txt} + 
+  s.files = ( %w{ bin/nagira History.rdoc Rakefile version.txt} + 
               Dir.glob("{app,lib,spec,config,test}/**/*")
              ).uniq
 
   s.require_paths << 'lib'
   s.bindir = 'bin'
-  s.executables << 'nagira'
+  s.executables << 'nagira' << 'nagira-setup'
   s.default_executable = 'nagira'
   # GEMS
   
-  s.add_dependency 'activemodel'
-  s.add_dependency 'activesupport'
-  s.add_dependency 'json'
+  s.add_dependency 'activemodel', '>= 3.2.12'
+  s.add_dependency 'activesupport', '>= 3.2.12'
+  s.add_dependency 'json', '1.7.7'
   s.add_dependency 'rspec'
+  s.add_dependency 'sherlock_os', '~> 0.0.2'
   s.add_dependency 'rspec-core'
   s.add_dependency 'rspec-expectations'
   s.add_dependency 'rspec-mocks'
   s.add_dependency 'ruby-nagios', ">= 0.1.0"
   s.add_dependency 'sinatra', '>= 1.3.1'
+  s.add_dependency 'sinatra-contrib', '>= 1.3.1'
+  s.add_dependency 'rake'
   
   # Dev
-  s.add_development_dependency "growl", "~> 1.0.3"
-  s.add_development_dependency "guard-brakeman", "~> 0.5.0"
-  s.add_development_dependency "guard-rspec", "~> 1.2.1"
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'redcarpet'
-  s.add_development_dependency 'sinatra-contrib', '>= 1.3.1'
-  s.add_development_dependency 'yard', "~> 0.8"
+  s.add_dependency "growl", "~> 1.0.3"
+  s.add_dependency "guard-brakeman", "~> 0.5.0"
+  s.add_dependency "guard-rspec", "~> 1.2.1"
+  s.add_dependency 'redcarpet'
+  s.add_dependency 'yard', "~> 0.8"
 end

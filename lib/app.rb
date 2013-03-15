@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 # @!macro  [attach] sinatra.get
 #
 #    @overload get "$1"
@@ -43,6 +41,8 @@
 #       servicestatus information for each host.
 #       
 #
+
+
 
 require 'nagira'
 

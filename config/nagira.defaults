@@ -1,8 +1,31 @@
 #
-# Defaults configuration file for Nagira to be used together with 
+# Defaults configuration file for Nagira
+# --------------------------------------------
 #
 # RACK_ENV=production
+#
+# Usually nagira process should be run by same user ID as Nagios. In
+# many cases this is nagios user.
+#
 # NAGIRA_USER=nagios
+#
+#
 # RVM_STRING="rvm use default"
+#
+# Log file
 # NAGIRA_LOG=/var/log/nagios/nagira.log
+#
+#
+# Number of seconds between re-parses. All Nagios file are parsed no
+# more often than this. Default is 5 sec. Setting this to 0 or
+# negative number disables TTL and backgroiund prser as well.
+#
+# NAGIRA_TTL=20
+#
+# Set this to 0, to disable background parsing.
+# NAGIRA_BG_PARSING=1
+#
+# Where main Nagios configuration file is located. usually this does
+# not need to change.
+#
 # NAGIOS_CFG_FILE=/etc/nagios/nagios.cfg

@@ -54,62 +54,6 @@ programstatus {
 	serial_host_check_stats=0,0,0
 	}
 
-hoststatus {
-	host_name=airport
-	modified_attributes=0
-	check_command=check-host-alive
-	check_period=
-	notification_period=_24x7
-	check_interval=5.000000
-	retry_interval=1.000000
-	event_handler=
-	has_been_checked=1
-	should_be_scheduled=1
-	check_execution_time=3.015
-	check_latency=0.159
-	check_type=0
-	current_state=1
-	last_hard_state=1
-	last_event_id=3517
-	current_event_id=3518
-	current_problem_id=1492
-	last_problem_id=1490
-	plugin_output=CRITICAL - Host Unreachable (airport.sakae)
-	long_plugin_output=
-	performance_data=
-	last_check=1325284781
-	next_check=1325285091
-	check_options=0
-	current_attempt=1
-	max_attempts=10
-	current_event_id=3518
-	last_event_id=3517
-	state_type=1
-	last_state_change=1276077294
-	last_hard_state_change=1276077294
-	last_time_up=1276075650
-	last_time_down=1325284791
-	last_time_unreachable=0
-	last_notification=1276077294
-	next_notification=1276077294
-	no_more_notifications=1
-	current_notification_number=1
-	current_notification_id=340
-	notifications_enabled=1
-	problem_has_been_acknowledged=0
-	acknowledgement_type=0
-	active_checks_enabled=1
-	passive_checks_enabled=1
-	event_handler_enabled=1
-	flap_detection_enabled=1
-	failure_prediction_enabled=1
-	process_performance_data=1
-	obsess_over_host=1
-	last_update=1325285001
-	is_flapping=0
-	percent_state_change=0.00
-	scheduled_downtime_depth=0
-	}
 
 hoststatus {
 	host_name=archive
@@ -453,64 +397,6 @@ hoststatus {
 	scheduled_downtime_depth=0
 	}
 
-servicestatus {
-	host_name=airport
-	service_description=PING
-	modified_attributes=0
-	check_command=check_ping!100.0,20%!500.0,60%
-	check_period=_24x7
-	notification_period=_24x7
-	check_interval=1.000000
-	retry_interval=1.000000
-	event_handler=
-	has_been_checked=1
-	should_be_scheduled=1
-	check_execution_time=3.016
-	check_latency=0.214
-	check_type=0
-	current_state=2
-	last_hard_state=2
-	last_event_id=9427
-	current_event_id=9477
-	current_problem_id=1491
-	last_problem_id=1489
-	current_attempt=1
-	max_attempts=4
-	current_event_id=9477
-	last_event_id=9427
-	state_type=1
-	last_state_change=1299104826
-	last_hard_state_change=1299104826
-	last_time_ok=1276075644
-	last_time_warning=1275599902
-	last_time_unknown=1299100104
-	last_time_critical=1325284983
-	plugin_output=CRITICAL - Host Unreachable (airport.sakae)
-	long_plugin_output=
-	performance_data=
-	last_check=1325284983
-	next_check=1325285043
-	check_options=0
-	current_notification_number=0
-	current_notification_id=0
-	last_notification=0
-	next_notification=0
-	no_more_notifications=0
-	notifications_enabled=1
-	active_checks_enabled=1
-	passive_checks_enabled=1
-	event_handler_enabled=1
-	problem_has_been_acknowledged=0
-	acknowledgement_type=0
-	flap_detection_enabled=1
-	failure_prediction_enabled=1
-	process_performance_data=1
-	obsess_over_service=1
-	last_update=1325285001
-	is_flapping=0
-	percent_state_change=0.00
-	scheduled_downtime_depth=0
-	}
 
 servicestatus {
 	host_name=archive

@@ -12,7 +12,6 @@ class Nagira < Sinatra::Base
   #
   #
   # @method get_config
-  # Get Nagios configuration.
   #
   # Get Nagios configuration hash form parsing main Nagios
   # configuration file nagios.cfg

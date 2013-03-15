@@ -10,7 +10,8 @@ docs/CONFIGURATION.md
 docs/TROUBLE_SHOOTING.md
 docs/nagios_objects.rdoc
 LICENSE
-History.rdoc
+History.md
 version.txt
 docs/nagios_external_commands_descriptions.txt
 docs/nagios_external_commands_full_list.txt
+docs/INSTALL_pre0.2.2.md

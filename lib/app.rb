@@ -57,6 +57,8 @@ class Nagira < Sinatra::Base
   ##
   # Do some necessary tasks at start and then run Sinatra app.
   #
+  # @method   startup_configuration
+  # @overload before("Initial Config")
   configure do 
     
     $nagios = { }

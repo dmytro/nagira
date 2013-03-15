@@ -41,7 +41,7 @@ DEFAULT = {
   # this number of seconds. To disable timed parsing, set
   # ttl to 0 or negative number.
   
-  ttl: 5,
+  ttl: ENV['NAGIRA_TTL'].to_i || 5,
   
   ##
   # start_background_parser used in Nagios::BackgroundParse class.
@@ -53,7 +53,7 @@ DEFAULT = {
   # intervals slightly shorter than `ttl` to ensure that data are
   # always updated. So, `ttl` should be larger than 1.
   #
-  start_background_parser: true
+  start_background_parser: (ENV['NAGIRA_BG_PARSING'] == '1')
 }
 
 require 'sinatra'

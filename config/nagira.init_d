@@ -24,7 +24,7 @@ pid_file=/var/run/nagira.pid
 
 
 load_defaults () {
-    which sherlock > /dev/null 2>&1 && eval $(sherlock | grep FAMILY) || exit 2
+    which sherlock > /dev/null 2>&1 && eval $(sherlock | grep FAMILY) || { echo "sherlock not found"; exit 2; }
     
     case $FAMILY in
         'rh')
@@ -58,17 +58,19 @@ NAGIRA_LOG=${NAGIRA_LOG:-/var/log/nagios/nagira.log}
 export RACK_ENV NAGIRA_LOG NAGIRA_USER RVM_STRING
 
 get_pid () {
+# ps -U ${
+# ps -C ruby -o pid,comm,cmd 
      #echo $(ps axo pid,command | awk '$2 ~ /ruby/ && $3 ~ /nagira/ {print $1}')
-     echo $(ps axo pid,command | awk '$2 ~ /^\/usr.*bin\/nagira *$/ {print $1}')
+     echo $(ps -C ruby -o pid,cmd | awk '$2 ~ /^\/usr.*bin\/nagira *$/ {print $1}')
 }
 
 
 start() {
+    set -x
     [ ! -z "$(get_pid)" ] && { status; return 1; }
-    echo -n $"Starting ${process_name}:    "
+    echo -n "Starting ${process_name}:    "
     load_defaults
     su - $NAGIRA_USER -s /bin/bash -c "$RVM_STRING ;  RACK_ENV=$RACK_ENV nagira&" > $NAGIRA_LOG  2>&1 
-    echo $!
     sleep 5
     process=$(get_pid)
     if [ -z "$process" ]; then
@@ -76,6 +78,7 @@ start() {
     else
         echo $process > $pid_file
         echo "[OK]"
+        status
     fi
 }
 

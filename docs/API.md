@@ -117,9 +117,9 @@ ActiveResource expects JSON output of search result in the form of Array, but Na
 
 Where this is available following forms of request are supported:
 
-- /_status/host/<name> - singular (Nagira)
-- /_status/hosts/<name> - plural  (ActiveResource)
-- /_status/hosts/<id>   - by ID   (ActiveResource)
+- /_status/host/[name] - singular (Nagira/Nagios)
+- /_status/hosts/[name] - plural  (ActiveResource)
+- /_status/hosts/[id]   - by ID   (ActiveResource)
 
 ### `/_objects`
 

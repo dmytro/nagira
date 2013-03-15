@@ -1,8 +1,5 @@
-
-require 'erb'
 require 'fileutils'
 require_relative 'lib/nagira'
-require_relative 'config/install'
 
 def log_user msg
   puts "#{Time.now} -- #{msg.chomp}"
@@ -14,13 +11,6 @@ namespace :doc do
   task :yard do
     sh 'yardoc'
   end
-
-#   namespace :yard do
-#     desc 'Generate YARD documentation for github web page'
-#     task :github do
-#       sh 'yardoc --output-dir ../dmytro.github.com/nagira/doc'
-#     end
-#   end
 
 end
 
@@ -36,7 +26,27 @@ namespace :config do
     l,target_os = line.chomp.split '='
     target_os = target_os.chomp.strip.to_sym
   end
+  
+  namespace :test do
 
+    desc "Test Nagira production config: Nagios files in proper locations and parseable"
+    task :prod do 
+      ENV['RACK_ENV'] = 'production'
+      Rake::Task['config:test:test'].invoke
+    end
+
+    desc "Test Nagira installation: test Nagios files and parse"
+    task :install do 
+      ENV['RACK_ENV'] = 'test'
+      Rake::Task['config:test:test'].invoke
+    end
+
+    task :test do
+      p "Starting test in #{ENV['RACK_ENV']} environment"
+      sh "rspec --format doc --color spec/00_configuration_spec.rb"
+    end
+
+  end
 
   desc "Create Nagira configuration, allow start on boot and start it"
   task :all => [:config, :chkconfig, :start]
@@ -78,20 +88,22 @@ namespace :config do
             '/etc/default/nagira'
           else
             log_user "Unknown or unsupported target OS: #{target_os}"
-            log_user "Skipped defaults file installation"
+            log_user "    >>> Skipped defaults file installation"
             next
           end
-    
-    FileUtils.copy src, dst
-    FileUtils.chown 0, 0, dst unless test?
-    FileUtils.chmod 0644, dst
-
-    log_user "    Installed defaults file for Nagira in #{dst}."
-    log_user "    You might want to tune some of the variables."
+    unless File.exists? dst
+      FileUtils.copy src, dst
+      FileUtils.chown 0, 0, dst unless test?
+      FileUtils.chmod 0644, dst
+      
+      log_user "Installed new defaults file for Nagira in #{dst}."
+      log_user "    >>> You might want to tune some of the variables."
+    end
   end
 
   desc "Start Nagira API service"
   task :start => [:init_d, :defaults] do
+    log_user "Starting Nagira for the first time"
     sh "/etc/init.d/nagira start"
   end
   

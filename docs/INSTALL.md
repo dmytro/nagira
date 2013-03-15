@@ -1,63 +1,99 @@
 
+# Short installation procedure
+
+
+As root:
+
+```
+    gem install nagira
+    nagira-setup config:test:install
+    nagira-setup config:all
+    nagira-setup config:test:prod
+```    
+
+
+More detailed description of installation procedure below.
+
+
+# Install from gem
+
+Starting from version 0.2.2 Nagira is packaged as Ruby Gem with simplified installation procedure as well as run time commands. If you are using Nagira version pre-0.2.2, or are not using it as a gem please refer to {file:INSTALL_pre0.2.2.md older installation instructions}.
+
+
 ## Installation procedure
 
-- Clone from Github:
 
-     git clone --recursive git@github.com:dmytro/nagira.git
+### Install gem
 
-- Install bundle
+Install gem as `root` user or using sudo command. If your Ruby was installed by RVM please make sure to use `-i` sudo option:
 
-    bundle install
-
-- Run test suite
-
-  - First to test your package
-
-    Run rspec tests in +development+ and/or +test+ environments. In
-    this case Nagira will use proven to work files included with the
-    distribution (in test/data directory).
-
-        RACK_ENV#<development|test> rspec -fd 
-
-  - Test production
-
-        RACK_ENV#production rspec -fd 
-
-
-- Run application
-
-    bundle exec ./nagira.rb 
+    [sudo -i] gem install nagira
     
-or
+#### Test installation
 
-    rackup -p <port>
-
-- Access 
-  
-Go to URL: http://localhost:4567/status
-
-## Init.d start file 
-
-### Install init.d file
-
-Rake task is provided for installation of /etc/init.d start file. This task will parse provided ERB template (`./config/nagira.init_d.erb`) and configure services to start at boot time. Start file is `/etc/init.d/nagira`. 
-
-This task should be executed as `root` user. To install start file run:
+Use `nagira-setup` script for testing. Run following command to test installation.
 
 ```
-rake config:init_d
+    nagira-setup config:test:install
+```    
+
+This command will try to parse known to work files included with the distribution. If there are any errors reported by this test, something is not right with the installation. Please try to rectify these errors before going further.
+
+#### Run application
+
+You can run Nagira service form command line: `nagira` This starts Nagira application in foreground with log output to `STDOUT`. 
+
+If you intend to run Nagira as system service, read further.
+    
+### Create start-up files
+
+This will put start-up files for Nagira in `/etc` directory. 
+
+Nagira start-up files are tested only on Linux, they will probably work on other UNIX'es with minimal changes. Currently supported distros are RedHat, Debian and their derivatives like CentOS and Ubuntu. 
+
+Helper script `nagira-setup` assists in creating and placing config files into correct location.
+
+These files are `/etc/init.d/nagira` start-up file and defaults file. Location of defaults file depends on type of the Linux distribution. It is `/etc/sysconfig` for RedHat type distros and `/etc/default` for Debian and Ubuntu.
+
+
+#### Nagira-setup command
+
+    sudo -i nagira-setup [task]
+
+**Note** Running `nagira-setup` without any command line options produces list of tasks with help message.
+
+Following tasks are included with nagira-setup:
+
+```
+    nagira-setup config:all           # Create Nagira configuration, allow start on boot and start it
+    nagira-setup config:chkconfig     # Configure Nagira to start on system boot
+    nagira-setup config:config        # Create configuration for Nagira in /etc
+    nagira-setup config:start         # Start Nagira API service
+    nagira-setup config:test:install  # Test Nagira installation: test Nagios files and parse
+    nagira-setup config:test:prod     # Test Nagira production config: Nagios files in proper locations adn parseable
+    nagira-setup doc:yard             # Generate YARD documentation
 ```
 
-### Configure services
+For single step configuration run `nagira-setup config:all`. This task combines following ones:
 
-`config:service` task  configures services to run at boot time. 
+- **config:config** -- Create configuration for Nagira in /etc. This will copy `init.d` start up file and defaults file into proper locations.    
+- **config:chkconfig** -- Enable Nagira service to start on system boot  
+- **config:start** -- Starts Nagira API service
 
-Note: *As of time of writing (v.0.2) this task only works on Debian or Ubuntu Linux distribution, and fails on any other Linux/UNIX system.*
+
+#### Configuration file
+
+Run-time configuration variables can be adjusted by editing *defaults* file:
+
+- RedHat Linux : `/etc/sysconfig/nagira`
+- Debian Linux : `/etc/default/nagira`
+
+After editing *defaults* you need to restart Nagira.
 
 
 ## See also
 
 * See more on {file:CONFIGURATION.rdoc}
 
-* If you are getting misformed XML errors, please look at
+* If you are getting malformed XML errors, please look at
   {file:nagios_objects.rdoc}

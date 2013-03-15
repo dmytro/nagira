@@ -2,29 +2,63 @@
 # Defaults configuration file for Nagira
 # --------------------------------------------
 #
+# ----------------------
+# Port. Default 4567
+# ----------------------
+# NAGIRA_PORT=
+#
+# ----------------------
+# BIND
+# ----------------------
+# String specifying the hostname or IP address of the interface to
+# listen on when the :run setting is enabled. The default value –
+# '0.0.0.0' – causes the server to listen on all available
+# interfaces. To listen on the loopback interface only, use: 'localhost'
+#
+# NAGIRA_BIND=localhost
+# ----------------------
+# Environment
+# ----------------------
+# Usually needs to be production
+#
 # RACK_ENV=production
 #
+# ----------------------
+# Nagira user
+# ----------------------
 # Usually nagira process should be run by same user ID as Nagios. In
 # many cases this is nagios user.
 #
 # NAGIRA_USER=nagios
 #
-#
+# ----------------------
+# RVM
+# ----------------------
 # RVM_STRING="rvm use default"
 #
+# ----------------------
 # Log file
+# ----------------------
 # NAGIRA_LOG=/var/log/nagios/nagira.log
 #
-#
+# ----------------------
+# TTL for data
+# ----------------------
 # Number of seconds between re-parses. All Nagios file are parsed no
 # more often than this. Default is 5 sec. Setting this to 0 or
 # negative number disables TTL and backgroiund prser as well.
 #
 # NAGIRA_TTL=20
 #
+# ----------------------
+# Background parsing
+# ----------------------
 # Set this to 0, to disable background parsing.
 # NAGIRA_BG_PARSING=1
 #
+# ----------------------
+# Nagios configuration file
+# ----------------------
 # Where main Nagios configuration file is located. usually this does
 # not need to change.
 #

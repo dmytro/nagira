@@ -4,6 +4,8 @@ class Nagira < Sinatra::Base
   disable :protection
   enable :logging
 
+  set :port, ENV['NAGIRA_PORT'].to_i if ENV['NAGIRA_PORT']
+  set :bind, ENV['NAGIRA_BIND'] if ENV['NAGIRA_BIND']
 
   configure do 
     set :format, :json

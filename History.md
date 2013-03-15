@@ -1,6 +1,11 @@
-### v.0.2.2
+### v.0.2.5
 
-* Fri Mar 15 14:55:41 JST 2013 -- Dmytro Kovalov
+* Fri Mar 15 2013 -- Dmytro Kovalov
+  - Environment variables support and defaults file:
+    - `NAGIRA_TTL`
+    - `NAGIRA_BG_PARSING`
+    - `NAGIRA_PORT` - see Sinatra `set :port`
+    - `NAGIRA_BIND` - see Sinatra `set :bind`
   - Packaged as gem
     - nagira and nagira-setup binaries
     - cleaner init.d script, support for Debian and RedHat

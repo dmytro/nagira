@@ -31,17 +31,21 @@ Source code available from Github https://github.com/dmytro/nagira
 
 ## Installation
 
-See {file:INSTALL.rdoc}
+```
+    gem install nagira
+```    
+
+For more details look at {file:INSTALL.rdoc}
 
 ## Usage
 
-1. Run Sinatra application `bundle exec ./nagira.rb`
+1. Run Sinatra application `nagira`
 2. Use HTTP client to get information:
 
 ```
-   curl http://localhost:4567/objects/contact/list
+   curl http://localhost:4567/_objects/contact/_list
    
-   curl http://localhost:4567/status/list
+   curl http://localhost:4567/_status/_list
 ```
 
 or to send check result to Nagios:
@@ -59,11 +63,11 @@ curl -X PUT -H "Content-type: application/json;" \
  
 ```    
     
-See more in {file:FEATURES.rdoc}
+See more in {file:FEATURES.rdoc} and API documentation in {file:API.md}
 
 ## Documentation
 
-YARD documentation included with the project, run `yardoc` in project root directory. Generated YARD docs are available at http://dmytro.github.com/nagira/doc
+YARD documentation included with the project, run `yardoc` in project root directory. Generated YARD docs are available at http://dmytro.github.com/nagira
 
 ## How and why?
 
@@ -78,50 +82,13 @@ YARD documentation included with the project, run `yardoc` in project root direc
 
 If necessary at a later stages this could be implemented using Nagios' NEB interface, but the disadvantage of the NEB API is that it could block Nagios process and introduce latencies in Nagios.
 
-File parsing obviously takes resources for each single parse, however
-if application -- Rails, Sinatra or similar -- is able to keep state
-of the parser, is not a problem. IF application can keep track of file
-parse times and file modification time it is possible to parse file
-only if it was changed and infrequently enough.
+File parsing obviously takes resources for each single parse, however if application -- Rails, Sinatra or similar -- is able to keep state of the parser, is not a problem. IF application can keep track of file parse times and file modification time it is possible to parse file only if it was changed and infrequently enough.
 
 # Road-map blueprint
 
-When implemented API could provide foundation for development of
-well-defined, modular, distributed Nagios monitoring: distributed
-Nagios nodes communicating with each other, retrieving status and
-submitting check results, distributed, load-balanced, fault tolerant
-configuration.
+When implemented API could provide foundation for development of well-defined, modular, distributed Nagios monitoring: distributed Nagios nodes communicating with each other, retrieving status and submitting check results, distributed, load-balanced, fault tolerant configuration.
 
-Web GUI (IMHO weakest part of the Nagios) could be completely
-de-coupled from Nagios core and is not required to run on the Nagios
-core host.
-
-## First stage
-
-Note: *Implemented in version 0.1*
-
-Read-only (GET) routes to access lists of monitored objects and states
-of the objects.
-
-There are examples of various Nagios interfaces: [NDOUTILS][ndoutils], [IdoUtils][idoutils], [MK_Livestatus][mk_livestatus]. This is an attempt to do similar things using web services API.
-
-[ndoutils]: http://exchange.nagios.org/directory/Addons/Database-Backends/NDOUtils/details
-[idoutils]: http://docs.icinga.org/latest/en/quickstart-idoutils.html
-[mk_livestatus]: http://mathias-kettner.de/checkmk_livestatus.html
-
-## Second stage
-
-Note: *Implemented starting from v0.2.*
-
-Implement NCSA passive checks submission functionality using HTTP(S) web service. 
-
-Starting version v0.2 two Nagios external commands implemented `PROCESS_HOST_CHECK_RESULT` and `PROCESS_SERVICE_CHECK_RESULT`. This allows submitting passive check results for hosts and services, and implements accordingly functionality NSCA. 
-
-## Later stages
-
-Use POST/PUT/DELETE HTTP methods to control Nagios - automatically change configuration, control notifications, contacts; in many cases this requires Nagios process restarts/reloads. 
-
-There are 157 external commands in Nagios 3, compared to 2 implemented, so this is still far away... 
+Web UI could be completely de-coupled from Nagios core, not required to run on the Nagios host and can retrive data over the network. It's possible to build complete Javascript web application running in the browser server-less.
 
 ## Author
 

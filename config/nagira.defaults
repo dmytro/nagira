@@ -16,6 +16,7 @@
 # interfaces. To listen on the loopback interface only, use: 'localhost'
 #
 # NAGIRA_BIND=localhost
+#
 # ----------------------
 # Environment
 # ----------------------

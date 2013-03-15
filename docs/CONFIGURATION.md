@@ -2,19 +2,19 @@
 
 # Nagira configuration
 
-## Runtime configuration
+## Run-time configuration
 
-Nagira runtime environment configured by adjusting settings in `config/defaults.rb` and `config/environment.rb` files. In most cases `defaults.rb` file should not be changed, usually only editing `environment.rb` file is enough or even this in not required. Most defaults provided in `defaults.rb` and `environment.rb` will work for majority of users and don't need change. Anyway, recomendations below are for configuring Nagira.
+Nagira run-time environment configured by adjusting settings in `config/defaults.rb` and `config/environment.rb` files. In most cases `defaults.rb` file should not be changed, usually only editing `environment.rb` file is enough or even this in not required. Most defaults provided in `defaults.rb` and `environment.rb` will work for majority of users and don't need change. Anyway, recommendations below are for configuring Nagira.
 
 File `config/defaults.rb` defines configuration hash `DEFAULT`, it sets attributes `settings`  for Sinatra. Files `defaults.rb` and `environment.rb` use different syntax for configuration: former one uses hash assignment, while latter one uses Sinatra '`set <variable>`' syntax.
 
 #### Environment variables
 
-See comments in `config/nagira.defaults` file for environment varaibles that Nagira understands. This file is copied to system defauls area during installation. Bu adjusting values in this file you can change Nagira installation.
+See comments in `config/nagira.defaults` file for environment variables that Nagira understands. This file is copied to system defaults area during installation. Bu adjusting values in this file you can change Nagira installation.
 
-The same varibales can be set in the shell if you are using Nagira on command line. 
+The same variables can be set in the shell if you are using Nagira on command line. 
 
-Some of the configuration examples given below can be changed either in source of NAgira or by environment variable.
+Some of the configuration examples given below can be changed either in source of Nagira or by environment variable.
 
 #### Per-environment configuration
 
@@ -28,7 +28,7 @@ All settings can be configured either globally or for specific environment (deve
   end
 ```  
 
-* Only for develoment and test
+* Only for development and test
 
 ```ruby
 
@@ -38,7 +38,7 @@ All settings can be configured either globally or for specific environment (deve
 
 ```
 
-For more details please see Sinatra configuratioin documentation.
+For more details please see Sinatra configuration documentation.
 
 ### Nagios files location
 
@@ -54,7 +54,7 @@ Location of all Nagios files and data files are automatically detected by parsin
 
 If you are using some standard distribution of Nagios -- for example RedHat/CentOS RPM or Debian/Ubuntu dpkg -- chances are your `nagios.cfg` file is in `/etc/nagios3` or `/etc/nagios` directory. In this case Nagira will be OK with default configuration.
 
-However, if this is not the case, please set file location as in the example below or override by setting varaible `NAGIOS_CFG_FILE` in the shell.
+However, if this is not the case, please set file location as in the example below or override by setting variable `NAGIOS_CFG_FILE` in the shell.
 
 #### Example configuration
 
@@ -90,9 +90,9 @@ By default Nagios data files are not parsed on each HTTP request, instead they a
 
 ### Background parsing
 
-When on user request Nagira needs to parse `status.dat` file (when `:ttl` time passed) for large files there coulde be significant delay in sending data back to user. On average these delays will happen every `:min_parse_interval` seconds. 
+When on user request Nagira needs to parse `status.dat` file (when `:ttl` time passed) for large files there could be significant delay in sending data back to user. On average these delays will happen every `:min_parse_interval` seconds. 
 
-If you want to prevent such delays reponding to user requests, it is possible to start background loading and parsing `status.dat` file on regular intervals in separate thread.
+If you want to prevent such delays responding to user requests, it is possible to start background loading and parsing `status.dat` file on regular intervals in separate thread.
 
 For this set value of `:start_background_parser` to `true` and `:ttl` to at least 1 sec (or more).
 
@@ -104,20 +104,20 @@ For this set value of `:start_background_parser` to `true` and `:ttl` to at leas
         }
 ```
 
-**Note** Same as `:ttl` abone value of `:start_background_parser` can only be set in `config/defaults.rb` but not in `config/environment.rb`
+**Note** Same as `:ttl` above value of `:start_background_parser` can only be set in `config/defaults.rb` but not in `config/environment.rb`
 
 
 ## Verifying your configuration
 
 There is a RSpec file that allows to check your current configuration. It checks whether your Nagios files exist and can be parses by the Nagira.
 
-Configurarion checker is environment dependent. To check files for particular environment run check as:
+Configuration checker is environment dependent. To check files for particular environment run check as:
 
 ```
     RACK_ENV=<environment> rspec -fd spec/00_configuration_spec.rb
 ```
 
-In development and test (by default) it will check presence of files under ./test/data subdirectory. In production it checks actual Nagios files and validity of files in your Nagios installation.
+In development and test (by default) it will check presence of files under ./test/data sub-directory. In production it checks actual Nagios files and validity of files in your Nagios installation.
 
 With no errors check should produce output as following:
 

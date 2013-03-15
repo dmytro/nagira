@@ -24,7 +24,7 @@ server configuration and to Nagios runtime environment
 
 EOF
 
-  s.files = ( %w{ bin/nagira History.rdoc Rakefile version.txt} + 
+  s.files = ( %w{ bin/nagira History.md Rakefile version.txt} + 
               Dir.glob("{app,lib,spec,config,test}/**/*")
              ).uniq
 

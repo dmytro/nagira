@@ -77,7 +77,7 @@ class Nagira < Sinatra::Base
                                                             )
                   })
 
-    puts "[#{Time.now}] -- Starting Nagira apllication"
+    puts "[#{Time.now}] -- Starting Nagira application"
     puts "[#{Time.now}] -- Version #{Nagira::VERSION}"
     puts "[#{Time.now}] -- Running in #{Nagira.settings.environment} environment"
     $nagios.keys.each do |x|

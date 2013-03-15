@@ -1,7 +1,4 @@
-require_relative '../nagira.rb'
-require 'rack/test'
-require 'pp'
-
+require 'spec_helper'
 
 describe Nagira do 
 
@@ -81,7 +78,7 @@ describe Nagira do
             a = last_response.body
             get "/#{page}"            
             b = last_response.body
-            a.should === b
+            a.should eq b
           end
         end
 

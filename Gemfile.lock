@@ -102,6 +102,7 @@ DEPENDENCIES
   guard-brakeman (~> 0.5.0)
   guard-rspec (~> 1.2.1)
   json (= 1.7.7)
+  rack-test
   rake
   redcarpet
   rspec

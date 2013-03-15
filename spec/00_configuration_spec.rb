@@ -1,5 +1,4 @@
-$: << File.dirname(File.dirname(__FILE__))
-require 'lib/nagira'
+require 'spec_helper'
 
 describe "Configuration" do 
 

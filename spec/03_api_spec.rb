@@ -1,7 +1,4 @@
-require_relative '../nagira.rb'
-require 'rack/test'
-require 'pp'
-
+require 'spec_helper'
 
 describe Nagira do 
 

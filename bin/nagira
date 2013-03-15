@@ -8,3 +8,4 @@ rescue LoadError => e
   $:.unshift(path) if File.directory?(path) && !$:.include?(path)
   require 'app.rb'
 end
+Nagira.run!

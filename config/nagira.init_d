@@ -1,0 +1,131 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          nagira
+# Required-Start:    
+# Required-Stop:     
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Nagira API application for Nagios
+# Description:       Controls Nagira API application for Nagios
+### END INIT INFO
+#
+# nagira:       
+#
+# Version:      1
+#
+# chkconfig: -  20 99
+# description: Start-up file for Nagira monitoring component, Nagios RESTful API. See also: http://dmytro.github.com/nagira
+# processname: ruby /.../nagira
+# config: /etc/sysconfig/nagira, /etc/default/nagira
+
+process_name="Sinatra Nagira services"
+
+pid_file=/var/run/nagira.pid
+
+
+load_defaults () {
+    which sherlock > /dev/null 2>&1 && eval $(sherlock | grep FAMILY) || exit 2
+    
+    case $FAMILY in
+        'rh')
+            DEFAULTS=/etc/sysconfig/nagira ;;
+        'debian')
+            DEFAULTS=/etc/default/nagira ;;
+        *)
+            echo "Unknown OS or distribution version: $FAMILY"
+        exit 1
+        ;;
+    esac
+    source $DEFAULTS || { echo "Can not load defaults file" ; exit 1 ; }
+}
+
+
+##
+# Some reasonable defaults if not set in defaults file
+#
+RACK_ENV=${RACK_ENV:-production}
+NAGIRA_USER=${NAGIRA_USER:-nagios}
+RVM_STRING=${RVM_STRING:-"true"} # i.e. do nothing special
+NAGIRA_LOG=${NAGIRA_LOG:-/var/log/nagios/nagira.log}
+# There's no default for NAGIOS_CFG_FILE. Default is actually to have
+# it unset, Nagira would be able to find nagios config if it is in one
+# of the standard locations (/etc or /usr/local). If your Nagios
+# installation is less than standard, you can override it by setting
+# NAGIOS_CFG_FILE
+#
+# NAGIOS_CFG_FILE=...
+
+export RACK_ENV NAGIRA_LOG NAGIRA_USER RVM_STRING
+
+get_pid () {
+     #echo $(ps axo pid,command | awk '$2 ~ /ruby/ && $3 ~ /nagira/ {print $1}')
+     echo $(ps axo pid,command | awk '$2 ~ /^\/usr.*bin\/nagira *$/ {print $1}')
+}
+
+
+start() {
+    [ ! -z "$(get_pid)" ] && { status; return 1; }
+    echo -n $"Starting ${process_name}:    "
+    load_defaults
+    su - $NAGIRA_USER -s /bin/bash -c "$RVM_STRING ;  RACK_ENV=$RACK_ENV nagira&" > $NAGIRA_LOG  2>&1 
+    echo $!
+    sleep 5
+    process=$(get_pid)
+    if [ -z "$process" ]; then
+        echo "[FAIL]"
+    else
+        echo $process > $pid_file
+        echo "[OK]"
+    fi
+}
+
+stop() {
+    local process=$(get_pid)
+    [ -z "$process" ] && { status; return 1; }
+
+    echo -n $"Shutting down ${process_name}:    "
+
+    kill $process
+    \rm -f $pid_file
+    RETVAL=$?
+    sleep 2
+    [ -z "$(get_pid)" ] && { echo OK; return $RETVAL; }
+    echo FAIL
+}
+
+status () {
+    local process=$(get_pid)
+    if [ -z "$process" ]; then
+        echo "Process $process_name is not running"
+    else
+        echo "Process $process_name is running with PID: $process"
+    fi
+}
+
+restart() {
+    stop
+    start
+}
+
+RETVAL=0
+
+# See how we were called.
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  status)
+        status
+        ;;
+  restart|force-reload)
+        restart
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|status|restart|force-reload}"
+        exit 1
+esac
+
+exit $?

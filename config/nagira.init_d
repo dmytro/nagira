@@ -66,7 +66,6 @@ get_pid () {
 
 
 start() {
-    set -x
     [ ! -z "$(get_pid)" ] && { status; return 1; }
     echo -n "Starting ${process_name}:    "
     load_defaults

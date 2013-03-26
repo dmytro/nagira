@@ -14,11 +14,14 @@ module Nagios
     #
     def initialize
       interval = [::DEFAULT[:ttl],1].max || nil
+      $use_inflight_status = false
+      $use_inflight_objects = false
       if interval && ::DEFAULT[:start_background_parser]
         puts "[#{Time.now}] Starting background parser thread with interval #{interval} sec"
         $bg = Thread.new {
           loop {
-            $nagios[:status].parse
+            $use_inflight_status ? $nagios[:status].parse : $nagios[:status_inflight].parse
+            $use_inflight_status = !$use_inflight_status
             sleep interval
           } #loop
         } # thread

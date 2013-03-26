@@ -77,6 +77,15 @@ class Nagira < Sinatra::Base
                                                             )
                   })
 
+    $nagios.merge!({ 
+                    status_inflight: Nagios::Status.new( Nagira.settings.status_cfg ||
+                                                         $nagios[:config].status_file
+                                                         ),
+                    objects_inflight: Nagios::Objects.new( Nagira.settings.objects_cfg || 
+                                                           $nagios[:config].object_cache_file
+                                                         )
+                  }) if ::DEFAULT[:start_background_parser]
+
     puts "[#{Time.now}] -- Starting Nagira application"
     puts "[#{Time.now}] -- Version #{Nagira::VERSION}"
     puts "[#{Time.now}] -- Running in #{Nagira.settings.environment} environment"
@@ -123,14 +132,18 @@ class Nagira < Sinatra::Base
         $nagios[:status].parse
         $nagios[:objects].parse
       end
+      $use_inflight_status  ? @status = $nagios[:status_inflight].status['hosts'] 
+                            : @status = $nagios[:status].status['hosts']
+      $use_inflight_objects ? @objects  = $nagios[:objects_inflight].objects 
+                            : @objects  = $nagios[:objects].objects
     else
       $nagios[:config].parse
       $nagios[:status].parse
       $nagios[:objects].parse
+      @status   = $nagios[:status].status['hosts']
+      @objects  = $nagios[:objects].objects
     end
 
-    @status   = $nagios[:status].status['hosts']
-    @objects  = $nagios[:objects].objects
 
 ##
 # TODO: This stuff breaks XML valid. Will have to wait.

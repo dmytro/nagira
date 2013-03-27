@@ -1,7 +1,8 @@
 ### v.0.2.6
-* Tue Mar 26 2013 -- Ivan Gusev
 
+* Tue Mar 26 2013 -- Ivan Gusev
   - Fix for long time parsing https://github.com/dmytro/nagira/issues/20
+
 ### v.0.2.5
 
 * Fri Mar 15 2013 -- Dmytro Kovalov

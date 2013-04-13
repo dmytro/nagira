@@ -8,6 +8,11 @@ gem 'activesupport', '>= 3.2.12'
 gem 'json', '1.7.7'
 gem 'rspec'
 gem 'sherlock_os', '~> 0.0.2'
+gem 'ruby-nagios', '~> 0.1.0'
+#
+# RSpec modules should be in all environments - to be able to test prod config
+# too
+# 
 gem 'rspec-core'
 gem 'rspec-expectations'
 gem 'rspec-mocks'

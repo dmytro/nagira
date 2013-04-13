@@ -94,6 +94,39 @@ class Nagira < Sinatra::Base
 
     nil
   end
+
+  ##
+  # @method get_status
+  #
+  # All hosts status. If no output modifier provided, outputs full hosttatus information for each host. Not including services information.
+  #
+  # Alias: get /_status is the same thing as get /_status/_hosts for ActiveResource compatibility.
+  #
+  # @!macro accepted
+  # @!macro state
+  # @!macro list
+  # @!macro full
+  #
+  # Support for (see API):
+  # - plural resources: N/A
+  # - object access by ID: N/A
+  
+  get /\/_status(\/_hosts)?/ do
+    @data = @status.dup
+#git stash show -p | git apply --reverse
+    case @output 
+    when :state
+      @data.each { |k,v| @data[k] = v['hoststatus'].slice("host_name", "current_state") }
+    when :list
+      @data = @data.keys
+    when :full
+      @data
+    else
+      @data.each { |k,v| @data[k] = v['hoststatus'] }
+    end
+
+    nil
+  end
   
   # Hoststatus for single host
   #
@@ -110,6 +143,7 @@ class Nagira < Sinatra::Base
 
   get "/_status/:hostname" do |hostname|
 
+
     hostname = hostname.to_i if hostname =~ /^\d+$/
     @data =  @status[hostname]['hoststatus'].dup if @status.has_key? hostname
     
@@ -120,34 +154,4 @@ class Nagira < Sinatra::Base
     nil
   end
 
-  ##
-  # @method get_status
-  #
-  # All hosts status. If no output modifier provided, outputs full hosttatus information for each host. Not including services information.
-  #
-  # @!macro accepted
-  # @!macro state
-  # @!macro list
-  # @!macro full
-  #
-  # Support for (see API):
-  # - plural resources: N/A
-  # - object access by ID: N/A
-  
-  get "/_status" do
-    @data = @status.dup
-
-    case @output 
-    when :state
-      @data.each { |k,v| @data[k] = v['hoststatus'].slice("host_name", "current_state") }
-    when :list
-      @data = @data.keys
-    when :full
-      @data
-    else
-      @data.each { |k,v| @data[k] = v['hoststatus'] }
-    end
-
-    nil
-  end
 end

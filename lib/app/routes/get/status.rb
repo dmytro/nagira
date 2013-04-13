@@ -98,9 +98,13 @@ class Nagira < Sinatra::Base
   ##
   # @method get_status
   #
-  # All hosts status. If no output modifier provided, outputs full hosttatus information for each host. Not including services information.
+  # Return all hosts status. 
   #
-  # Alias: get /_status is the same thing as get /_status/_hosts for ActiveResource compatibility.
+  # If no output modifier provided, outputs full hosttatus information for each host. Not including services information.
+  #
+  # Alias: get /_status is the same thing as get /_status/_hosts with
+  # ActiveResource compatibility, i.e. for */_hosts request Nagira
+  # returns array instead of hash.
   #
   # @!macro accepted
   # @!macro state
@@ -113,7 +117,7 @@ class Nagira < Sinatra::Base
   
   get /\/_status(\/_hosts)?/ do
     @data = @status.dup
-#git stash show -p | git apply --reverse
+
     case @output 
     when :state
       @data.each { |k,v| @data[k] = v['hoststatus'].slice("host_name", "current_state") }
@@ -123,7 +127,9 @@ class Nagira < Sinatra::Base
       @data
     else
       @data.each { |k,v| @data[k] = v['hoststatus'] }
+      @data =  @data.values if request.path_info =~ /\/_hosts/
     end
+
 
     nil
   end

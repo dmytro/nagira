@@ -16,7 +16,6 @@ gem 'ruby-nagios', '~> 0.1.0'
 gem 'rspec-core'
 gem 'rspec-expectations'
 gem 'rspec-mocks'
-gem 'ruby-nagios', ">= 0.1.0"
 gem 'sinatra', '>= 1.3.1'
 gem 'rake'
 gem 'rack-test'

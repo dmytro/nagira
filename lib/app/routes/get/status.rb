@@ -115,7 +115,8 @@ class Nagira < Sinatra::Base
   # - plural resources: N/A
   # - object access by ID: N/A
   
-  get /\/_status(\/_hosts)?/ do
+  get /^\/_status(\/_hosts)?/ do
+
     @data = @status.dup
 
     case @output 
@@ -127,9 +128,7 @@ class Nagira < Sinatra::Base
       @data
     else
       @data.each { |k,v| @data[k] = v['hoststatus'] }
-      @data =  @data.values if request.path_info =~ /\/_hosts/
     end
-
 
     nil
   end

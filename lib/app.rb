@@ -19,16 +19,16 @@
 # @!macro [new] service_name
 #   @param [String] :service_name Configured Nagios service for the host
 #
-# @!macro [new] accepted 
+# @!macro [new] accepted
 #
 #    <b>Accepted output type modifiers:</b>
 #
-# @!macro [new] list 
+# @!macro [new] list
 #
 #     - +/_list+ : Short list of available objects, depending on the
 #       current request context: hosts, services, etc.
 #
-# @!macro [new] state 
+# @!macro [new] state
 #
 #     - +/_state+ - Instead of full status information send only
 #       current state. For hosts up/down, for services OK, Warn,
@@ -36,10 +36,10 @@
 #
 # @!macro [new] full
 #
-#     - +/_full+ - Show full status information. When used in 
-#       /_status/_full call will display full hoststaus and 
+#     - +/_full+ - Show full status information. When used in
+#       /_status/_full call will display full hoststaus and
 #       servicestatus information for each host.
-#       
+#
 #
 
 
@@ -59,29 +59,29 @@ class Nagira < Sinatra::Base
   #
   # @method   startup_configuration
   # @overload before("Initial Config")
-  configure do 
-    
+  configure do
+
     $nagios = { }
     $nagios[:config]  = Nagios::Config.new Nagira.settings.nagios_cfg
     $nagios[:config].parse
 
-    $nagios.merge!({ 
-                    status: Nagios::Status.new(  Nagira.settings.status_cfg || 
+    $nagios.merge!({
+                    status: Nagios::Status.new(  Nagira.settings.status_cfg ||
                                                  $nagios[:config].status_file
                                                  ),
-                    objects: Nagios::Objects.new( Nagira.settings.objects_cfg || 
+                    objects: Nagios::Objects.new( Nagira.settings.objects_cfg ||
                                                   $nagios[:config].object_cache_file
                                                   ),
-                    commands: Nagios::ExternalCommands.new( Nagira.settings.command_file || 
+                    commands: Nagios::ExternalCommands.new( Nagira.settings.command_file ||
                                                             $nagios[:config].command_file
                                                             )
                   })
 
-    $nagios.merge!({ 
+    $nagios.merge!({
                     status_inflight: Nagios::Status.new( Nagira.settings.status_cfg ||
                                                          $nagios[:config].status_file
                                                          ),
-                    objects_inflight: Nagios::Objects.new( Nagira.settings.objects_cfg || 
+                    objects_inflight: Nagios::Objects.new( Nagira.settings.objects_cfg ||
                                                            $nagios[:config].object_cache_file
                                                          )
                   }) if ::DEFAULT[:start_background_parser]
@@ -123,7 +123,7 @@ class Nagira < Sinatra::Base
   # @method   parse_nagios_files
   # @overload before("Parse Nagios files")
 
-  before do 
+  before do
 
     if Nagira.settings.start_background_parser
       unless $bg.alive?
@@ -132,9 +132,9 @@ class Nagira < Sinatra::Base
         $nagios[:status].parse
         $nagios[:objects].parse
       end
-      $use_inflight_status  ? @status = $nagios[:status_inflight].status['hosts'] 
+      $use_inflight_status  ? @status = $nagios[:status_inflight].status['hosts']
                             : @status = $nagios[:status].status['hosts']
-      $use_inflight_objects ? @objects  = $nagios[:objects_inflight].objects 
+      $use_inflight_objects ? @objects  = $nagios[:objects_inflight].objects
                             : @objects  = $nagios[:objects].objects
     else
       $nagios[:config].parse
@@ -147,7 +147,7 @@ class Nagira < Sinatra::Base
 
 ##
 # TODO: This stuff breaks XML valid. Will have to wait.
-#    
+#
 #     idx = 0
 #     @status.keys.uniq.each do |hostname|
 #       @status[idx] = @status[hostname]
@@ -168,13 +168,13 @@ class Nagira < Sinatra::Base
   #
   # Clear values onf instance variables before start.
   #
-  before do 
+  before do
     @data = []
     @format = @output = nil
   end
 
   ##
-  # @method     strip_extensions  
+  # @method     strip_extensions
   # @overload before("detect format")
   #
   # Detect and strip output format extension
@@ -187,19 +187,25 @@ class Nagira < Sinatra::Base
   # \@format can be assigned one of the symbols: :xml, :json, :yaml.
   #
   # = Examples
-  # 
+  #
   #     GET /_objects              # => default format
   #     GET /_objects.json         # => :json
   #     GET /_status/_list.yaml    # => :yaml
-  # 
- before do 
+  #
+ before do
     request.path_info.sub!(/#{settings.format_extensions}/, '')
     @format = ($1 || settings.format).to_sym
     content_type "application/#{@format.to_s}"
   end
 
+  before do
+    request.path_info.sub!(/^(#{Nagira::AR_PREFIX})\//, '/')
+    @active_resource = $1 ? true : false
+  end
+
+
   ##
-  # @method   strip_output_type 
+  # @method   strip_output_type
   # @overload before('detect output mode')
   #
   # Detect output mode modifier
@@ -228,14 +234,14 @@ class Nagira < Sinatra::Base
   ##
   # @method find_jsonp_callback
   # @overload before('find callback name')
-  # 
+  #
   # Detects if request is using jQuery JSON-P and sets @callback
   # variable. @callback variable is used if after method and prepends
   # JSON data with callback function name.
   #
   # = Example
   #
-  # GET /_api?callback=jQuery12313123123 # @callback == jQuery12313123123
+  #      GET /_api?callback=jQuery12313123123 # @callback == jQuery12313123123
   #
   # JSONP support is based on the code from +sinatra/jsonp+ Gem
   # https://github.com/shtirlic/sinatra-jsonp.
@@ -261,11 +267,21 @@ class Nagira < Sinatra::Base
     # return unless request["REQUEST_METHOD"] == 'PUT'
     if ! @data || @data.empty?
       halt [404, {
-              :message => "Object not found or bad request", 
+              :message => "Object not found or bad request",
               :error => "HTTP::Notfound"
             }.send("to_#{@format}")
            ]
     end
+  end
+
+
+  ##
+  # @method   convert_to_active_resource
+  # @overload after("Return Array for ActiveResouce routes")
+  #
+  #
+  after do
+    @data = @data.values if @active_resource && @data.is_a?(Hash)
   end
 
   ##
@@ -289,13 +305,14 @@ class Nagira < Sinatra::Base
 
 
 
+
   ##
   # @method get_api
   # @overload get(/_api)
   #
-  # Provide information about API routes 
+  # Provide information about API routes
   #
-  get "/_api" do 
+  get "/_api" do
     @data = self.api
     nil
   end
@@ -305,12 +322,12 @@ class Nagira < Sinatra::Base
   # @method get_runtime_config
   # @overload get(/_runtime)
   #
-  # Print out nagira runtime configuration 
-  get "/_runtime" do 
+  # Print out nagira runtime configuration
+  get "/_runtime" do
     @data = {
       application: self.class,
       version: VERSION,
-      runtime: { 
+      runtime: {
         environment: Nagira.settings.environment,
         home: ENV['HOME'],
         user: ENV['LOGNAME'],
@@ -323,7 +340,7 @@ class Nagira < Sinatra::Base
   # @method get_slash
   # @overload get(/)
   #
-  # Returns application information: name, version, github repository. 
+  # Returns application information: name, version, github repository.
   get "/" do
     @data = {
       :application => self.class,

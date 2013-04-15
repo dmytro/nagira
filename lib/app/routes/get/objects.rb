@@ -14,10 +14,10 @@ class Nagira < Sinatra::Base
   # @macro list
   #
   get "/_objects" do
-    
+
     @data = begin
               @output == :list ? @objects.keys : @objects
-            rescue NoMethodError 
+            rescue NoMethodError
               nil
             end
     nil
@@ -31,16 +31,13 @@ class Nagira < Sinatra::Base
   #
   # @!macro accepted
   # @!macro list
-  # 
+  #
   #
   get "/_objects/:type" do |type|
     begin
-      if type.singularize == type
-        @data = @objects[type.to_sym]
-      else
-        @data = Array[@objects[type.to_sym]]
-      end
+      @data = @objects[type.to_sym]
       @data = @data.keys if @output == :list
+
     rescue NoMethodError
       nil
     end

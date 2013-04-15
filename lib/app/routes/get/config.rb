@@ -11,7 +11,9 @@ class Nagira < Sinatra::Base
   #         requested output type(XML, YAML or JSON).
   #
   #
+
   # @method get_config
+  # @overload get("/_config")
   #
   # Get Nagios configuration hash form parsing main Nagios
   # configuration file nagios.cfg

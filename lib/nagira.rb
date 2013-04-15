@@ -33,6 +33,12 @@ class Nagira < Sinatra::Base
 
   VERSION  = File.read(File.expand_path(File.dirname(__FILE__)) + '/../version.txt').strip
   GITHUB   = "http://dmytro.github.com/nagira/"
+  
+  ##
+  # When this prefix added to routes convert output to ActiveResource
+  # compatible format (basically Array instead of Hash).
+  #
+  AR_PREFIX = "/ar"
 
   # Get all routes that Nagira provides. 
   def api 

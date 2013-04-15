@@ -1,3 +1,12 @@
+### v.0.2.7
+
+* Mon Apr 15 2013 -- Dmytro Kovalov
+  - Extend ActiveResource support
+    - add prefix /ar 
+    - AR_PREFIX constant for the same
+    - covert all output ot Array if it's ActiveResource
+  - ActiveResource supportewd now in /_objects, /_status
+  
 ### v.0.2.6
 
 * Tue Mar 26 2013 -- Ivan Gusev

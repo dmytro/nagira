@@ -16,7 +16,7 @@ gem 'ruby-nagios', '~> 0.1.0'
 gem 'rspec-core'
 gem 'rspec-expectations'
 gem 'rspec-mocks'
-gem 'sinatra', '>= 1.3.1'
+gem 'sinatra', '~> 1.4.2'
 gem 'rake'
 gem 'rack-test'
 
@@ -29,6 +29,6 @@ platforms :mri do
     gem 'redcarpet' # redcarpet fails in jruby
 end
 #  gem 'redcarpet'
-gem 'sinatra-contrib', '>= 1.3.1'
+gem 'sinatra-contrib', '~> 1.4.0'
 gem 'yard', "~> 0.8"
 # end

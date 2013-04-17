@@ -1,3 +1,7 @@
+### v.0.2.8
+* Wed Apr 17 2013 -- Dmytro Kovalov
+  - Bugfix - prevent tracedumps on nonexisting hostnames
+
 ### v.0.2.7
 
 * Mon Apr 15 2013 -- Dmytro Kovalov

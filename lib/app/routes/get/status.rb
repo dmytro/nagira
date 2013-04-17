@@ -62,10 +62,12 @@ class Nagira < Sinatra::Base
 
 
     hostname = hostname.to_i if hostname =~ /^\d+$/
-    if @output == :state
-      @data = @status[hostname]['servicestatus'][service].slice("hostname", "service_description", "current_state")
-    else
-      @data = @status[hostname]['servicestatus'][service]
+    if @status && @status[hostname]
+      if @output == :state
+        @data = @status[hostname]['servicestatus'][service].slice("hostname", "service_description", "current_state")
+      else
+        @data = @status[hostname]['servicestatus'][service]
+      end
     end
     nil
   end
@@ -83,13 +85,15 @@ class Nagira < Sinatra::Base
   get "/_status/:hostname/_services" do |hostname|
 
     hostname = hostname.to_i if hostname =~ /^\d+$/
-    case @output
-    when :list
-      @data = @status[hostname]['servicestatus'].keys
-    when :state
-      @data = @status.each { |k,v| @data[k] = v.slice("host_name", "service_description", "current_state") }
-    else
-      @data = @status[hostname]['servicestatus']
+    if @status && @status[hostname]
+      case @output
+      when :list
+        @data = @status[hostname]['servicestatus'].keys
+      when :state
+        @data = @status.each { |k,v| @data[k] = v.slice("host_name", "service_description", "current_state") }
+      else
+        @data = @status[hostname]['servicestatus']
+      end
     end
 
     nil

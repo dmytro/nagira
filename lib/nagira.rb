@@ -18,9 +18,6 @@ require "app/routes/get/config"
 require "app/routes/get/objects"
 require "app/routes/get/status"
 
-require "app/routes/put"
-require "app/routes/put/status"
-
 
 #
 # environment file must go after default, some settings override

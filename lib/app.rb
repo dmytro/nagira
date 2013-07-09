@@ -358,3 +358,5 @@ class Nagira < Sinatra::Base
 
 end
 
+require "app/routes/put"
+require "app/routes/put/status"

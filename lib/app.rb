@@ -264,7 +264,6 @@ class Nagira < Sinatra::Base
   #
   #
   after do
-    # return unless request["REQUEST_METHOD"] == 'PUT'
     if ! @data || @data.empty?
       halt [404, {
               :message => "Object not found or bad request",
@@ -272,6 +271,17 @@ class Nagira < Sinatra::Base
             }.send("to_#{@format}")
            ]
     end
+  end
+
+  ##
+  # @method argument_error 
+  # @overload after("ArgumentError")
+  #
+  # Return 400 if result of PUT operation is not success.
+  #
+  after do 
+    return unless request.env["REQUEST_METHOD"] == 'PUT'
+    halt [400, @data.send("to_#{@format}") ] if ! @data.first[:status]
   end
 
 

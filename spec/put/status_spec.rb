@@ -26,7 +26,7 @@ describe Nagira do
   end
 
   before :each do 
-    %x{ cat /dev/null > #{nagios_cmd}}
+    File.delete nagios_cmd rescue nil
   end
 
   context "updates /_status/:host/_services" do
@@ -39,8 +39,10 @@ describe Nagira do
         last_response.should be_ok
       end
       
-      it "writes to nagios.cmd file" do 
+      it "writes to nagios.cmd file" do
+        File.should_not exist(nagios_cmd)
         put url, @good_data.to_json, content_type
+        File.should exist(nagios_cmd)
         File.read(nagios_cmd).should =~ /^\[\d+\] PROCESS_SERVICE_CHECK_RESULT;#{@host}/
       end
       

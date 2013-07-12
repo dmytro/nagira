@@ -11,7 +11,8 @@ gem 'activesupport', '>= 3.2.12'
 gem 'json', '1.7.7'
 gem 'rspec'
 gem 'sherlock_os', '~> 0.0.2'
-gem 'ruby-nagios', '~> 0.1.0'
+#gem 'ruby-nagios', '~> 0.1.0'
+gem 'ruby-nagios', github: "dmytro/ruby-nagios" # Until >= 0.1.0 released
 #
 # RSpec modules should be in all environments - to be able to test prod config
 # too

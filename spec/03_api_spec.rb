@@ -1,5 +1,8 @@
 require 'spec_helper'
 
+#
+# Test resonse to /_api GET
+#
 describe Nagira do 
 
   set :environment, ENV['RACK_ENV'] || :test

@@ -24,6 +24,7 @@ gem 'rack-test'
 
 # Dev
 # group :development do 
+gem 'rb-fsevent', '~> 0.9'
 gem "growl", "~> 1.0.3"
 gem "guard-brakeman", "~> 0.5.0"
 gem "guard-rspec", "~> 1.2.1"

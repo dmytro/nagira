@@ -1,16 +1,16 @@
 require 'spec_helper'
 require_relative 'support'
 
-describe Nagira do 
-  
+describe Nagira do
+
   set :environment, :test       #  This is potentially desctructive test, run only in  test mode
   include Rack::Test::Methods
-  def app 
+  def app
     @app ||= Nagira
   end
-  
+
   let (:content_type) {  {'Content-Type' => 'application/json'} }
-  let (:nagios_cmd )  { $nagios[:commands].path }
+
   before :all do
     get "/_status/_list.json"
 
@@ -18,22 +18,25 @@ describe Nagira do
     get "/_status/#{@host}/_services.json"
 
     @data = {
-      "service_description" => "Host Service", 
-      "return_code" => 0, 
-      "plugin_output" => "Plugin said: Bla" 
+      "service_description" => "Host Service",
+      "return_code" => 0,
+      "plugin_output" => "Plugin said: Bla"
     }
 
   end
 
-  before :each do 
+  before :each do
     File.delete nagios_cmd rescue nil
   end
+
+  let (:host) { @host }
 
   # ==================================================================
   # Tests
   #
 
   context "/_status/:host_name/_services" do
+    it { pending }
   end
 
 
@@ -42,37 +45,34 @@ describe Nagira do
     before do
       put url, { return_code: 0, plugin_output: "All OK"}.to_json, content_type
     end
-    
-    it_should_behave_like :json_response
-    it "writes status" do 
+
+    it_should_behave_like :put_status
+    it "writes status" do
       last_response.should be_ok
     end
   end
 
 
-  context "Updates /_status/:host/_services" do    
+  context "Updates /_status/:host/_services" do
     let (:url) { "/_status/#{@host}/_services" }
-    
+    before (:each) do
+      put url, @data.to_json, content_type
+    end
+
+
     context "valid host" do
 
-      it_should_behave_like :json_response
+      it_should_behave_like :put_status
 
       it "over-writes JSON hostname from URL" do
         pending
       end
-      
-      it "update with valid data" do 
+
+      it "update with valid data" do
         last_response.should be_ok
       end
-      
-      it "writes to nagios.cmd file" do
-        File.should_not exist(nagios_cmd)
-        put url, @data.to_json, content_type
-        File.should exist(nagios_cmd)
-        File.read(nagios_cmd).should =~ /^\[\d+\] PROCESS_SERVICE_CHECK_RESULT;#{@host}/
-      end
-      
-      it 'Fails with missing data' do 
+
+      it 'Fails with missing data' do
         @data.keys.each do |key|
           data = @data.dup
           data.delete key
@@ -81,21 +81,22 @@ describe Nagira do
         end
       end
 
-      it "ignores 404 for some services" do 
+      it "ignores 404 for some services" do
         pending
       end
 
     end                       # valid host
 
     context 'host does not exist' do
-      let (:url) { "/_status/some_nonexisting_host/_services" }
+      let (:host) { "some_nonexisting_host" }
+      let (:url) { "/_status/#{host}/_services" }
 
-      it_should_behave_like :json_response
+      it_should_behave_like :put_status
       it {  pending "Add validaton for host existence in Ruby-Nagios for PUT"}
 
-#       it "fails with valid data" do 
+#       it "fails with valid data" do
 #       end
-#       it 'fails with invalid data' do 
+#       it 'fails with invalid data' do
 #       end
 
     end                         # host does not exist

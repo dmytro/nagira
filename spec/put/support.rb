@@ -18,16 +18,24 @@ shared_examples_for :json_response do
   end
 end
 
-shared_examples_for :nagios_cmd_file do
-  before :each do 
-    File.delete nagios_cmd rescue nil
+shared_examples_for :write_to_nagios_cmd_file do
+  before (:all) do 
+      File.delete $nagios[:commands].path rescue nil
   end
+  let (:cmd) { $nagios[:commands].path }
   
   it "writes to nagios.cmd file" do
-    File.should_not exist(nagios_cmd)
-    put url, @data.to_json, content_type
-    File.should exist(nagios_cmd)
-    File.read(nagios_cmd).should =~ /^\[\d+\] PROCESS_SERVICE_CHECK_RESULT;#{@host}/
+    File.should exist(cmd)
+    File.read(cmd).should =~ /^\[\d+\] PROCESS_SERVICE_CHECK_RESULT;#{host}/
   end
-  
+
+  after (:each) do 
+      File.delete $nagios[:commands].path rescue nil
+  end
+end
+
+
+shared_examples_for :put_status do 
+      it_should_behave_like :json_response
+      it_should_behave_like :write_to_nagios_cmd_file
 end

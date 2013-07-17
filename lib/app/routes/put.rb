@@ -18,6 +18,7 @@ class Nagira < Sinatra::Base
       # Make sure we always return an Array
       @input = [@input] if @input.is_a? Hash
     end
+    @input
   end
 
   # Define helpers for put methods

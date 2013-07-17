@@ -254,6 +254,7 @@ class Nagira < Sinatra::Base
     end
   end
 
+
   ##
   # @method   object_not_found
   # @overload after("Object not found or bad request")
@@ -273,6 +274,7 @@ class Nagira < Sinatra::Base
     end
   end
 
+
   ##
   # @method argument_error 
   # @overload after("ArgumentError")
@@ -280,7 +282,7 @@ class Nagira < Sinatra::Base
   # Return 400 if result of PUT operation is not success.
   #
   after do 
-    return unless request.env["REQUEST_METHOD"] == 'PUT'
+    return unless request.put?
     halt [400, @data.send("to_#{@format}") ] if ! @data.first[:status]
   end
 
@@ -368,5 +370,6 @@ class Nagira < Sinatra::Base
 
 end
 
-require "app/routes/put"
 require "app/routes/put/status"
+require "app/routes/put/host"
+require "app/routes/put"

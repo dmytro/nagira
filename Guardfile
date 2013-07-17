@@ -3,12 +3,19 @@
 
 guard 'rspec', :version => 2 do
   watch(%r{^spec/.+_spec\.rb$})
+  watch(%r{^spec/(.*)/.+_spec\.rb$})
+
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
 
   # Rails example
   watch(%r{^lib/(.+)\.rb$})                           { |m| "spec/#{m[1]}_spec.rb" }
+
+  watch(%r{^lib/app.rb$})                             { "spec" }
+  watch(%r{^lib/app/routes/put.rb$})                  { |m| "spec/put" }
   watch(%r{^lib/app/routes/(.+)/(.+)\.rb$})           { |m| "spec/#{m[1]}/#{m[2]}_spec.rb" }
+
+  watch(%r{^spec/(.+)/support\.rb$})                  { |m| "spec/#{m[1]}" }
   watch(%r{^spec/support/(.+)\.rb$})                  { "spec" }
 
 end

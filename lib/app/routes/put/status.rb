@@ -1,51 +1,8 @@
+#
+# PUT method routes for services status.
+#
 class Nagira < Sinatra::Base
 
-
-  # @method put_status
-  # @overload put("/_status")
-  #
-  # Submit JSON Hash for multiple services,  on multiple hosts.
-  put "/_status" do
-    "TODO: Not implemented"
-  end
-
-  # @method put_status_host_name
-  # @overload put("/_status/:host_name")
-  #
-  # Update hoststatus information only for the given host. URL
-  # hostname always override hostname given in the JSON file.
-  #
-  # == Example
-  #
-  #        $ curl -i -H "Accept: application/json" -d @host.json -X
-  #            PUT http://localhost:4567/_status/svaroh
-  #
-  #          => {"status": true, "object": [{"data": {"host_name":"svaroh",
-  #          "status_code": "0", "plugin_output": "ping OK", "action":
-  #          "PROCESS_HOST_CHECK_RESULT"}, "result":true, "messages": []}]}
-  #
-  # == Example JSON
-  #
-  #     {
-  #      "status_code":"0",
-  #      "plugin_output" : "ping OK"
-  #     }                               
-  put "/_status/:host_name" do
-    @data = update_host_status @input.first.merge({
-                                                    'host_name' => params['host_name']
-                                                  })
-    nil
-  end
-
-  # Same as /_status/:host_name (Not implemented)
-  #
-  # @method put__host_status_host_name
-  # @overload put("/_host_status/:host_name")
-  #
-  put "/_host_status/:host_name" do 
-    "Not implemented: TODO"
-  end
-  
   # @method put_status_host_name_services
   # @overload put("/_status/:host_name/_services")
   #
@@ -112,7 +69,8 @@ class Nagira < Sinatra::Base
   
   # Update single service on a single host by JSON data.
   put "/_status/:host_name/_services/:service_description" do
-    @data = update_service_status \
+    @data = []
+    @data[0] = update_service_status \
     @input.first.merge({ 
                          'service_description' => params['service_description'],
                          'host_name' => params['host_name']
@@ -131,7 +89,6 @@ class Nagira < Sinatra::Base
   #        -X PUT http://localhost:4567/_status/viy/_services/PING/_return_code/0/_plugin_output/OK
   #       # => ok
   put "/_status/:host_name/_services/:service_description/_return_code/:return_code/_plugin_output/:plugin_output" do 
-
     @data = update_service_status params
     nil
   end

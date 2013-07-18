@@ -41,50 +41,30 @@ describe Nagira do
   # Tests
   #
 
-#   context "/_status/:host_name/_services" do
-#     let (:url) { "/_status/#{host}/_services" }
-#     before do
-#       put url, [@input, @input2].to_json, content_type
-#     end
-
-#     it {  puts last_response.body }
-#     it_should_behave_like :put_status
-#   end
-
-
-  context "/_status/:host_name/_services/:service_description" do
-    let(:url) { "/_status/#{@host}/_services/PING" }
-    before do
-      put url, [{ return_code: 0, plugin_output: "All OK"}].to_json, content_type
-    end
-
-    it "writes status" do
-      last_response.should be_ok
-    end
-    it_should_behave_like :put_status
-
-  end
-
-
-  context "Updates /_status/:host/_services" do
-    let (:url) { "/_status/#{@host}/_services" }
-    before (:each) do
-      put url, @input.to_json, content_type
-    end
-
-
-    context "valid host" do
-
-      it_should_behave_like :put_status
-
-      it "over-writes JSON hostname from URL" do
-        pending
+  context "/_status/:host/_services" do
+    
+    context :single do 
+      
+      let (:url) { "/_status/#{host}/_services" }
+      before (:each) do
+        put url, @input.to_json, content_type
       end
+      
+      it_should_behave_like :put_status
+      
+      it "URL param hostname is higher priority than JSON" do
+        pending
+#         put url, @input.merge({ "host_name" => "fake_host"}).to_json, content_type
 
+#         out = JSON.parse last_response.body 
+# pp out
+#         out["object"]["data"]["host_name"].should eq host
+      end
+      
       it "update with valid data" do
         last_response.should be_ok
       end
-
+      
       it 'Fails with missing data' do
         @input.keys.each do |key|
           data = @input.dup
@@ -93,25 +73,59 @@ describe Nagira do
           last_response.status.should be 400
         end
       end
-
-      it "ignores 404 for some services" do
-        pending
-      end
-
-    end                       # valid host
-
-    context 'host does not exist' do
-      let (:host) { "some_nonexisting_host" }
+    end
+    
+    context :multiple do
       let (:url) { "/_status/#{host}/_services" }
-
+      before do
+        put url, [@input, @input2].to_json, content_type
+      end
+      
+      let (:out) { JSON.parse last_response.body }
+      
       it_should_behave_like :put_status
-      it {  pending "Add validaton for host existence in Ruby-Nagios for PUT"}
+      
+      context "data check" do 
+        subject {  out["object"] }
+        
+        it {  should be_a_kind_of Array }
+        it {  subject.size.should eq 2 }
+      end
+    end
+  end
+  
+  context "/_status/:host_name/_services/:service_description" do
+    let(:url) { "/_status/#{host}/_services/PING" }
+    before do
+      put url, [{ return_code: 0, plugin_output: "All OK"}].to_json, content_type
+    end
+    
+    it "writes status" do
+      last_response.should be_ok
+    end
+    it_should_behave_like :put_status
 
-#       it "fails with valid data" do
-#       end
-#       it 'fails with invalid data' do
-#       end
+  end
 
-    end                         # host does not exist
-  end                           # update /_hosts
-end
+
+
+#   context 'host does not exist' do
+#     let (:host) { "some_nonexisting_host" }
+#     let (:url) { "/_status/#{host}/_services" }
+
+#     it_should_behave_like :put_status
+#     it {  pending "Add validaton for host existence in Ruby-Nagios for PUT"}
+
+#     #       it "fails with valid data" do
+#     #       end
+#     #       it 'fails with invalid data' do
+#     #       end
+
+#   end                         # host does not exist
+
+
+  context "/_status/:host_name/_services/:service_description/_return_code/:return_code/_plugin_output/:plugin_output" do
+    it { pending "To be depreciated "}
+  end
+
+end                           # update /_hosts

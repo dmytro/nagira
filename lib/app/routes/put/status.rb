@@ -62,7 +62,7 @@ class Nagira < Sinatra::Base
                                                     'host_name' => params['host_name']
                                                   })
                                       )
-      data << update[:object]
+      data << update[:object].first
       result &&= update[:result]
     end
     @data = { result: result, object: data }

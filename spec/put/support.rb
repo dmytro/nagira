@@ -7,6 +7,29 @@ shared_examples_for :json_response do
   it { should be_a_kind_of Hash }
   it { should have_key "result" }
   it { should have_key "object" }
+
+  let (:obj) {  subject["object"] }
+
+  context :object do
+    # subject { obj }
+    
+    it { obj.should be_a_kind_of Array }
+    it { 
+      obj.each { |x| x.should be_a_kind_of Hash }
+    }
+
+    context :data_keys do
+      
+      it do
+        obj.each do |x| 
+          x.should have_key "data"
+          x.should have_key "result"
+          x.should have_key "messages"
+          [true, false].should include x["result"]
+        end
+      end
+    end
+  end
 end
 
 shared_examples_for :json_success_response do

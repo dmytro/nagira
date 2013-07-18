@@ -1,21 +1,21 @@
 shared_examples_for :json_response do 
-  
-  context "data structure" do
-
-    before (:each) do 
-      @ret = JSON.parse(last_response.body)
-    end
-    
-    subject { @ret }
-
-    it "should be an Array" do 
-      should be_a_kind_of Array
-    end
-
-    it { subject.first.should have_key "status" }
-    it { subject.first.should have_key "object" }
-
+  before (:each) do 
+    @ret = JSON.parse(last_response.body)
   end
+  subject { @ret }
+  
+  it { should be_a_kind_of Hash }
+  it { should have_key "result" }
+  it { should have_key "object" }
+end
+
+shared_examples_for :json_success_response do
+  before (:each) do 
+    @ret = JSON.parse(last_response.body)
+  end
+  subject { @ret }
+  
+  #it {  subject.}
 end
 
 shared_examples_for :write_to_nagios_cmd_file do

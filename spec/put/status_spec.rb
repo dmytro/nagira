@@ -17,10 +17,16 @@ describe Nagira do
     @host = JSON.parse(last_response.body).first
     get "/_status/#{@host}/_services.json"
 
-    @data = {
+    @input = {
       "service_description" => "Host Service",
       "return_code" => 0,
       "plugin_output" => "Plugin said: Bla"
+    }
+
+    @input2 = {
+      "service_description" => "Another Host Service",
+      "return_code" => 2,
+      "plugin_output" => "Plugin said: Bla and Bla"
     }
 
   end
@@ -35,28 +41,35 @@ describe Nagira do
   # Tests
   #
 
-  context "/_status/:host_name/_services" do
-    it { pending }
-  end
+#   context "/_status/:host_name/_services" do
+#     let (:url) { "/_status/#{host}/_services" }
+#     before do
+#       put url, [@input, @input2].to_json, content_type
+#     end
+
+#     it {  puts last_response.body }
+#     it_should_behave_like :put_status
+#   end
 
 
   context "/_status/:host_name/_services/:service_description" do
     let(:url) { "/_status/#{@host}/_services/PING" }
     before do
-      put url, { return_code: 0, plugin_output: "All OK"}.to_json, content_type
+      put url, [{ return_code: 0, plugin_output: "All OK"}].to_json, content_type
     end
 
-    it_should_behave_like :put_status
     it "writes status" do
       last_response.should be_ok
     end
+    it_should_behave_like :put_status
+
   end
 
 
   context "Updates /_status/:host/_services" do
     let (:url) { "/_status/#{@host}/_services" }
     before (:each) do
-      put url, @data.to_json, content_type
+      put url, @input.to_json, content_type
     end
 
 
@@ -73,8 +86,8 @@ describe Nagira do
       end
 
       it 'Fails with missing data' do
-        @data.keys.each do |key|
-          data = @data.dup
+        @input.keys.each do |key|
+          data = @input.dup
           data.delete key
           put url, data.to_json, content_type
           last_response.status.should be 400

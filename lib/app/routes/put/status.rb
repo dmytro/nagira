@@ -16,16 +16,16 @@ class Nagira < Sinatra::Base
   #   $ curl -i -H "Accept: application/json" -d @dat_m.json -X PUT
   #   http://localhost:4567/_status/svaroh/_services
   #
-  #     [{"status":true, "object":[{"data":{"host_name":"svaroh",
-  #     "service_description":"PING", "return_code":"0",
-  #     "plugin_output":"OK",
-  #     "action":"PROCESS_SERVICE_CHECK_RESULT"}, "result":true,
-  #     "messages":[]}]}, {"status":true,
-  #     "object":[{"data":{"host_name":"svaroh",
-  #     "service_description":"Apache", "return_code":"r20",
-  #     "plugin_output":"cwfailedOK",
-  #     "action":"PROCESS_SERVICE_CHECK_RESULT"}, "result":true,
-  #     "messages":[]}]}]%
+  #     {"result"=>true,
+  #      "object"=>
+  #       [{"data"=>
+  #          {"return_code"=>0,
+  #           "plugin_output"=>"All OK",
+  #           "service_description"=>"PING",
+  #           "host_name"=>"archive",
+  #           "action"=>"PROCESS_SERVICE_CHECK_RESULT"},
+  #         "result"=>true,
+  #         "messages"=>[]}]}
   #
   # == Example JSON for submit
   #
@@ -53,24 +53,26 @@ class Nagira < Sinatra::Base
   #
   put "/_status/:host_name/_services" do
 
-    data = []
+    data, result = [], true
+
     @input.each do |datum|
       # FIXME - this calls update for each service. Should be batching them together
-      data << update_service_status(
-                                    datum.merge({ 
-                                                  'host_name' => params['host_name']
-                                                })
-                                    )
+      update = update_service_status(
+                                      datum.merge({ 
+                                                    'host_name' => params['host_name']
+                                                  })
+                                      )
+      data << update[:object]
+      result &&= update[:result]
     end
-    @data = data
+    @data = { result: result, object: data }
     nil
 
   end
   
   # Update single service on a single host by JSON data.
   put "/_status/:host_name/_services/:service_description" do
-    @data = []
-    @data[0] = update_service_status \
+    @data = update_service_status \
     @input.first.merge({ 
                          'service_description' => params['service_description'],
                          'host_name' => params['host_name']

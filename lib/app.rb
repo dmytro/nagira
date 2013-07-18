@@ -283,7 +283,7 @@ class Nagira < Sinatra::Base
   #
   after do 
     return unless request.put?
-    halt [400, @data.send("to_#{@format}") ] if ! @data.first[:status]
+    halt [400, @data.send("to_#{@format}") ] if ! @data[:result]
   end
 
 

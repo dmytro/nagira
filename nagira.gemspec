@@ -3,6 +3,7 @@ require File.join([File.dirname(__FILE__),'lib','nagira.rb'])
 spec = Gem::Specification.new do |s| 
   s.name = 'nagira'
   s.version = Nagira::VERSION
+  s.license = 'MIT'
   s.author = 'Dmytro Kovalov'
   s.email = 'dmytro.kovalov@gmail.com'
   s.homepage = 'http://dmytro.github.com/nagira'

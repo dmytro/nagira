@@ -12,16 +12,11 @@ spec = Gem::Specification.new do |s|
   s.description =<<-EOF
 
 Nagira -- Nagios RESTful API
-============================
 
-Description
-------------
-
-Light-weight web services RESTful API for reading and changing
-status of Nagios objects: host status service status and for
-read-only access to: Nagios objects hosts services, contacts,
-groups of hosts services contacts escalations, etc., to Nagios
-server configuration and to Nagios runtime environment
+Web services API for Nagios: host status (R/W), service status (R/W);
+read-only access to configuration objects: hosts, services, contacts,
+escalations; read-only Nagios server configuration and Nagios runtime
+environment
 
 EOF
 

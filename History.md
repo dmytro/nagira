@@ -1,5 +1,6 @@
-### v.0.2.10
+### v.0.2.10, v.0.2.11
 * Fri Jul 19 2013 -- Dmytro Kovalov
+  - Gem versions fixes in gemspec, use gemspec in Gemfile.
   - JSON 1.7.7 dependency conflict fix (#25)
   - Upgrade to latest ruby-nagios 0.2.0
 * Fri Jul 12 2013 -- Dmytro Kovalov

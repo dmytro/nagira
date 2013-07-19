@@ -38,7 +38,6 @@ shared_examples_for :json_success_response do
   end
   subject { @ret }
   
-  #it {  subject.}
 end
 
 shared_examples_for :write_to_nagios_cmd_file do
@@ -49,7 +48,7 @@ shared_examples_for :write_to_nagios_cmd_file do
   
   it "writes to nagios.cmd file" do
     File.should exist(cmd)
-    File.read(cmd).should =~ /^\[\d+\] PROCESS_SERVICE_CHECK_RESULT;#{host}/
+    File.read(cmd).should =~ /^\[\d+\] PROCESS_(SERVICE|HOST)_CHECK_RESULT;#{host}/
   end
 
   after (:each) do 

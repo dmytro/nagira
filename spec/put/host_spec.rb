@@ -1,4 +1,6 @@
 require 'spec_helper'
+require_relative 'support'
+require 'pp'
 
 describe Nagira do 
   
@@ -8,45 +10,50 @@ describe Nagira do
     @app ||= Nagira
   end
 
-  let (:content_type) {  {'Content-Type' => 'application/json'} }
-
   before :all do 
-    @data = {
+    get "/_status/_list.json"
+    @host = JSON.parse(last_response.body).first
+  end
+
+  let (:content_type) {  {'Content-Type' => 'application/json'} }
+  let (:host) { @host }
+  let (:input) { 
+    {
       "status_code" => 0, 
       "plugin_output" => "Plugin said: Bla" 
     }
+  }
 
-    get "/_status/_list.json"
-    @host = JSON.parse(last_response.body).first
+  # --------------------------------------------
+  # Tests
+  #
 
-  end
+  context "/_status" do
+    it { pending "Not implemented" }
+  end                           # ----------- "/_status" do
 
-  context "updates /_status/:host" do 
-    let (:url) { "/_status/#{@host}" }
-    
-    context "single check" do
-      
-      it "with no hostname" do
-        pending
-#         put url, @data, content_type
+  context "/_status/:host_name" do
+    let (:url) { "/_status/#{host}"}
 
-#         pp [url, @data, last_response.body]
-#         last_response.should be_ok
-      end
-
-      it "with hostname" do
-        put url, @data, content_type
-        pp last_response.body
-        last_response.should_not be_ok
-      end
-
-
+    before (:each) do 
+      put url, input.to_json, content_type
     end
 
-    it "Multiple checks" do
-      pending
+    it_should_behave_like :put_status
+
+    it "should fail with missing data" do
+      input.keys.each do |key|
+        (inp = input.dup).delete key
+        put url, inp.to_json, content_type
+        last_response.status.should eq 400
+      end
     end
 
-  end                           #  /_status/:host
+    context "/_host_status/:host_name" do
+      it { pending "Not implemented" }
+    end                         # ----------- "/_host_status/:host_name" 
+
+
+  end                           #  ----------- /_status/:host
 
 end

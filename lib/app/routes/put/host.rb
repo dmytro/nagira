@@ -22,7 +22,7 @@ class Nagira < Sinatra::Base
   #        $ curl -i -H "Accept: application/json" -d @host.json -X
   #            PUT http://localhost:4567/_status/svaroh
   #
-  #          => {"status": true, "object": [{"data": {"host_name":"svaroh",
+  #          => {"result": true, "object": [{"data": {"host_name":"svaroh",
   #          "status_code": "0", "plugin_output": "ping OK", "action":
   #          "PROCESS_HOST_CHECK_RESULT"}, "result":true, "messages": []}]}
   #

@@ -7,3 +7,4 @@ doc
 tmp
 .rbx
 *.gem
+.bundle

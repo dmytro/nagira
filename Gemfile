@@ -8,7 +8,7 @@ gem 'sinatra-contrib', '~> 1.3.2'
 
 gem 'activemodel', '>= 3.2.12'
 gem 'activesupport', '>= 3.2.12'
-gem 'json', '1.7.7'
+gem 'json', '>= 1.7.7'
 gem 'rspec'
 gem 'sherlock_os', '~> 0.0.2'
 #gem 'ruby-nagios', '~> 0.1.0'

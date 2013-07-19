@@ -1,3 +1,15 @@
+### v.0.2.10
+* Fri Jul 19 2013 -- Dmytro Kovalov
+  - JSON 1.7.7 dependency conflict fix (#25)
+  - Upgrade to latest ruby-nagios 0.2.0
+* Fri Jul 12 2013 -- Dmytro Kovalov
+  - rspec tests
+      - PUT method specs for /_status _services
+      - JSON structure specs for PUT methods
+      - return 400 if PUT not success
+      - specs for nagios.cmd writes
+### v.0.2.9
+  - Bugfix - library loading order change, for @format processing in PUT routes.
 ### v.0.2.8
 * Wed Apr 17 2013 -- Dmytro Kovalov
   - Bugfix - prevent tracedumps on nonexisting hostnames

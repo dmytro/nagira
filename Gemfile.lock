@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    nagira (0.2.10)
-      activemodel (~> 3.2.12)
-      activesupport (~> 3.2.12)
+    nagira (0.2.11)
+      activemodel (~> 3.2.13)
+      activesupport (~> 3.2.13)
       json (>= 1.7.7)
       rake
       rspec

@@ -1,5 +1,5 @@
 # Ensure we require the local version and not one we might have installed already
-require File.join([File.dirname(__FILE__),'lib','nagira.rb'])
+require File.join([File.dirname(__FILE__),'lib','nagira','version.rb'])
 spec = Gem::Specification.new do |s| 
   s.name = 'nagira'
   s.version = Nagira::VERSION
@@ -30,8 +30,8 @@ EOF
   s.default_executable = 'nagira'
   # GEMS
   
-  s.add_dependency 'activemodel', '~> 3.2.12'
-  s.add_dependency 'activesupport', '~> 3.2.12'
+  s.add_dependency 'activemodel', '~> 3.2.13'
+  s.add_dependency 'activesupport', '~> 3.2.13'
   s.add_dependency 'json', '>= 1.7.7'
   s.add_dependency 'rspec'
   s.add_dependency 'sherlock_os', '~> 0.0.2'

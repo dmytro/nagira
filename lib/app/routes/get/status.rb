@@ -119,7 +119,7 @@ class Nagira < Sinatra::Base
   # - plural resources: N/A
   # - object access by ID: N/A
   
-  get /^\/_status(\/_hosts)?/ do
+  get /^\/_status(\/_hosts)?$/ do
 
     @data = @status.dup
 

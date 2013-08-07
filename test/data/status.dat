@@ -1650,3 +1650,30 @@ contactstatus {
 	service_notifications_enabled=1
 	}
 
+servicecomment {
+	host_name=archive
+	service_description=Disk space
+	entry_type=4
+	comment_id=38
+	source=0
+	persistent=0
+	entry_time=1373457035
+	expires=0
+	expire_time=0
+	author=dmytro
+	comment_data=Need to verify what to delete.
+    }
+
+hostcomment {
+	host_name=tv
+	entry_type=1
+	comment_id=40
+	source=1
+	persistent=1
+	entry_time=1375778132
+	expires=0
+	expire_time=0
+	author=dmytro
+	comment_data=Testing Host Comment --dk
+	}
+

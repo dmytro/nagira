@@ -1,3 +1,12 @@
+### v.0.2.12
+* Thr Aug 08 2013 -- Dmytro Kovalov
+  - Implementation for GET comments endpoints:
+    - /_status/:hostname/_services
+    - /_status/:hostname/_hostcomments
+    - /_status/:hostname/_servicecomments
+* July, Aug 2013
+  - RSpec tests
+    - GET endpoints checks
 ### v.0.2.10, v.0.2.11
 * Fri Jul 19 2013 -- Dmytro Kovalov
   - Gem versions fixes in gemspec, use gemspec in Gemfile.

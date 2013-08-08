@@ -75,7 +75,13 @@ class Nagira < Sinatra::Base
   # @method get_status_hostname_services
   # @!macro hostname
   #
-  # All services,hostcomments or servicecomments for single host.
+  # Endpoints: 
+  # -  GET /_status/:hostname/_services
+  # -  GET /_status/:hostname/_hostcomments
+  # -  GET /_status/:hostname/_servicecomments
+  #
+  # Read +services+, +hostcomments+ or +servicecomments+ for single
+  # host. 
   #
   # @!macro accepted
   # @!macro state
@@ -110,7 +116,10 @@ class Nagira < Sinatra::Base
   #
   # Return all hosts status. 
   #
-  # If no output modifier provided, outputs full hosttatus information for each host. Not including services information.
+  # If no output modifier provided, outputs full hosttatus information
+  # for each host. Not including services information. When +_full+
+  # modifier is provided data include hoststatus, servicestatus and
+  # all comments (servicecomments and hostcomments) for hosts.
   #
   # Alias: get /_status is the same thing as get /_status/_hosts with
   # ActiveResource compatibility, i.e. for */_hosts request Nagira

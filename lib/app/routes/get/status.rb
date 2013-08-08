@@ -60,7 +60,6 @@ class Nagira < Sinatra::Base
   #
   get "/_status/:hostname/_services/:service_name" do |hostname,service|
 
-
     hostname = hostname.to_i if hostname =~ /^\d+$/
     if @status && @status[hostname]
       if @output == :state
@@ -76,23 +75,30 @@ class Nagira < Sinatra::Base
   # @method get_status_hostname_services
   # @!macro hostname
   #
-  # All services for single host.
+  # All services,hostcomments or servicecomments for single host.
   #
   # @!macro accepted
   # @!macro state
   # @!macro list
   # @!macro full
-  get "/_status/:hostname/_services" do |hostname|
+  get %r{^/_status/(?<hostname>[\w\-\.]+)/_(?<service>(services|hostcomments|servicecomments))$} do |hostname,service|
 
     hostname = hostname.to_i if hostname =~ /^\d+$/
+    key = case service
+          when 'services' 
+            'servicestatus'
+          else
+            service
+          end
+            
     if @status && @status[hostname]
       case @output
       when :list
-        @data = @status[hostname]['servicestatus'].keys
+        @data = @status[hostname][key].keys
       when :state
         @data = @status.each { |k,v| @data[k] = v.slice("host_name", "service_description", "current_state") }
       else
-        @data = @status[hostname]['servicestatus']
+        @data = @status[hostname][key]
       end
     end
 

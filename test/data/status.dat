@@ -1665,7 +1665,7 @@ servicecomment {
     }
 
 hostcomment {
-	host_name=tv
+	host_name=archive
 	entry_type=1
 	comment_id=40
 	source=1

@@ -1,3 +1,6 @@
+### 
+* Mon Aug 12 2013 -- Dmytro Kovalov
+  - rake ask for collecting debug information (issues #2)
 ### v.0.2.12
 * Thr Aug 08 2013 -- Dmytro Kovalov
   - Implementation for GET comments endpoints:

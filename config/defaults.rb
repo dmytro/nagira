@@ -53,7 +53,29 @@ DEFAULT = {
   # intervals slightly shorter than `ttl` to ensure that data are
   # always updated. So, `ttl` should be larger than 1.
   #
-  start_background_parser: (ENV['NAGIRA_BG_PARSING'] == '1')
+  start_background_parser: (ENV['NAGIRA_BG_PARSING'] == '1'),
+
+  ##
+  # By default hostname regular expression accepts alpha-numerics,
+  # dashes and dots, as specified by http://tools.ietf.org/html/rfc952
+  # for hostnames. Extended to accept dots in the middle for FQHN's.
+  # 
+  #
+  # - default: '\w([\w\-\.]+)?\w'
+  # - simple hostname: '\w([\w\-]+)?\w'
+  # - allow space in hostname: '\w([\w\-\.(%20)]+)?\w' 
+  #
+  # Explanation regarding spaces: 
+  # ---------------------------------
+  #
+  # Nagios works OK with hostnames with spaces. This is against RFC's
+  # and can't really used for real hosts, but for aggregated checks
+  # (like cluster name for example), you might want to consider this
+  # option.
+
+  hostname_regex: ENV['NAGIOS_HOST_CUSTOM_REGEX'] || '\w([\w\-\.]+)?\w'
+
+
 }
 
 require 'sinatra'

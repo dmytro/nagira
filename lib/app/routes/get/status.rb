@@ -87,7 +87,7 @@ class Nagira < Sinatra::Base
   # @!macro state
   # @!macro list
   # @!macro full
-  get %r{^/_status/(?<hostname>[\w\-\.]+)/_(?<service>(services|hostcomments|servicecomments))$} do |hostname,service|
+  get %r{^/_status/(?<hostname>#{hostname_regex})/_(?<service>(services|hostcomments|servicecomments))$} do |hostname,service|
 
     hostname = hostname.to_i if hostname =~ /^\d+$/
     key = case service
@@ -156,6 +156,10 @@ class Nagira < Sinatra::Base
   #
   # @method get_status_hostname
   #
+  # Endpoint
+  #
+  # - get "/_status/:hostname"
+  #
   # @!macro hostname
   #
   # @!macro accepted
@@ -165,7 +169,7 @@ class Nagira < Sinatra::Base
   # - plural resources: N/A
   # - object access by ID: NO (TODO)
 
-  get "/_status/:hostname" do |hostname|
+  get %r{^/_status/(?<hostname>#{hostname_regex})$} do |hostname|
 
 
     hostname = hostname.to_i if hostname =~ /^\d+$/

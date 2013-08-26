@@ -1,4 +1,8 @@
 require 'spec_helper'
+#
+# Specs for returned data for /_status/* endpoints.
+#
+# Endpoint checks (i.e. check HTTP success) are in  endpoints_spec.rb
 
 describe Nagira do 
   

@@ -64,3 +64,28 @@
 # not need to change.
 #
 # NAGIOS_CFG_FILE=/etc/nagios/nagios.cfg
+#
+# ----------------------
+# Custom regex for hostnames
+# ----------------------
+#
+# By default hostname regular expression accepts alpha-numerics,
+# dashes and dots, as specified by http://tools.ietf.org/html/rfc952
+# for hostnames. Extended to accept dots in the middle for FQHN's.
+#
+# Possible settings:
+#
+# - default: '\w([\w\-\.]+)?\w' FQHN
+# - short hostname: '\w([\w\-]+)?\w'
+# - FQHN allow space in hostname: '\w([\w\-\.(%20)]+)?\w' 
+#
+# Explanation regarding spaces: 
+# ---------------------------------
+#
+# Nagios works OK with hostnames with spaces. This is against RFC's
+# and can't really used for real hosts, but for aggregated checks
+# (like cluster name for example), you might want to consider this
+# option.
+# 
+# NAGIOS_HOST_CUSTOM_REGEX='\w([\w\-\.]+)?\w'
+#

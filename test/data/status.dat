@@ -113,6 +113,63 @@ hoststatus {
 	}
 
 hoststatus {
+	host_name=host with space
+	modified_attributes=0
+	check_command=check-host-alive
+	check_period=
+	notification_period=_24x7
+	check_interval=5.000000
+	retry_interval=1.000000
+	event_handler=
+	has_been_checked=1
+	should_be_scheduled=1
+	check_execution_time=3.011
+	check_latency=0.071
+	check_type=0
+	current_state=1
+	last_hard_state=1
+	last_event_id=19699
+	current_event_id=19702
+	current_problem_id=8664
+	last_problem_id=8611
+	plugin_output=CRITICAL - Host Unreachable (192.168.2.72)
+	long_plugin_output=
+	performance_data=
+	last_check=1325284831
+	next_check=1325285141
+	check_options=0
+	current_attempt=1
+	max_attempts=10
+	current_event_id=19702
+	last_event_id=19699
+	state_type=1
+	last_state_change=1324805581
+	last_hard_state_change=1324805581
+	last_time_up=1324787230
+	last_time_down=1325284841
+	last_time_unreachable=0
+	last_notification=1324805581
+	next_notification=1324805581
+	no_more_notifications=1
+	current_notification_number=1
+	current_notification_id=2118
+	notifications_enabled=1
+	problem_has_been_acknowledged=0
+	acknowledgement_type=0
+	active_checks_enabled=1
+	passive_checks_enabled=1
+	event_handler_enabled=1
+	flap_detection_enabled=1
+	failure_prediction_enabled=1
+	process_performance_data=1
+	obsess_over_host=1
+	last_update=1325285001
+	is_flapping=0
+	percent_state_change=0.00
+	scheduled_downtime_depth=0
+	}
+
+hoststatus {
 	host_name=gateway
 	modified_attributes=0
 	check_command=check-host-alive
@@ -574,6 +631,67 @@ servicestatus {
 	percent_state_change=0.00
 	scheduled_downtime_depth=0
 	}
+
+
+servicestatus {
+	host_name=host with space
+	service_description=SSH
+	modified_attributes=0
+	check_command=check_ssh
+	check_period=_24x7
+	notification_period=_24x7
+	check_interval=5.000000
+	retry_interval=1.000000
+	event_handler=
+	has_been_checked=1
+	should_be_scheduled=1
+	check_execution_time=3.012
+	check_latency=0.226
+	check_type=0
+	current_state=2
+	last_hard_state=2
+	last_event_id=19664
+	current_event_id=19686
+	current_problem_id=8675
+	last_problem_id=8662
+	current_attempt=1
+	max_attempts=4
+	current_event_id=19686
+	last_event_id=19664
+	state_type=1
+	last_state_change=1324805222
+	last_hard_state_change=1324805222
+	last_time_ok=1324787091
+	last_time_warning=0
+	last_time_unknown=0
+	last_time_critical=1325284922
+	plugin_output=No route to host
+	long_plugin_output=
+	performance_data=
+	last_check=1325284922
+	next_check=1325285222
+	check_options=0
+	current_notification_number=0
+	current_notification_id=0
+	last_notification=0
+	next_notification=0
+	no_more_notifications=0
+	notifications_enabled=1
+	active_checks_enabled=1
+	passive_checks_enabled=1
+	event_handler_enabled=1
+	problem_has_been_acknowledged=0
+	acknowledgement_type=0
+	flap_detection_enabled=1
+	failure_prediction_enabled=1
+	process_performance_data=1
+	obsess_over_service=1
+	last_update=1325285001
+	is_flapping=0
+	percent_state_change=0.00
+	scheduled_downtime_depth=0
+	}
+
 
 servicestatus {
 	host_name=kurobka

@@ -23,22 +23,19 @@ process_name="Sinatra Nagira services"
 pid_file=/var/run/nagira.pid
 
 
-load_defaults () {
-    which sherlock > /dev/null 2>&1 && eval $(sherlock | grep FAMILY) || { echo "sherlock not found"; exit 2; }
-    
-    case $FAMILY in
-        'rh')
-            DEFAULTS=/etc/sysconfig/nagira ;;
-        'debian')
-            DEFAULTS=/etc/default/nagira ;;
-        *)
-            echo "Unknown OS or distribution version: $FAMILY"
+which sherlock > /dev/null 2>&1 && eval $(sherlock | grep FAMILY) || { echo "sherlock not found"; exit 2; }
+
+case $FAMILY in
+    'rh')
+        DEFAULTS=/etc/sysconfig/nagira ;;
+    'debian')
+        DEFAULTS=/etc/default/nagira ;;
+    *)
+        echo "Unknown OS or distribution version: $FAMILY"
         exit 1
         ;;
-    esac
-    source $DEFAULTS || { echo "Can not load defaults file" ; exit 1 ; }
-}
-
+esac
+source $DEFAULTS || { echo "Can not load defaults file" ; exit 1 ; }
 
 ##
 # Some reasonable defaults if not set in defaults file
@@ -68,8 +65,7 @@ get_pid () {
 start() {
     [ ! -z "$(get_pid)" ] && { status; return 1; }
     echo -n "Starting ${process_name}:    "
-    load_defaults
-    su - $NAGIRA_USER -s /bin/bash -c "$RVM_STRING ;  RACK_ENV=$RACK_ENV nagira&" > $NAGIRA_LOG  2>&1 
+    su - $NAGIRA_USER -s /bin/bash -c "source $DEFAULTS ; $RVM_STRING ;  RACK_ENV=$RACK_ENV nagira&" > $NAGIRA_LOG  2>&1 
     sleep 5
     process=$(get_pid)
     if [ -z "$process" ]; then

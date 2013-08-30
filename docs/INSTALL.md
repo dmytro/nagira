@@ -19,6 +19,26 @@ More detailed description of installation procedure below.
 
 Starting from version 0.2.2 Nagira is packaged as Ruby Gem with simplified installation procedure as well as run time commands. If you are using Nagira version pre-0.2.2, or are not using it as a gem please refer to {file:INSTALL_pre0.2.2.md older installation instructions}.
 
+## Requirements
+
+Nagira written with MRI Ruby 1.9.x and tested with several 1.9 versions, as well as Ruby 2.0.0. Other versions and RUby families could be added in the future. 
+
+Current state of the passing/failing tests can always be seen on [Travis-CI page for Nagira.](https://travis-ci.org/dmytro/nagira).
+
+Other requirements are installed by gem installation, but still listed here for the reference. Gems below are subject for change, please see `nagira.gemspec` for the latest list.
+
+* activemodel
+* activesupport
+* json
+* rspec
+* sherlock_os
+* rspec-core
+* rspec-expectations
+* rspec-mocks
+* ruby-nagios
+* sinatra
+* sinatra-contrib
+* rake
 
 ## Installation procedure
 

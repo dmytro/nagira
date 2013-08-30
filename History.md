@@ -1,4 +1,8 @@
 ### v.0.3.1
+* Fri Aug 30 2013 -- Dmytro Kovalov
+  - Add requirement for Ruby version in gemspec
+  - Requirement documentation
+### v.0.3.1
 * Mon Aug 26 2013 -- Dmytro Kovalov
   - Bugfix: fix for init.d script to load defaults file
 

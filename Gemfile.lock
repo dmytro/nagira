@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nagira (0.3.1)
+    nagira (0.3.2)
       activemodel (~> 3.2.13)
       activesupport (~> 3.2.13)
       json (>= 1.7.7)

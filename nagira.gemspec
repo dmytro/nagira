@@ -19,6 +19,8 @@ environment
 
 EOF
 
+  s.required_ruby_version = '>= 1.9.1'
+
   s.files = ( %w{ bin/nagira History.md Rakefile version.txt} + 
               Dir.glob("{app,lib,spec,config,test}/**/*")
              ).uniq

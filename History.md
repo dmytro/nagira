@@ -1,3 +1,13 @@
+### v.0.3.1
+* Mon Aug 26 2013 -- Dmytro Kovalov
+  - Bugfix: fix for init.d script to load defaults file
+
+### v.0.3.0
+* Mon Aug 26 2013 -- Dmytro Kovalov
+  - Feature: Configurable hostname regex (see `NAGIOS_HOST_CUSTOM_REGEXi` in `config/nagira.defaults`)
+* Mon Aug 12 2013 -- Dmytro Kovalov
+  - rake ask for collecting debug information (issues #2)
+
 ### v.0.2.12
 * Thr Aug 08 2013 -- Dmytro Kovalov
   - Implementation for GET comments endpoints:

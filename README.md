@@ -99,3 +99,7 @@ Dmytro Kovalov, dmytro.kovalov@gmail.com
 ## License
 
 MIT, see {file:LICENSE.rdoc}
+
+## Contributing
+
+If you want to contribute feature, send a bug fix, or simply report a bug or requet a feature see {file:CONTRIBUTING.md}. 

@@ -1,3 +1,8 @@
+
+### v.0.3.3
+* Tue May 27 2014 -- Dmytro Kovalov
+  - Bugfix: fix parsing of service blocks https://github.com/dmytro/nagira/issues/27
+
 ### v.0.3.1
 * Mon Aug 26 2013 -- Dmytro Kovalov
   - Bugfix: fix for init.d script to load defaults file

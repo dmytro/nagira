@@ -1,4 +1,3 @@
-
 class Nagira < Sinatra::Base
 
   disable :protection
@@ -9,6 +8,7 @@ class Nagira < Sinatra::Base
   set :root, File.dirname(File.dirname(__FILE__))
 
   configure do
+    set :server, %w[puma thin webrick]
     set :format, :json
   end
 

@@ -43,6 +43,7 @@ EOF
   s.add_dependency 'sinatra', '~> 1.4.x'
   s.add_dependency 'sinatra-contrib', '~> 1.4.x'
   s.add_dependency 'rake'
+  s.add_dependency 'puma', '~> 2.x.x'
 
 
 

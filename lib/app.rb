@@ -372,4 +372,5 @@ end
 
 require "app/routes/put/status"
 require "app/routes/put/host"
+require "app/routes/put/notifications"
 require "app/routes/put"

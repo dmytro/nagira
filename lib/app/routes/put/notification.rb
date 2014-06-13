@@ -14,7 +14,6 @@ class Nagira < Sinatra::Base
                     'host_name' => params['host_name'],
                     'service_description' => params['service_description']
                  )
-      end
       elsif datum['command'] == 'disable'
         update = disable_svc_notifications(
                     'host_name' => params['host_name'],

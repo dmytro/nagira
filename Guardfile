@@ -1,7 +1,7 @@
 # A sample Guardfile
 # More info at https://github.com/guard/guard#readme
 
-guard 'rspec', :version => 2 do
+guard 'rspec', cmd: "rspec -fp" do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^spec/(.*)/.+_spec\.rb$})
 
@@ -29,4 +29,3 @@ guard 'rspec', :version => 2 do
   watch(%r{^lib/app/routes/(.+)/status\.rb$})           { |m| "spec/#{m[1]}/comments_spec.rb" }
 
 end
-

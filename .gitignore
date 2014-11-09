@@ -8,3 +8,4 @@ tmp
 .rbx
 *.gem
 .bundle
+Gemfile.lock

@@ -3,12 +3,12 @@ require 'spec_helper'
 #
 # Test resonse to /_api GET
 #
-describe Nagira do 
+describe Nagira do
 
   set :environment, ENV['RACK_ENV'] || :test
 
   include Rack::Test::Methods
-  
+
   def app
     @app ||= Nagira
   end
@@ -16,30 +16,30 @@ describe Nagira do
 
 
   context "API data" do
-    before :all do 
+    before :all do
       get "/_api.json"
       @data = JSON.parse last_response.body
     end
 
-    it "should be array" do 
-      @data.should be_a_kind_of Hash
+    it "should be array" do
+      expect(@data).to be_a_kind_of Hash
     end
 
     METHODS = %w{ GET PUT POST DELETE}
 
-    context "routes" do 
-      
+    context "routes" do
+
       METHODS.each do |method|
-        
-        context method do 
+
+        context method do
           it "routes should be an Array" do
-            @data[method].should be_a_kind_of Array if @data[method]
+            expect(@data[method]).to be_a_kind_of Array if @data[method]
           end
-          
+
           it "should star with slash" do
             if @data[method]
               @data[method].each do |path|
-                path.should =~ /^\//
+                expect(path).to match( /^\//)
               end
             end
           end

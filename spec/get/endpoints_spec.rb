@@ -4,12 +4,12 @@ require 'spec_helper'
 # Specs for implemetned API endpoints. Only check response: OK or 404.
 #
 
-shared_examples_for :fail_on_random_url do |base|  
+shared_examples_for :fail_on_random_url do |base|
   RANDOM.each do |url|
     ep = "#{base}/#{url}"
     it "fails on '#{ep}' string" do
       get ep
-      last_response.status.should be 404
+      expect(last_response.status).to be 404
     end
   end
 end
@@ -22,44 +22,44 @@ shared_examples_for :respond_to_valid_url do |base, urls, custom_regex|
       ep = "#{base}/#{url}"
       it "responds to #{ep}" do
         get ep
-        last_response.should be_ok
+        expect(last_response).to be_ok
       end
     end
     when nil
       ep = "#{base}"
       it "responds to #{ep}" do
         get ep
-        last_response.should be_ok
+        expect(last_response).to be_ok
       end
   end
 end
 
 shared_examples_for :fail_on_bad_url do |url|
   before {  get url }
-  it "fails on #{url}" do 
-    last_response.status.should be 404
+  it "fails on #{url}" do
+    expect(last_response.status).to eq 404
   end
 end
 
-describe Nagira do 
-  
+describe Nagira do
+
   set :environment, :test       # This should run only in test mode as it uses hardcoded host names
   include Rack::Test::Methods
-  def app 
+  def app
     @app ||= Nagira
   end
-  
+
   context "API endpoints" do
-    
-    host   = IMPLEMENTED[:hosts].first 
+
+    host   = IMPLEMENTED[:hosts].first
     spaces = "host%20with%20space"
 
 
-    context :top do 
+    context :top do
       it_should_behave_like :respond_to_valid_url,  '', IMPLEMENTED[:top]
       it_should_behave_like :fail_on_random_url,    ''
     end
-      
+
 
     context "/_status" do
       it_should_behave_like :respond_to_valid_url,  "/_status", IMPLEMENTED[:hosts]
@@ -81,7 +81,7 @@ describe Nagira do
       end
     end                         # /_status/:host
 
-    context "/_status/:host/_services" do 
+    context "/_status/:host/_services" do
       it_should_behave_like :respond_to_valid_url,  "/_status/#{host}/_services"
       it_should_behave_like :respond_to_valid_url,  "/_status/#{host}/_services", ["SSH", "PING"]
 
@@ -92,12 +92,12 @@ describe Nagira do
 
 
     context "custom hostname regex - host with spaces" do
-        
-      it { pending "Need to figure out how to change hostname regex on the fly" }
+
+      it { pending "Need to figure out how to change hostname regex on the fly"; fail }
         #it_should_behave_like :respond_to_valid_url,  "/_status/#{spaces}", nil, '\w[(%20)\w\-\.]+'
         #it_should_behave_like :respond_to_valid_url,  "/_status/#{spaces}/_services"
     end                         # custom hostname regex
-    
+
   end                           # API endpoints
-    
+
 end

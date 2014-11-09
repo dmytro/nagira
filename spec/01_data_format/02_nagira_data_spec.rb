@@ -4,7 +4,7 @@
 
 # Check these routes
 # ----------------------------------------
-#   get "/config" do 
+#   get "/config" do
 #   get "/objects" do
 #   get "/objects/:type" do |type|
 #   get "/objects/:type/:name" do |type,name|
@@ -12,16 +12,16 @@
 #   get "/status/:hostname/services" do |hostname|
 #   get "/status/:hostname" do |hostname|
 #   get "/status" do
-#   get "/api" do 
+#   get "/api" do
 
 require 'spec_helper'
 
-describe Nagira do 
+describe Nagira do
 
   set :environment, ENV['RACK_ENV'] || :test
 
   include Rack::Test::Methods
-  
+
   def app
     @app ||= Nagira
   end
@@ -31,7 +31,7 @@ describe Nagira do
   # ----------------------------------------
   context "/objects" do
 
-    before :all do 
+    before :all do
       get "/_objects"
       @data = JSON.parse last_response.body
 
@@ -40,39 +40,39 @@ describe Nagira do
       # $allkeys =  (%w{host service contact timeperiod} + @data.keys).uniq
     end
 
-      
+
     context 'hash key' do
       %w{host service contact timeperiod}.each do |obj|
-        it "objects[#{obj}] should exist" do 
-          @data[obj].should be_a_kind_of Hash
+        it "objects[#{obj}] should exist" do
+          expect(@data[obj]).to be_a_kind_of Hash
         end
       end
     end
-      
+
       %w{host service contact timeperiod}.each do |obj|
       context "/_objects/#{obj}" do
-        
-        it "should respond to HTTP resuest" do 
+
+        it "should respond to HTTP resuest" do
           get "/_objects/#{obj}.json"
-          last_response.should be_ok
+          expect(last_response).to be_ok
         end
-        
-        it "response to /objects/#{obj} should be Hash" do 
+
+        it "response to /objects/#{obj} should be Hash" do
           get "/_objects/#{obj}.json"
-          JSON.parse(last_response.body).should be_a_kind_of Hash
+          expect(JSON.parse(last_response.body)).to be_a_kind_of Hash
         end
       end
     end
-  end 
+  end
   # /objects --------------------
-  
+
 
   #
   # GET /status
   # -----------------------------
 
-  context '/status' do 
-    before :all do 
+  context '/status' do
+    before :all do
       get "/_status"
       @data = JSON.parse last_response.body
 
@@ -82,18 +82,18 @@ describe Nagira do
       get "/_status/_state"
       @state = JSON.parse last_response.body
     end
-    
-    context "list of hosts should be the same" do 
-      it "full and state" do 
-        @data.keys.should == @state.keys
+
+    context "list of hosts should be the same" do
+      it "full and state" do
+        expect(@data.keys).to eq @state.keys
       end
 
-      it "list and state" do 
-        @list.should == @state.keys
+      it "list and state" do
+        expect(@list).to eq @state.keys
       end
 
-      it "list and data" do 
-        @list.should == @data.keys
+      it "list and data" do
+        expect(@list).to eq @data.keys
       end
     end
 

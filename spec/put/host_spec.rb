@@ -2,25 +2,25 @@ require 'spec_helper'
 require_relative 'support'
 require 'pp'
 
-describe Nagira do 
-  
+describe Nagira do
+
   set :environment, :test       #  This is potentially desctructive test, run only in  test mode
   include Rack::Test::Methods
-  def app 
+  def app
     @app ||= Nagira
   end
 
-  before :all do 
+  before :all do
     get "/_status/_list.json"
     @host = JSON.parse(last_response.body).first
   end
 
   let (:content_type) {  {'Content-Type' => 'application/json'} }
   let (:host) { @host }
-  let (:input) { 
+  let (:input) {
     {
-      "status_code" => 0, 
-      "plugin_output" => "Plugin said: Bla" 
+      "status_code" => 0,
+      "plugin_output" => "Plugin said: Bla"
     }
   }
 
@@ -29,13 +29,13 @@ describe Nagira do
   #
 
   context "/_status" do
-    it { pending "Not implemented" }
+    it { pending "Not implemented"; fail }
   end                           # ----------- "/_status" do
 
   context "/_status/:host_name" do
     let (:url) { "/_status/#{host}"}
 
-    before (:each) do 
+    before (:each) do
       put url, input.to_json, content_type
     end
 
@@ -45,13 +45,13 @@ describe Nagira do
       input.keys.each do |key|
         (inp = input.dup).delete key
         put url, inp.to_json, content_type
-        last_response.status.should eq 400
+        expect(last_response.status).to eq 400
       end
     end
 
     context "/_host_status/:host_name" do
-      it { pending "Not implemented" }
-    end                         # ----------- "/_host_status/:host_name" 
+      it { pending "Not implemented" ; fail }
+    end                         # ----------- "/_host_status/:host_name"
 
 
   end                           #  ----------- /_status/:host

@@ -20,16 +20,16 @@ class Nagira < Sinatra::Base
   # @!macro [new] service_name
   #   @param [String] :service_name Configured Nagios service for the host
   #
-  # @!macro [new] accepted 
+  # @!macro [new] accepted
   #
   #    <b>Accepted output type modifiers:</b>
   #
-  # @!macro [new] list 
+  # @!macro [new] list
   #
   #     - +/_list+ : Short list of available objects, depending on the
   #       current request context: hosts, services, etc.
   #
-  # @!macro [new] state 
+  # @!macro [new] state
   #
   #     - +/_state+ - Instead of full status information send only
   #       current state. For hosts up/down, for services OK, Warn,
@@ -37,10 +37,10 @@ class Nagira < Sinatra::Base
   #
   # @!macro [new] full
   #
-  #     - +/_full+ - Show full status information. When used in 
-  #       /_status/_full call will display full hoststaus and 
+  #     - +/_full+ - Show full status information. When used in
+  #       /_status/_full call will display full hoststaus and
   #       servicestatus information for each host.
-  #       
+  #
   #
 
   # Status routes
@@ -75,13 +75,13 @@ class Nagira < Sinatra::Base
   # @method get_status_hostname_services
   # @!macro hostname
   #
-  # Endpoints: 
+  # Endpoints:
   # -  GET /_status/:hostname/_services
   # -  GET /_status/:hostname/_hostcomments
   # -  GET /_status/:hostname/_servicecomments
   #
   # Read +services+, +hostcomments+ or +servicecomments+ for single
-  # host. 
+  # host.
   #
   # @!macro accepted
   # @!macro state
@@ -91,12 +91,12 @@ class Nagira < Sinatra::Base
 
     hostname = hostname.to_i if hostname =~ /^\d+$/
     key = case service
-          when 'services' 
+          when 'services'
             'servicestatus'
           else
             service
           end
-            
+
     if @status && @status[hostname]
       case @output
       when :list
@@ -114,7 +114,7 @@ class Nagira < Sinatra::Base
   ##
   # @method get_status
   #
-  # Return all hosts status. 
+  # Return all hosts status.
   #
   # If no output modifier provided, outputs full hosttatus information
   # for each host. Not including services information. When +_full+
@@ -133,12 +133,12 @@ class Nagira < Sinatra::Base
   # Support for (see API):
   # - plural resources: N/A
   # - object access by ID: N/A
-  
+
   get /^\/_status(\/_hosts)?$/ do
 
     @data = @status.dup
 
-    case @output 
+    case @output
     when :state
       @data.each { |k,v| @data[k] = v['hoststatus'].slice("host_name", "current_state") }
     when :list
@@ -151,7 +151,7 @@ class Nagira < Sinatra::Base
 
     nil
   end
-  
+
   # Hoststatus for single host
   #
   # @method get_status_hostname
@@ -174,7 +174,7 @@ class Nagira < Sinatra::Base
 
     hostname = hostname.to_i if hostname =~ /^\d+$/
     @data =  @status[hostname]['hoststatus'].dup if @status.has_key? hostname
-    
+
     if @output == :state
       @data = @data.slice("host_name", "current_state")
     end

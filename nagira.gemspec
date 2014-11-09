@@ -1,5 +1,5 @@
 # Ensure we require the local version and not one we might have installed already
-spec = Gem::Specification.new do |s| 
+spec = Gem::Specification.new do |s|
   s.name = 'nagira'
   s.version = File.read('version.txt').strip
   s.license = 'MIT'
@@ -19,7 +19,7 @@ environment
 
 EOF
 
-  s.files = ( %w{ bin/nagira History.md Rakefile version.txt} + 
+  s.files = ( %w{ bin/nagira History.md Rakefile version.txt} +
               Dir.glob("{app,lib,spec,config,test}/**/*")
              ).uniq
 
@@ -28,7 +28,7 @@ EOF
   s.executables << 'nagira' << 'nagira-setup'
   s.default_executable = 'nagira'
   # GEMS
-  
+
   s.add_dependency 'activemodel', '~> 3.2'
   s.add_dependency 'activesupport', '~> 3.2'
   s.add_dependency 'json', '~> 1.7.7'
@@ -42,8 +42,8 @@ EOF
   s.add_dependency 'sinatra-contrib', '~> 1.3.2'
   s.add_dependency 'rake'
 
-  
-  
+
+
   # Dev
   s.add_development_dependency "growl", "~> 1.0.3"
   s.add_development_dependency "guard-brakeman", "~> 0.5.0"

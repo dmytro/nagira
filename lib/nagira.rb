@@ -30,17 +30,17 @@ class Nagira < Sinatra::Base
 
   VERSION  = File.read(File.expand_path(File.dirname(__FILE__)) + '/../version.txt').strip
   GITHUB   = "http://dmytro.github.com/nagira/"
-  
+
   ##
   # When this prefix added to routes convert output to ActiveResource
   # compatible format (basically Array instead of Hash).
   #
   AR_PREFIX = "/ar"
 
-  # Get all routes that Nagira provides. 
-  def api 
+  # Get all routes that Nagira provides.
+  def api
     api = { }
-    
+
     param_regex = Regexp.new '\(\[\^\\\\\/\?\#\]\+\)'
     Nagira.routes.keys.each do |method|
       api[method] ||= []
@@ -50,7 +50,7 @@ class Nagira < Sinatra::Base
           path.sub!(param_regex,":#{parm}")
         end
         path.gsub!('\\','')
-        api[method] << path unless path.empty? 
+        api[method] << path unless path.empty?
       end
     end
     api

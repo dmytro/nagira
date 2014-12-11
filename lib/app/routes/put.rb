@@ -49,5 +49,19 @@ class Nagira < Sinatra::Base
     def update_host_status params
       put_update :PROCESS_HOST_CHECK_RESULT, params
     end
+
+    # Small helper to submit data to ::Nagios::ExternalCommands
+    # object. For status updates sends external coond via
+    # ::Nagios::ExternalCommands.send method.
+    def disable_svc_notifications params
+      put_update :DISABLE_SVC_NOTIFICATIONS, params
+    end
+
+    # Small helper to submit data to ::Nagios::ExternalCommands
+    # object. For status updates sends external coond via
+    # ::Nagios::ExternalCommands.send method.
+    def enable_svc_notifications params
+      put_update :ENABLE_SVC_NOTIFICATIONS, params
+    end
   
 end

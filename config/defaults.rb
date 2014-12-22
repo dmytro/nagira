@@ -11,7 +11,7 @@
 
 
 DEFAULT = {
-   
+
   format_extensions: '\.(json|yaml|xml)$', #  Regex for available
                                            #  formats: xml, json, yaml
 
@@ -21,15 +21,15 @@ DEFAULT = {
 
   # No path to file configuration file by default. Main nagios config
   # is defined by +nagios_cfg_glob+ or by Sintra's
-  # +settings.nagios_cfg+ variable. 
+  # +settings.nagios_cfg+ variable.
   #
   # status_cfg and objects_cfg are defined by parsing of nagios_cfg
   # file. Sinatra's setting override parsed values.
-  nagios_cfg: nil, 
+  nagios_cfg: nil,
   status_cfg: nil,
   objects_cfg: nil,
   command_file: nil,
-  
+
   ##
   # ttl used in Nagios::TimedParse module - extension
   # to Nagios modules.
@@ -40,9 +40,9 @@ DEFAULT = {
   # if file changes often, we do not want to parse it more often, then
   # this number of seconds. To disable timed parsing, set
   # ttl to 0 or negative number.
-  
+
   ttl: ENV['NAGIRA_TTL'].to_i || 5,
-  
+
   ##
   # start_background_parser used in Nagios::BackgroundParse class.
   #
@@ -59,13 +59,13 @@ DEFAULT = {
   # By default hostname regular expression accepts alpha-numerics,
   # dashes and dots, as specified by http://tools.ietf.org/html/rfc952
   # for hostnames. Extended to accept dots in the middle for FQHN's.
-  # 
+  #
   #
   # - default: '\w([\w\-\.]+)?\w'
   # - simple hostname: '\w([\w\-]+)?\w'
-  # - allow space in hostname: '\w([\w\-\.(%20)]+)?\w' 
+  # - allow space in hostname: '\w([\w\-\.(%20)]+)?\w'
   #
-  # Explanation regarding spaces: 
+  # Explanation regarding spaces:
   # ---------------------------------
   #
   # Nagios works OK with hostnames with spaces. This is against RFC's
@@ -74,7 +74,6 @@ DEFAULT = {
   # option.
 
   hostname_regex: ENV['NAGIOS_HOST_CUSTOM_REGEX'] || '\w([\w\-\.]+)?\w'
-
 
 }
 

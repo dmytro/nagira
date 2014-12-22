@@ -7,7 +7,7 @@ class Nagira < Sinatra::Base
   set :port, ENV['NAGIRA_PORT'].to_i if ENV['NAGIRA_PORT']
   set :bind, ENV['NAGIRA_BIND'] if ENV['NAGIRA_BIND']
 
-  configure do 
+  configure do
     set :format, :json
   end
 
@@ -21,10 +21,10 @@ class Nagira < Sinatra::Base
   ##
   # Development and test environments use local files located in the
   # development tree: ./test/data.
-  configure :development, :test do 
+  configure :development, :test do
 
     dir = File.expand_path(File.dirname(__FILE__) + '/../test/data/')
-    
+
     set :nagios_cfg, "#{dir}/nagios.cfg"
     set :status_cfg, "#{dir}/status.dat"
     set :objects_cfg, "#{dir}/objects.cache"
@@ -32,7 +32,7 @@ class Nagira < Sinatra::Base
 
     set :show_exceptions, false
   end
-  
+
 
 # configure :production do
 #   # If your nagios.cfg file is in 'standard' location (in RH and

@@ -52,6 +52,7 @@ require 'nagira'
 #
 class Nagira < Sinatra::Base
 
+  register Sinatra::Namespace
   set :app_file, __FILE__
 
   ##
@@ -276,12 +277,12 @@ class Nagira < Sinatra::Base
 
 
   ##
-  # @method argument_error 
+  # @method argument_error
   # @overload after("ArgumentError")
   #
   # Return 400 if result of PUT operation is not success.
   #
-  after do 
+  after do
     return unless request.put?
     halt [400, @data.send("to_#{@format}") ] if ! @data[:result]
   end
@@ -370,6 +371,6 @@ class Nagira < Sinatra::Base
 
 end
 
-require "app/routes/put/status"
-require "app/routes/put/host"
-require "app/routes/put"
+require "app/put/status"
+require "app/put/host"
+require "app/put"

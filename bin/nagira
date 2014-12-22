@@ -4,8 +4,8 @@ begin
   require 'app.rb'
 rescue LoadError => e
   require 'rubygems'
-  path = File.expand_path '../../lib', __FILE__
-  $:.unshift(path) if File.directory?(path) && !$:.include?(path)
+  root = File.expand_path '..', __FILE__
+  $: << (File.expand_path 'lib', root) << (File.expand_path 'app', root)
   require 'app.rb'
 end
 Nagira.run!

@@ -8,15 +8,16 @@ require 'active_support/core_ext/hash/slice' # for Hash.slice
 require 'json'
 require 'yaml'
 require 'sinatra'
+require 'sinatra/namespace'
 require 'sinatra/reloader'
 
 $: << File.dirname(__FILE__) << File.dirname(File.dirname(__FILE__))
 
 require 'config/defaults'
 
-require "app/routes/get/config"
-require "app/routes/get/objects"
-require "app/routes/get/status"
+require "app/get/config"
+require "app/get/objects"
+require "app/get/status"
 
 
 #

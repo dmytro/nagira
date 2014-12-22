@@ -52,7 +52,6 @@ require 'nagira'
 #
 class Nagira < Sinatra::Base
 
-  register Sinatra::Namespace
   set :app_file, __FILE__
 
   ##

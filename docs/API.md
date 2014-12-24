@@ -4,10 +4,23 @@ This document describes specifications of Nagira API: endpoints, HTTP methods an
 
 Examples of the curl command and output are given in {file:FEATURES.md} file.
 
-Output format
+Supported Output formats
 ======================
 
-Output format is spcified by extension at the end of the HTTP request. It can be 1 of `.xml`, `.json` or `.yaml`.  If output specifier is absent Nagira will use default configured format (see {file:CONFIGURATION.md}.
+Output format is specified by extension at the end of the HTTP request. It can be 1 of `.xml`, `.json` or `.yaml`.  If output specifier is absent Nagira will use default configured format (see {file:CONFIGURATION.md}.
+
+Default responses
+======================
+
+## Success
+
+- Status: 200
+- Data: either Hash or Array (one of the supported types)
+
+## Failure
+
+For not existing routes, object not found or object not configured in Nagios, 404 is returned. At the momemnt it is impossible to distinquish between non-existing routes and non-existing object(s).
+
 
 Top level routes
 ======================
@@ -17,9 +30,7 @@ General information
 
 API endpoints in General section do not provide Nagios information, they are  used to receive from Nagira information related to Nagira application itself and Nagios instance Nagira talks to.
 
-### `/` (*root*) endpoint
-
-- Method GET
+### GET `/` (*root*)
 
 - Returned attributes
   - `application`
@@ -27,33 +38,30 @@ API endpoints in General section do not provide Nagios information, they are  us
   - `source`
   - `apiUrl`
 
-Provides general inforamtion about Nagira application, no nested routes.
+Provides general information about Nagira application, no nested routes.
 
 ----
 
-### `/_api` endpoint
+### GET `/_api`
 
-Prints out available routes on the Nagira aplication. No nested subroutes.
+Prints out available routes on the Nagira application. No nested sub-routes.
 
-- Method: GET
 - Returned data: routes available for each HTTP method: `GET`, `HEAD`, `PUT`
 
 -----
 
-### `/_runtime`
+### GET `/_runtime`
 
-- Method GET
-
-Print runtime Nagira environment configuration. No nested subroutes.
+Print runtime Nagira environment configuration. No nested sub-routes.
 
 Available: since Nagira version > 0.2.1
 
 
-- Returnded data:
+- Returned data:
   - `application` - name of the application (Nagira)
   - `version`
   - `runtime`  - Hash with runtime environment of Nagira
-    - `environment` - development, test or porduction
+    - `environment` - development, test or production
     - `home` - home directory of the UNIX user running Nagira application (for example: `nagios`)
     - `user` - UNIX user running Nagira application (for example: `nagios`)
     - `nagiosFiles` - PATH's to Nagios configuration files parsed by Nagira
@@ -67,15 +75,13 @@ Available: since Nagira version > 0.2.1
 Nagios server information
 ---------------------------------
 
-Nagios inforamtion section describes methods for accessing Nagios objects and status information, as well as updating status information.
+Nagios information section describes methods for accessing Nagios objects and status information, as well as updating status information.
 
-### `/_config`
-
-- Method GET
+### GET `/_config`
 
 Nagios server configuration information: location of Nagios configuration files, log files, various setting usually found in main Nagios configuration file `nagios.cfg`.
 
-No nested subroutes/endpoints available.
+No nested sub routes/endpoints available.
 
 - Returned data:
 
@@ -86,13 +92,13 @@ No nested subroutes/endpoints available.
 -----
 
 
-## API Extensions ##
+# API Extensions #
 
-`/_objects` and `/_status` family of routes support extensions `_list`, `_state` and `_fulll` and can use of both plural and singular names of resources. Specifications below show where each one of the extensions can or can not  be used.
+`/_objects` and `/_status` family of routes support extensions `_list`, `_state` and `_full` and can use of both plural and singular names of resources. Specifications below show where each one of the extensions can or can not  be used.
 
-### `_list`,`_state` and `_full` ###
+## `_list`,`_state` and `_full` ##
 
-Either `_list`, `_state` oe `_full` keyword can be appended to the HTTP request path at the end to modify responce as:
+Either `_list`, `_state` or `_full` keyword can be appended to the HTTP request path at the end to modify response as:
 
 * `_list` option produces only list of hosts/services
 * `_state` - gives short status of host or service
@@ -100,12 +106,12 @@ Either `_list`, `_state` oe `_full` keyword can be appended to the HTTP request 
 
 For example:
 
-* `/_status` - will provide full list of all hosts together with hoststaus information, but
+* `/_status` - will provide full list of all hosts together with host-status information, but
 * `/_status/_list` - provides only list of hosts as an array.
 
 **Note**: `_list` modifier changes output type of the request. `/_status` and `/_object` request can return either Hash or Array, depending on other parts of request (see below, plural vs singular) but `_list` request always returns Array.
 
-### Plural and singular resources ###
+## Plural and singular resources ##
 
 Nagira API up to version 0.2.1 used Nagios resources as nouns in singular form ('host', 'hostgroup', 'service', 'contact'), same way as they are used by Nagios. In order to support ActiveResource type of requests, use of pluralized resources has been added.
 
@@ -122,9 +128,9 @@ Where this is available following forms of request are supported:
 
 --------------------------------------------
 
-## Nagios objects information
+# Read Nagios objects configuration #
 
-### `/_objects`
+## GET `/_objects` ##
 
 All Nagios object configurations grouped into Hash subtrees by resource type (host, service, contact, command).
 
@@ -134,25 +140,25 @@ List of all possible objects can be obtained from http://nagios.sourceforge.net/
 
 - Method GET
 - Output data: Hash
-- Supports  extention
+- Supports  extension
       - `_list`: yes
       - `_state`: no
       - plural resources: n/a
 
 
-### /_objects/:type
+## GET /_objects/:type ##
 
 Read object type configuration. Object types are supported by Nagios.
 
 - Method GET
 - Parameter(s): object type, one of ( timeperiod, command, contactgroup, hostgroup, contact, host, service)
 - Output data: Hash
-- Supports  extention
+- Supports  extension
     - `_list`: yes
     - plural resources: yes
 - Object types
 
-### /_objects/:type/:name
+## GET /_objects/:type/:name ##
 
 Read configuration of one object.
 
@@ -167,110 +173,156 @@ Read configuration of one object.
 
 -----
 
-## Host and services status information
+# Read host and services status #
 
-### Host status and host services status
+## Host status and host services status ##
 
-#### `/_status` ####
+### GET `/_status` ###
 
-- Method GET:
   Get all hosts status, see {Nagira#get_status}
 
-#### `/_status/:hostname` ####
+### Subroutes
 
-- Method GET
-  Read hoststatus for single host, see {Nagira#get\_status\_hostname\_services}
+#### GET `/_status/:hostname` ####
 
-
-#### `/_status/:hostname/_services` ####
-
-- Method GET
-  - Read all services for single host. Not including hoststate information.
-  - see {Nagira#get\_status\_hostname\_services}
+Read hoststatus for single host, see {Nagira#get\_status\_hostname\_services}
 
 
-#### /_status/:hostname/_services/:service_name
-- Method GET
-  - Read single services for single host. Not including hoststate information.
+#### GET `/_status/:hostname/_services` ####
+
+- Read all services for single host. Not including host state information.
+    - see {Nagira#get\_status\_hostname\_services}
+
+
+#### GET /_status/:hostname/_services/:service_name
+
+Read single services for single host. Not including host state information.
+
+### Comments
+
+Subrotes _hostcomments and \_servicecomments return comment for the host or service.
+
+#### GET /_status/:hostname/_servicecomments
+
+- Data: Hash
+
+        curl -s localhost:4567/_status/archive/_servicecomments | jsonlint
+        {
+          "Disk space": [
+            {
+              "host_name": "archive",
+              "service_description": "Disk space",
+              "entry_type": "4",
+              "comment_id": "38",
+              "source": "0",
+              "persistent": "0",
+              "entry_time": "1373457035",
+              "expires": "0",
+              "expire_time": "0",
+              "author": "dmytro",
+              "comment_data": "Need to verify what to delete."
+            }
+          ]
+        }
+
+#### GET /_status/:hostname/_hostcomments
+
+- Data: Array
+
+        $ curl -s localhost:4567/_status/archive/_hostcomments
+        [
+          {
+            "entry_type": "1",
+            "comment_id": "40",
+            "source": "1",
+            "persistent": "1",
+            "entry_time": "1375778132",
+            "expires": "0",
+            "expire_time": "0",
+            "author": "dmytro",
+            "comment_data": "Testing Host Comment --dk"
+          }
+        ]
+
 
 --------------------------------------------
 
-### Hostgroup status
+# Read hostgroup status #
 
-####  /_status/_hostgroup/:hostgroup ####
+### GET /_status/_hostgroup/:hostgroup ###
 
-- Method GET
-      - Host and services information for a hostgroup
-      - Output: Hash
-      - Params :hostgroup - hostgroup name
-        - Data format:
+- Host and services information for a hostgroup
+- Output: Hash
+- Params :hostgroup - hostgroup name
+  - Data format:
 
-          { "<hostname>":
-              "hoststatus" :
-                { "key" : "value", ...},
-              "servicestatus" :
-              {
-              "<servicename>" :
-                { "key" : "value", ...},
+    { "<hostname>":
+        "hoststatus" :
+          { "key" : "value", ...},
+        "servicestatus" :
+        {
+        "<servicename>" :
+          { "key" : "value", ...},
+- Example
+
+        "gateway": {
+           "hoststatus": {
+             "host_name": "gateway",
+             "modified_attributes": "0",
+             "check_command": "check-host-alive",
+             "notification_period": "_24x7",
+             },
+           "servicestatus": {
+             "PING": {
+               "host_name": "gateway",
+               "service_description": "PING",
+               "modified_attributes": "0",
+               "check_command": "check_ping!100.0,20%!500.0,60%",
+               "check_period": "_24x7",
 
 
+### Subroutes
 
-##### Data example: #####
+####  GET /_status/_hostgroup/:hostgroup/_service ####
 
-    "gateway": {
-       "hoststatus": {
-         "host_name": "gateway",
-         "modified_attributes": "0",
-         "check_command": "check-host-alive",
-         "notification_period": "_24x7",
-         },
-       "servicestatus": {
-         "PING": {
+
+- Output: Hash
+- Services information for a hostgroup
+- Params :hostgroup - hostgroup name
+- Data format: { "hostname": { "service_name": { "key" : "value", ...}, ... }, ...}
+- Example:
+
+         {
+           "gateway": {
+             "PING": {
+               "host_name": "gateway",
+               "service_description": "PING",
+               "modified_attributes": "0",
+               "check_command": "check_ping!100.0,20%!500.0,60%",
+               "check_period": "_24x7",
+               "notification_period": "_24x7",
+               "check_interval": "1.000000",
+               "retry_interval": "1.000000",
+
+####  GET /_status/_hostgroup/:hostgroup/_host ####
+
+- Output: Hash
+- Host status information for a hostgroup
+- Params :hostgroup - hostgroup name
+- Data format: { "hostname": { "key" : "value", ...}, ... }
+- Example:
+
+         {
+         "gateway": {
            "host_name": "gateway",
-           "service_description": "PING",
            "modified_attributes": "0",
-           "check_command": "check_ping!100.0,20%!500.0,60%",
-           "check_period": "_24x7",
-
-
-####  /_status/_hostgroup/:hostgroup/_service ####
-
-- Method GET
-  - Output: Hash
-  - Services information for a hostgroup
-  - Params :hostgroup - hostgroup name
-  - Data format: { "hostname": { "service_name": { "key" : "value", ...}, ... }, ...}
-
-##### Returned data example #####
-
-     {
-       "gateway": {
-         "PING": {
-           "host_name": "gateway",
-           "service_description": "PING",
-           "modified_attributes": "0",
-           "check_command": "check_ping!100.0,20%!500.0,60%",
-           "check_period": "_24x7",
+           "check_command": "check-host-alive",
            "notification_period": "_24x7",
-           "check_interval": "1.000000",
+           "check_interval": "5.000000",
            "retry_interval": "1.000000",
+           "has_been_checked": "1",
 
-####  /_status/_hostgroup/:hostgroup/_host ####
+--------------------------------------------
 
-- Method GET
-  - Output: Hash
-  - Host status information for a hostgroup
-  - Params :hostgroup - hostgroup name
-  - Data format: { "hostname": { "key" : "value", ...}, ... }
-
-#### Returned data:
-
-     {
-     "gateway": {
-       "host_name": "gateway",
-       "modified_attributes": "0",
-       "check_command": "check-host-alive",
-       "notification_period": "_24x7",
-       "check_interval": "5.000000",
-       "retry_interval": "1.000000",
-       "has_been_checked": "1",
+<!--  LocalWords:  xml yaml Nagios apiUrl nagios ActiveResource timeperiod contactgroup hoststatus servicestatus servicename
+ -->

@@ -6,22 +6,21 @@ class Nagira < Sinatra::Base
 
   set :port, ENV['NAGIRA_PORT'].to_i if ENV['NAGIRA_PORT']
   set :bind, ENV['NAGIRA_BIND'] if ENV['NAGIRA_BIND']
+  set :root, File.dirname(File.dirname(__FILE__))
 
   configure do
     set :format, :json
   end
 
-  if development?
-    require 'sinatra/reloader'
-    register Sinatra::Reloader
-    also_reload(File.dirname(File.dirname(__FILE__))+"/*.rb")
-    also_reload(File.dirname(File.dirname(__FILE__))+"/{app,lib}/**/*.rb")
-  end
+  require 'sinatra/reloader'  if development?
 
   ##
   # Development and test environments use local files located in the
   # development tree: ./test/data.
   configure :development, :test do
+    register Sinatra::Reloader
+    also_reload("#{root}/*.rb")
+    also_reload("#{root}/{config,app,lib}/**/*.rb")
 
     dir = File.expand_path(File.dirname(__FILE__) + '/../test/data/')
 

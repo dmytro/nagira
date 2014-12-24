@@ -19,6 +19,7 @@ require "app/get/config"
 require "app/get/objects"
 require "app/get/status"
 
+require "nagira/hostgroup"
 
 #
 # environment file must go after default, some settings override
@@ -31,6 +32,8 @@ class Nagira < Sinatra::Base
 
   VERSION  = File.read(File.expand_path(File.dirname(__FILE__)) + '/../version.txt').strip
   GITHUB   = "http://dmytro.github.com/nagira/"
+
+  register Sinatra::Namespace
 
   ##
   # When this prefix added to routes convert output to ActiveResource

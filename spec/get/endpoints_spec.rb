@@ -52,6 +52,7 @@ describe Nagira do
   context "API endpoints" do
 
     host   = IMPLEMENTED[:hosts].first
+    hostgroup = 'all'
     spaces = "host%20with%20space"
 
 
@@ -97,6 +98,20 @@ describe Nagira do
         #it_should_behave_like :respond_to_valid_url,  "/_status/#{spaces}", nil, '\w[(%20)\w\-\.]+'
         #it_should_behave_like :respond_to_valid_url,  "/_status/#{spaces}/_services"
     end                         # custom hostname regex
+
+    context "Hostgroups" do
+
+      context "/_status/_hostgroups/:hostgroup" do
+        it_should_behave_like :respond_to_valid_url,  "/_status/_hostgroup/#{hostgroup}"
+      end
+
+      context "/_status/_hostgroups/:hostgroup/_service" do
+        it_should_behave_like :respond_to_valid_url,  "/_status/_hostgroup/#{hostgroup}/_service"
+      end
+      context "/_status/_hostgroups/:hostgroup/_host" do
+        it_should_behave_like :respond_to_valid_url,  "/_status/_hostgroup/#{hostgroup}/_host"
+      end
+    end                         # Hostgroup
 
   end                           # API endpoints
 

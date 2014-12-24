@@ -1,3 +1,5 @@
+require_relative 'status/hostgroups'
+
 class Nagira < Sinatra::Base
   # @!macro  [attach] sinatra.get
   #
@@ -48,6 +50,7 @@ class Nagira < Sinatra::Base
 
   ##
   # @method get_status_hostname_services_service_name
+  # @overload get("/_status/:hostname/_services/:service_name")
   #
   # @!macro hostname
   # @!macro service_name

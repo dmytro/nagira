@@ -46,6 +46,7 @@ EOF
 
   # Dev
   s.add_development_dependency "growl", "~> 1.0.3"
+  s.add_development_dependency "pry", "~> 0.10.x"
   s.add_development_dependency "guard-brakeman", "~> 0.5.0"
   s.add_development_dependency "guard-rspec", "~> 4.x.x"
   s.add_development_dependency 'yard', "~> 0.8"

@@ -51,7 +51,6 @@ require 'nagira'
 # Nagios.
 #
 class Nagira < Sinatra::Base
-
   set :app_file, __FILE__
 
   ##
@@ -61,7 +60,7 @@ class Nagira < Sinatra::Base
   # @overload before("Initial Config")
   configure do
 
-    $nagios = { }
+    $nagios = {  }
     $nagios[:config]  = Nagios::Config.new Nagira.settings.nagios_cfg
     $nagios[:config].parse
 

@@ -31,11 +31,11 @@ class Nagira < Sinatra::Base
   #     {
   #      "status_code":"0",
   #      "plugin_output" : "ping OK"
-  #     }                               
+  #     }
   put "/_status/:host_name" do
     @data = update_host_status @input.first.merge({
-                                                    'host_name' => params['host_name']
-                                                  })
+      'host_name' => params['host_name']
+    })
     nil
   end
 
@@ -44,9 +44,8 @@ class Nagira < Sinatra::Base
   # @method put__host_status_host_name
   # @overload put("/_host_status/:host_name")
   #
-  put "/_host_status/:host_name" do 
+  put "/_host_status/:host_name" do
     "Not implemented: TODO"
   end
-  
 
 end

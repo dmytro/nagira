@@ -9,17 +9,17 @@ namespace :config do
     l,target_os = line.chomp.split '='
     target_os = target_os.chomp.strip.to_sym
   end
-  
+
   namespace :test do
 
     desc "Test Nagira production config: Nagios files in proper locations and parseable"
-    task :prod do 
+    task :prod do
       ENV['RACK_ENV'] = 'production'
       Rake::Task['config:test:test'].invoke
     end
 
     desc "Test Nagira installation: test Nagios files and parse"
-    task :install do 
+    task :install do
       ENV['RACK_ENV'] = 'test'
       Rake::Task['config:test:test'].invoke
     end
@@ -62,7 +62,7 @@ namespace :config do
   end
 
   #desc "Install defaults file for Nagira service in /etc"
-  task :defaults do 
+  task :defaults do
     src = File.join(@nagira_config, 'nagira.defaults')
     dst = case target_os
           when :rh
@@ -78,7 +78,7 @@ namespace :config do
       FileUtils.copy src, dst
       FileUtils.chown 0, 0, dst unless test?
       FileUtils.chmod 0644, dst
-      
+
       log_user "Installed new defaults file for Nagira in #{dst}."
       log_user "    >>> You might want to tune some of the variables."
     end
@@ -89,7 +89,7 @@ namespace :config do
     log_user "Starting Nagira for the first time"
     sh "/etc/init.d/nagira start"
   end
-  
+
   desc "Configure Nagira to start on system boot"
   task :chkconfig => [:init_d, :defaults] do
 

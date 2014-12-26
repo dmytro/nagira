@@ -1,3 +1,6 @@
+### v0.4.1
+* Wed Dec 26 2014 -- Dmytro Kovalov (birthday release, NAgira tuns 4 years today :)
+  - Added puma support, puma is default now
 ### v0.4.0
 * Wed Dec 24 2014 -- Dmytro Kovalov
   - new API endpoints

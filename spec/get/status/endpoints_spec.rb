@@ -43,7 +43,7 @@ end
 
 describe Nagira do
 
-  set :environment, :test       # This should run only in test mode as it uses hardcoded host names
+# TODO   set :environment, :test       # This should run only in test mode as it uses hardcoded host names
   include Rack::Test::Methods
   def app
     @app ||= Nagira

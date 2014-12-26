@@ -12,3 +12,5 @@ IMPLEMENTED = {
 }
 
 RANDOM = %w{ _bla _foo bla foo ahdhjdjda }
+
+set :environment, ENV['RACK_ENV'] || :test

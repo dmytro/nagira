@@ -33,26 +33,26 @@ EOF
 
   s.add_dependency 'activemodel', '~> 3.2'
   s.add_dependency 'activesupport', '~> 3.2'
-  s.add_dependency 'json', '~> 1.7.7'
-  s.add_dependency 'rspec', '~> 3.1.x'
-  s.add_dependency 'sherlock_os', '~> 0.0', '>= 0.0.2'
-  s.add_dependency 'rspec-core', '~> 3.1.x'
-  s.add_dependency 'rspec-expectations', '~> 3.1.x'
-  s.add_dependency 'rspec-mocks', '~> 3.1.x'
+  s.add_dependency 'json', '~> 1.8'
+  s.add_dependency 'rspec', '~> 3.1'
+  s.add_dependency 'sherlock_os', '~> 0.0'
+  s.add_dependency 'rspec-core', '~> 3.1'
+  s.add_dependency 'rspec-expectations', '~> 3.1'
+  s.add_dependency 'rspec-mocks', '~> 3.1'
   s.add_dependency 'ruby-nagios','~> 0.2', ">= 0.2.2"
-  s.add_dependency 'sinatra', '~> 1.4.x'
-  s.add_dependency 'sinatra-contrib', '~> 1.4.x'
-  s.add_dependency 'rake'
-  s.add_dependency 'puma', '~> 2.x.x'
+  s.add_dependency 'sinatra', '~> 1.4'
+  s.add_dependency 'sinatra-contrib', '~> 1.4'
+  s.add_dependency 'rake', '~> 10.1'
+  s.add_dependency 'puma', '~> 2.1'
 
 
 
   # Dev
-  s.add_development_dependency "growl", "~> 1.0.3"
-  s.add_development_dependency "pry", "~> 0.10.x"
-  s.add_development_dependency "guard-brakeman", "~> 0.5.0"
-  s.add_development_dependency "guard-rspec", "~> 4.x.x"
+  s.add_development_dependency "growl", "~> 1"
+  s.add_development_dependency "pry", "~> 0.10"
+  s.add_development_dependency "guard-brakeman", "~> 0.5"
+  s.add_development_dependency "guard-rspec", "~> 4"
   s.add_development_dependency 'yard', "~> 0.8"
   # redcarpet fails in jruby
-  s.add_development_dependency 'redcarpet' unless RUBY_ENGINE == 'jruby'
+  s.add_development_dependency 'redcarpet', '~> 3.0' unless RUBY_ENGINE == 'jruby'
 end

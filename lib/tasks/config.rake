@@ -1,7 +1,5 @@
 namespace :config do
 
-  @nagira_config = File.join($nagira_root, 'config')      # Config directory of Nagira installation
-
   target_os = nil
 
   %x{ sherlock }.split($\).each do |line|
@@ -10,7 +8,7 @@ namespace :config do
     target_os = target_os.chomp.strip.to_sym
   end
 
-  namespace :test do
+ namespace :test do
 
     desc "Test Nagira production config: Nagios files in proper locations and parseable"
     task :prod do
@@ -51,7 +49,7 @@ namespace :config do
 
   #desc "Install /etc/init.d startup file for Nagira"
   task :init_d => init_d do
-    src = File.join(@nagira_config, 'nagira.init_d')
+    src = File.join(Nagira.cfg_dir, 'nagira.init_d')
     dst = "#{init_d}/nagira"
 
     FileUtils.copy  src, dst
@@ -63,7 +61,7 @@ namespace :config do
 
   #desc "Install defaults file for Nagira service in /etc"
   task :defaults do
-    src = File.join(@nagira_config, 'nagira.defaults')
+    src = File.join(Nagira.cfg_dir, 'nagira.defaults')
     dst = case target_os
           when :rh
             '/etc/sysconfig/nagira'
@@ -104,6 +102,7 @@ namespace :config do
       abort "Unknown or unsupported target OS: #{target_os}"
     end
     log_user "[OK]"
-  end
+
+    end
 
 end

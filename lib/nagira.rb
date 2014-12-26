@@ -8,7 +8,6 @@ require 'active_support/core_ext/hash/slice' # for Hash.slice
 require 'json'
 require 'yaml'
 require 'sinatra'
-require 'sinatra/namespace'
 require 'sinatra/reloader'
 
 $: << File.dirname(__FILE__) << File.dirname(File.dirname(__FILE__))
@@ -32,8 +31,6 @@ class Nagira < Sinatra::Base
 
   VERSION  = File.read(File.expand_path(File.dirname(__FILE__)) + '/../version.txt').strip
   GITHUB   = "http://dmytro.github.com/nagira/"
-
-  register Sinatra::Namespace
 
   ##
   # When this prefix added to routes convert output to ActiveResource

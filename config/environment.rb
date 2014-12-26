@@ -6,6 +6,7 @@ class Nagira < Sinatra::Base
   set :port, ENV['NAGIRA_PORT'].to_i if ENV['NAGIRA_PORT']
   set :bind, ENV['NAGIRA_BIND'] if ENV['NAGIRA_BIND']
   set :root, File.dirname(File.dirname(__FILE__))
+  set :cfg_dir, "#{root}/config"
 
   configure do
     set :server, %w[puma thin webrick]

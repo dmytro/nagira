@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe Nagira do
 
-  set :environment, ENV['RACK_ENV'] || :test
 
   include Rack::Test::Methods
 

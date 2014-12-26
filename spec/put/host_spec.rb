@@ -4,7 +4,8 @@ require 'pp'
 
 describe Nagira do
 
-  # TODO set :environment, :test       #  This is potentially desctructive test, run only in  test mode
+  dont_run_in_production(__FILE__) and break
+
   include Rack::Test::Methods
   def app
     @app ||= Nagira

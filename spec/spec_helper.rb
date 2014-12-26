@@ -14,3 +14,11 @@ IMPLEMENTED = {
 RANDOM = %w{ _bla _foo bla foo ahdhjdjda }
 
 set :environment, ENV['RACK_ENV'] || :test
+
+def dont_run_in_production(file)
+  if Nagira.settings.environment == :production
+    puts "**** #{File.basename file} should not be run in #{Nagira.settings.environment} environment"
+    return true
+  end
+  false
+end

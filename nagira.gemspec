@@ -40,8 +40,8 @@ EOF
   s.add_dependency 'rspec-expectations', '~> 3.1.x'
   s.add_dependency 'rspec-mocks', '~> 3.1.x'
   s.add_dependency 'ruby-nagios','~> 0.2', ">= 0.2.2"
-  s.add_dependency 'sinatra', '~> 1.3.6'
-  s.add_dependency 'sinatra-contrib', '~> 1.3.2'
+  s.add_dependency 'sinatra', '~> 1.4.x'
+  s.add_dependency 'sinatra-contrib', '~> 1.4.x'
   s.add_dependency 'rake'
 
 

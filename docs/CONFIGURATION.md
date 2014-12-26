@@ -12,7 +12,7 @@ File `config/defaults.rb` defines configuration hash `DEFAULT`, it sets attribut
 
 See comments in `config/nagira.defaults` file for environment variables that Nagira understands. This file is copied to system defaults area during installation. Bu adjusting values in this file you can change Nagira installation.
 
-The same variables can be set in the shell if you are using Nagira on command line. 
+The same variables can be set in the shell if you are using Nagira on command line.
 
 Some of the configuration examples given below can be changed either in source of Nagira or by environment variable.
 
@@ -23,16 +23,16 @@ All settings can be configured either globally or for specific environment (deve
 * Global setting
 
 ```ruby
-  configure do 
+  configure do
     set :format, :json
   end
-```  
+```
 
 * Only for development and test
 
 ```ruby
 
-  configure :development, :test do 
+  configure :development, :test do
     set :nagios_cfg, "#{dir}/nagios.cfg"
   end
 
@@ -45,9 +45,9 @@ For more details please see Sinatra configuration documentation.
 Location of all Nagios files and data files are automatically detected by parsing `nagios.cfg` file on start. Therefore you only need to point Nagira to this file location. Value for the search directories is set in `ruby-nagios` module defaults (starting from Nagira version > 0.2.1) and it is:
 
 ```ruby
-    :nagios_cfg_glob => ENV['NAGIOS_CFG_FILE'] || 
+    :nagios_cfg_glob => ENV['NAGIOS_CFG_FILE'] ||
     [
-     "/etc/nagios*/nagios.cfg", 
+     "/etc/nagios*/nagios.cfg",
      "/usr/local/nagios/etc/nagios.cfg"
     ]
 ```
@@ -90,7 +90,7 @@ By default Nagios data files are not parsed on each HTTP request, instead they a
 
 ### Background parsing
 
-When on user request Nagira needs to parse `status.dat` file (when `:ttl` time passed) for large files there could be significant delay in sending data back to user. On average these delays will happen every `:min_parse_interval` seconds. 
+When on user request Nagira needs to parse `status.dat` file (when `:ttl` time passed) for large files there could be significant delay in sending data back to user. On average these delays will happen every `:min_parse_interval` seconds.
 
 If you want to prevent such delays responding to user requests, it is possible to start background loading and parsing `status.dat` file on regular intervals in separate thread.
 
@@ -122,7 +122,7 @@ In development and test (by default) it will check presence of files under ./tes
 With no errors check should produce output as following:
 
 ```
-    
+
       $ bundle exec rspec --format doc  spec/00_configuration_spec.rb
       [2013-03-15 17:02:06 +0900] -- Starting Nagira apllication
       [2013-03-15 17:02:06 +0900] -- Version 0.2.5
@@ -131,7 +131,7 @@ With no errors check should produce output as following:
       [2013-03-15 17:02:06 +0900] -- Using nagios status file: /Users/dmytro/Development/nagira/test/data/status.dat
       [2013-03-15 17:02:06 +0900] -- Using nagios objects file: /Users/dmytro/Development/nagira/test/data/objects.cache
       [2013-03-15 17:02:06 +0900] -- Using nagios commands file: /tmp/nagios.cmd
-      
+
       Configuration
         nagios.cfg
             should exist ["/Users/dmytro/Development/nagira/test/data/nagios.cfg"]
@@ -146,9 +146,8 @@ With no errors check should produce output as following:
             Nagios::Objects
               should exist ["/Users/dmytro/Development/nagira/test/data/objects.cache"]
               should be parseable
-      
+
       Finished in 0.12154 seconds
       8 examples, 0 failures
-      
+
 ```
-      

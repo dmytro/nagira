@@ -65,10 +65,6 @@ curl -X PUT -H "Content-type: application/json;" \
 
 See more in {file:FEATURES.rdoc} and API documentation in {file:API.md}
 
-## Documentation
-
-YARD documentation included with the project, run `yardoc` in project root directory. Generated YARD docs are available at http://dmytro.github.com/nagira
-
 ## How and why?
 
 ### Provide simple and consistent way for information exchange with Nagios
@@ -79,16 +75,15 @@ YARD documentation included with the project, run `yardoc` in project root direc
    * Nagios configuration information is in `nagios.cfg` file, by reading and parsing this file all other configuration can be obtained.
 1. provide check result submission interface (similar to [Nagios NSCA](http://nagios.sourceforge.net/docs/3_0/addons.html) and for setting/updating Nagios configuration.
 
+File parsing is implemented in the background thread on a regular intervals, so that parsed information is available immediately when HTTP request comes.
 
-If necessary at a later stages this could be implemented using Nagios' NEB interface, but the disadvantage of the NEB API is that it could block Nagios process and introduce latencies in Nagios.
+## Documentation
 
-File parsing obviously takes resources for each single parse, however if application -- Rails, Sinatra or similar -- is able to keep state of the parser, is not a problem. IF application can keep track of file parse times and file modification time it is possible to parse file only if it was changed and infrequently enough.
+YARD documentation included with the project, run `yardoc` in project root directory. Generated YARD docs are available at http://dmytro.github.com/nagira
 
-# Road-map blueprint
+### API Documentation
 
-When implemented API could provide foundation for development of well-defined, modular, distributed Nagios monitoring: distributed Nagios nodes communicating with each other, retrieving status and submitting check results, distributed, load-balanced, fault tolerant configuration.
-
-Web UI could be completely de-coupled from Nagios core, not required to run on the Nagios host and can retrive data over the network. It's possible to build complete Javascript web application running in the browser server-less.
+API endpoints are partially documented in the inline comments and accessible in YARD documents (Nagira class), most of the enpoints are documented in {file:API}.
 
 ## Author
 

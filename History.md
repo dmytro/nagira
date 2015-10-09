@@ -1,3 +1,9 @@
+### v0.4.2
+* Fri Oct 9 2015 -- Dmytro Kovalov
+  - init.d script fixes
+    - Fix for not detecting PID of the running Nagira, when ruby bibnary
+      is like ruby1.9.1
+    - Sanity checks for nagios user and log directory
 ### v0.4.1
 * Wed Dec 26 2014 -- Dmytro Kovalov (birthday release, NAgira tuns 4 years today :)
   - Added puma support, puma is default now

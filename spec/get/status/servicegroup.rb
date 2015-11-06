@@ -83,7 +83,7 @@ describe Nagira do
     end
 
     it "service data should contain service attributes" do
-      expect(@data['kurobka']['SSH']).to include 'host_name', 'service_description', 'current_state'
+      expect(@data['kurobka']['SSH']).to include 'host_name', 'service_description', 'current_state', 'last_hard_state_change', 'next_notification'
     end
 
   end

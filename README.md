@@ -79,7 +79,11 @@ File parsing is implemented in the background thread on a regular intervals, so 
 
 ## Documentation
 
-YARD documentation included with the project, run `yardoc` in project root directory. Generated YARD docs are available at http://dmytro.github.com/nagira
+YARD documentation included with the project, run `yardoc` in project
+root directory. Generated YARD docs are available at
+http://dmytro.github.com/nagira_docs
+
+Unformatted Markdown file in the project's `docs` directory.
 
 ### API Documentation
 

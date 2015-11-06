@@ -1,3 +1,7 @@
+### v0.5.0
+* Fri Nov 6 2015 -- Dmytro Kovalov
+  - Add support for Service groups, new route `GET /_status/_servicegroup/`
+  - Vagrantfile for Ubuntu development
 ### v0.4.2
 * Fri Oct 9 2015 -- Dmytro Kovalov
   - init.d script fixes

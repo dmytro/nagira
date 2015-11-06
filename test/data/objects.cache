@@ -829,6 +829,12 @@ define contactgroup {
 	members	root
 	}
 
+define servicegroup {
+	servicegroup_name	ping
+	alias			All SSH Services
+	members			archive,PING kurobka,PING airport,PING kurobka,SSH
+	}
+
 define hostgroup {
 	hostgroup_name	all
 	alias	All Servers
@@ -1865,4 +1871,3 @@ define service {
 	retain_status_information	1
 	retain_nonstatus_information	1
 	}
-

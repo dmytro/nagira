@@ -1,4 +1,5 @@
 require_relative 'status/hostgroups'
+require_relative 'status/servicegroups'
 
 class Nagira < Sinatra::Base
   # @!macro  [attach] sinatra.get

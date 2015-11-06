@@ -246,6 +246,82 @@ Subrotes _hostcomments and \_servicecomments return comment for the host or serv
 
 
 --------------------------------------------
+# Read Servicegroup status
+
+### GET /_status/_servicegroup/:servicegroup  ###
+
+- Services information for single servicegroup.
+- Output: Hash
+- Params: :servicegroup - name of the service group
+- Output data format:
+
+```
+    { "<hostname>":
+        "<servicename>" :
+          { "key" : "value", ...},
+          ...
+
+```
+
+- Example (YAML)
+
+```
+$ curl localhost:4567/_status/_servicegroup/ping.yaml
+---
+archive:
+  PING:
+    host_name: archive
+    service_description: PING
+    modified_attributes: '0'
+    check_command: check_ping!100.0,20%!500.0,60%
+      ...
+
+```
+
+### Extensions
+
+#### _list
+
+- Only show list of hosts and services
+- Example (JSON)
+
+```
+$ curl localhost:4567/_status/_servicegroup/ping/_list
+{"archive":["PING"],
+    "kurobka":["PING","SSH"],
+      "airport":["PING"]
+}
+
+```
+
+#### _state
+
+- Short status information
+- Including: hostname, service description (AKA name), and current
+  status
+- Example (YAML)
+
+```
+      $ curl localhost:4567/_status/_servicegroup/ping/_state.yaml
+      ---
+      archive:
+        PING:
+          host_name: archive
+          service_description: PING
+          current_state: '2'
+      kurobka:
+        PING:
+          host_name: kurobka
+          service_description: PING
+          current_state: '2'
+        SSH:
+          host_name: kurobka
+          service_description: SSH
+          current_state: '2'
+      airport:
+        PING: {}
+
+```
 
 # Read hostgroup status #
 
@@ -256,6 +332,7 @@ Subrotes _hostcomments and \_servicecomments return comment for the host or serv
 - Params :hostgroup - hostgroup name
   - Data format:
 
+```
     { "<hostname>":
         "hoststatus" :
           { "key" : "value", ...},
@@ -263,8 +340,11 @@ Subrotes _hostcomments and \_servicecomments return comment for the host or serv
         {
         "<servicename>" :
           { "key" : "value", ...},
+```
+
 - Example
 
+```
         "gateway": {
            "hoststatus": {
              "host_name": "gateway",
@@ -280,6 +360,7 @@ Subrotes _hostcomments and \_servicecomments return comment for the host or serv
                "check_command": "check_ping!100.0,20%!500.0,60%",
                "check_period": "_24x7",
 
+```
 
 ### Subroutes
 
@@ -289,9 +370,10 @@ Subrotes _hostcomments and \_servicecomments return comment for the host or serv
 - Output: Hash
 - Services information for a hostgroup
 - Params :hostgroup - hostgroup name
-- Data format: { "hostname": { "service_name": { "key" : "value", ...}, ... }, ...}
+- Data format: `{ "hostname": { "service_name": { "key" : "value", ...}, ... }, ...}`
 - Example:
 
+```
          {
            "gateway": {
              "PING": {
@@ -304,14 +386,17 @@ Subrotes _hostcomments and \_servicecomments return comment for the host or serv
                "check_interval": "1.000000",
                "retry_interval": "1.000000",
 
+```
+
 ####  GET /_status/_hostgroup/:hostgroup/_host ####
 
 - Output: Hash
 - Host status information for a hostgroup
 - Params :hostgroup - hostgroup name
-- Data format: { "hostname": { "key" : "value", ...}, ... }
+- Data format: `{ "hostname": { "key" : "value", ...}, ... }`
 - Example:
 
+```
          {
          "gateway": {
            "host_name": "gateway",
@@ -322,6 +407,7 @@ Subrotes _hostcomments and \_servicecomments return comment for the host or serv
            "retry_interval": "1.000000",
            "has_been_checked": "1",
 
+```
 --------------------------------------------
 
 <!--  LocalWords:  xml yaml Nagios apiUrl nagios ActiveResource timeperiod contactgroup hoststatus servicestatus servicename

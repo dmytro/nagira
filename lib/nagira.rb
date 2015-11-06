@@ -19,6 +19,8 @@ require "app/get/objects"
 require "app/get/status"
 
 require "nagira/hostgroup"
+require "nagira/servicegroup"
+require "nagira/hostservice"
 
 #
 # environment file must go after default, some settings override

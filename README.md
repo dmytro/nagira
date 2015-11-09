@@ -8,22 +8,23 @@ Version {include:file:version.txt}
 
 ## Description
 
-- Light-weight web services RESTful API for reading and changing status of Nagios objects:
-  - host status
-  - service status
-- and for read-only access to:
-* Nagios objects
-  - hosts
-  - services,
-  - contacts,
-  - groups of
-      - hosts
-      - services
-      - contacts
-      - escalations, etc.
-* Nagios server configuration
-* Nagios runtime environment
-
+- Light-weight web services RESTful API for reading and updating (R/W):
+  - status of
+    - hosts
+    - services
+    - hostgroups
+    - servicegroups
+- read-only (R/O) access to :
+  - configuration of
+    - hosts
+    - services,
+    - contacts,
+    - hostgroups
+    - servicegroups
+    - contactgroups, etc.
+  - Nagios server
+    - configuration
+    - runtime environment
 
 ## Source Code
 
@@ -31,11 +32,25 @@ Source code available from Github https://github.com/dmytro/nagira
 
 ## Installation
 
+### As Docker container
+
+
+To pull and run from public Docker registry run as:
+
+
+```
+docker run -d -p 4567:4567 -v /etc/nagios3:/etc/nagios3 \
+  -v /var/cache/nagios3:/var/cache/nagios3 \
+  -v /var/lib/nagios3:/var/lib/nagios3 ortym/nagira
+```
+
+### As Ruby gem
+
 ```
     gem install nagira
 ```
 
-For more details look at {file:INSTALL.rdoc}
+For more details look at {file:INSTALL.md}
 
 ## Usage
 

@@ -8,13 +8,15 @@ Version {include:file:version.txt}
 
 ## Description
 
-- Light-weight web services RESTful API for reading and updating (R/W):
+Light-weight web services RESTful API for Nagios monitoring.
+
+- read and update (R/W):
   - status of
     - hosts
     - services
     - hostgroups
     - servicegroups
-- read-only (R/O) access to :
+- read-only (R/O) access to:
   - configuration of
     - hosts
     - services,

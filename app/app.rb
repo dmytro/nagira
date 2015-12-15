@@ -197,7 +197,6 @@ class Nagira < Sinatra::Base
     @active_resource = request.path_info =~ %r{^#{Nagira::AR_PREFIX}/}
   end
 
-
   ##
   # @method   strip_output_type
   # @overload before('detect output mode')
@@ -248,7 +247,6 @@ class Nagira < Sinatra::Base
     end
   end
 
-
   ##
   # @method   object_not_found
   # @overload after("Object not found or bad request")
@@ -268,7 +266,6 @@ class Nagira < Sinatra::Base
     end
   end
 
-
   ##
   # @method argument_error
   # @overload after("ArgumentError")
@@ -279,7 +276,6 @@ class Nagira < Sinatra::Base
     return unless request.put?
     halt [400, @data.send("to_#{@format}") ] if ! @data[:result]
   end
-
 
   ##
   # @method   convert_to_active_resource
@@ -309,9 +305,6 @@ class Nagira < Sinatra::Base
     body( @callback ? "#{@callback.to_s} (#{@data.to_json})" : @data.send("to_#{@format}") )
   end
 
-
-
-
   ##
   # @method get_api
   # @overload get(/_api)
@@ -322,7 +315,6 @@ class Nagira < Sinatra::Base
     @data = self.api
     nil
   end
-
 
   ##
   # @method get_runtime_config
@@ -361,7 +353,6 @@ class Nagira < Sinatra::Base
   # get "/:resource" do |resource|
   #   respond_with $nagios.status[resource], @format
   # end
-
 end
 
 require "app/put/status"

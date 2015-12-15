@@ -1,4 +1,5 @@
 require 'nagios'
+require 'singleton'
 
 module Nagios
   ##
@@ -6,26 +7,60 @@ module Nagios
   # regular intervals slightly shorter than :ttl
   #
   class BackgroundParser
+    include Singleton
 
-    ##
-    # 
-    # If :ttl is not defined set to 0 and do not run
-    # background parsing.
-    #
     def initialize
-      interval = [::DEFAULT[:ttl],1].max || nil
-      $use_inflight_status = false
-      $use_inflight_objects = false
-      if interval && ::DEFAULT[:start_background_parser]
-        puts "[#{Time.now}] Starting background parser thread with interval #{interval} sec"
-        $bg = Thread.new {
-          loop {
-            $use_inflight_status ? $nagios[:status].parse : $nagios[:status_inflight].parse
-            $use_inflight_status = !$use_inflight_status
-            sleep interval
-          } #loop
-        } # thread
+      @use_inflight_flag = false
+      @ttl = @@ttl
+      @start = @@start
+    end
+
+    attr_accessor :ttl, :start, :use_inflight_flag
+
+    class << self
+      def ttl= ttl
+        @@ttl = ttl
+      end
+
+      def start= start
+        @@start = start
       end
     end
+
+    def configured?
+       ttl > 0 && start
+    end
+
+    ##
+    # Is BG parser thread running
+    #
+    def alive?
+      !@bg.nil? && @bg.alive?
+    end
+
+    ##
+    # See alive?
+    def dead?
+      !alive?
+    end
+
+    ##
+    # Start BG Parser if it's configured to run and TTL is defined
+    def run
+      if configured? && dead?
+        puts "[#{Time.now}] Starting background parser thread with interval #{ttl} sec"
+        @bg = Thread.new {
+          loop {
+            if  use_inflight_flag = !use_inflight_flag
+              $nagios[:status].parse
+            else
+              $nagios[:status_inflight].parse
+            end
+            sleep interval
+          }
+        }
+      end
+    end
+
   end
 end

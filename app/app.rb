@@ -76,6 +76,14 @@ class Nagira < Sinatra::Base
                                                             )
                   })
 
+    puts "[#{Time.now}] -- Starting Nagira application"
+    puts "[#{Time.now}] -- Version #{Nagira::VERSION}"
+    puts "[#{Time.now}] -- Running in #{Nagira.settings.environment} environment"
+
+    Nagios::BackgroundParser.ttl = ::DEFAULT[:ttl].to_i
+    Nagios::BackgroundParser.start = ::DEFAULT[:start_background_parser]
+    Nagios::BackgroundParser.instance.run
+
     $nagios.merge!({
                     status_inflight: Nagios::Status.new( Nagira.settings.status_cfg ||
                                                          $nagios[:config].status_file
@@ -83,11 +91,8 @@ class Nagira < Sinatra::Base
                     objects_inflight: Nagios::Objects.new( Nagira.settings.objects_cfg ||
                                                            $nagios[:config].object_cache_file
                                                          )
-                  }) if ::DEFAULT[:start_background_parser]
+                  }) if  Nagios::BackgroundParser.instance.alive?
 
-    puts "[#{Time.now}] -- Starting Nagira application"
-    puts "[#{Time.now}] -- Version #{Nagira::VERSION}"
-    puts "[#{Time.now}] -- Running in #{Nagira.settings.environment} environment"
     $nagios.keys.each do |x|
       puts "[#{Time.now}] -- Using nagios #{x} file: #{$nagios[x].path}"
     end
@@ -98,7 +103,6 @@ class Nagira < Sinatra::Base
     @status   = $nagios[:status].status['hosts']
     @objects  = $nagios[:objects].objects
 
-    Nagios::BackgroundParser.new
   end
 
 
@@ -124,34 +128,20 @@ class Nagira < Sinatra::Base
 
   before do
 
-    if Nagira.settings.start_background_parser
-      unless $bg.alive?
-        logger.warn "Background Parser is configured to run, but is not active"
-        $nagios[:config].parse
-        $nagios[:status].parse
-        $nagios[:objects].parse
-      end
-      $use_inflight_status  ? @status = $nagios[:status_inflight].status['hosts']
-                            : @status = $nagios[:status].status['hosts']
-      $use_inflight_objects ? @objects  = $nagios[:objects_inflight].objects
-                            : @objects  = $nagios[:objects].objects
-    else
+    parser = Nagios::BackgroundParser.instance
+
+    if parser.dead?
       $nagios[:config].parse
       $nagios[:status].parse
       $nagios[:objects].parse
-      @status   = $nagios[:status].status['hosts']
-      @objects  = $nagios[:objects].objects
     end
 
+    flag = parser.use_inflight_flag
+    @status  = $nagios[flag ? :status_inflight : :status ].status['hosts']
+    @objects = $nagios[flag ? :objects_inflight : :objects].objects
 
-##
-# TODO: This stuff breaks XML valid. Will have to wait.
-#
-#     idx = 0
-#     @status.keys.uniq.each do |hostname|
-#       @status[idx] = @status[hostname]
-#       idx += 1
-#     end
+
+
     #
     # Add plural keys to use ActiveResource with Nagira
     #

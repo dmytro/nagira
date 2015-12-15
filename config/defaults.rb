@@ -9,7 +9,6 @@
 # Exception is ::DEFAULT[:ttl] which is not overriden by environment.rb
 # and should be changed here.
 
-
 DEFAULT = {
 
   format_extensions: '\.(json|yaml|xml)$', #  Regex for available
@@ -90,6 +89,5 @@ configure do
     set key,val
   end
 end
-
 
 end

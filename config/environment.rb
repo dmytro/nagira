@@ -1,4 +1,6 @@
+require 'pry'
 class Nagira < Sinatra::Base
+
 
   disable :protection
   enable :logging
@@ -32,7 +34,6 @@ class Nagira < Sinatra::Base
 
     set :show_exceptions, false
   end
-
 
 # configure :production do
 #   # If your nagios.cfg file is in 'standard' location (in RH and

@@ -2,12 +2,12 @@ class Nagira < Sinatra::Base
 
   # @method parse_input_data
   # @overload before("Parse PUT request body")
-  # 
+  #
   # Process the data before on each HTTP request.
   #
-  # @return [Array] @input Sets @input instance variable. 
+  # @return [Array] @input Sets @input instance variable.
   #
-  before do 
+  before do
     if request.put?
       data = request.body.read
       @input = case @format
@@ -22,14 +22,14 @@ class Nagira < Sinatra::Base
   end
 
   # Define helpers for put methods
-  helpers do 
+  helpers do
 
     # Helper to send PUT update to Nagios::ExternalCommands
     #
-    # @param [Hash] params 
+    # @param [Hash] params
     # @param [Symbol] action Nagios external command name
     #
-    # FIXME: This only accepts single service. Modify to use Arrays too 
+    # FIXME: This only accepts single service. Modify to use Arrays too
     def put_update action, params
       res = $nagios[:commands].write(params.merge({ :action => action }))
       { :result => res[:result], :object => res[:data]}

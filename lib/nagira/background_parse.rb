@@ -4,7 +4,7 @@ require 'singleton'
 module Nagios
   ##
   # Background parsing of status.dat file in separate thread. Runs on
-  # regular intervals slightly shorter than :ttl
+  # regular intervals defined by :ttl
   #
   class BackgroundParser
     include Singleton

@@ -181,15 +181,20 @@ class Nagira < Sinatra::Base
   #     GET /_objects.json         # => :json
   #     GET /_status/_list.yaml    # => :yaml
   #
- before do
+  before do
     request.path_info.sub!(/#{settings.format_extensions}/, '')
     @format = ($1 || settings.format).to_sym
     content_type "application/#{@format.to_s}"
   end
 
+  ##
+  # @method   detect_ar_type
+  # @overload before('detect ActiveResource mode')
+  #
+  # Detect if this a request for ActiveResource PATH
+  #
   before do
-    request.path_info.sub!(/^(#{Nagira::AR_PREFIX})\//, '/')
-    @active_resource = $1 ? true : false
+    @active_resource = request.path_info =~ %r{^#{Nagira::AR_PREFIX}/}
   end
 
 

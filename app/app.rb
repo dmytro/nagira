@@ -73,9 +73,9 @@ class Nagira < Sinatra::Base
     $nagios.objects = Nagios::Objects.new(objects_file)
     $nagios.commands = Nagios::ExternalCommands.new(commands_file)
 
-    Nagios::BackgroundParser.ttl    = ::DEFAULT[:ttl].to_i
-    Nagios::BackgroundParser.start  = ::DEFAULT[:start_background_parser]
-    Nagios::BackgroundParser.target = $nagios
+    BackgroundParser.ttl    = ::DEFAULT[:ttl].to_i
+    BackgroundParser.start  = ::DEFAULT[:start_background_parser]
+    BackgroundParser.target = $nagios
 
     SimpleLogger.log "Starting Nagira application"
     SimpleLogger.log "Version #{Nagira::VERSION}"
@@ -88,7 +88,7 @@ class Nagira < Sinatra::Base
     $nagios[:status].parse
     $nagios[:objects].parse
 
-    Nagios::BackgroundParser.run if Nagios::BackgroundParser.configured?
+    BackgroundParser.run if BackgroundParser.configured?
 
     @status   = $nagios[:status].status['hosts']
     @objects  = $nagios[:objects].objects
@@ -117,14 +117,14 @@ class Nagira < Sinatra::Base
 
   before do
 
-    if Nagios::BackgroundParser.dead?
-      SimpleLogger.log("BackgroundParser is not running", :warning) if Nagios::BackgroundParser.configured?
+    if BackgroundParser.dead?
+      SimpleLogger.log("BackgroundParser is not running", :warning) if BackgroundParser.configured?
       $nagios[:config].parse
       $nagios[:status].parse
       $nagios[:objects].parse
     end
 
-    flag = Nagios::BackgroundParser.inflight?
+    flag = BackgroundParser.inflight?
     @status  = $nagios[flag ? :status_inflight : :status ].status['hosts']
     @objects = $nagios[flag ? :objects_inflight : :objects].objects
 

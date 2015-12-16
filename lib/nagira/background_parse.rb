@@ -1,7 +1,7 @@
 require 'nagios'
 require 'singleton'
 
-module Nagios
+class Nagira < Sinatra::Base
   ##
   # Background parsing of status.dat file in separate thread. Runs on
   # regular intervals defined by :ttl

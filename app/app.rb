@@ -77,12 +77,12 @@ class Nagira < Sinatra::Base
     Nagios::BackgroundParser.start  = ::DEFAULT[:start_background_parser]
     Nagios::BackgroundParser.target = $nagios
 
-    puts "[#{Time.now}] -- Starting Nagira application"
-    puts "[#{Time.now}] -- Version #{Nagira::VERSION}"
-    puts "[#{Time.now}] -- Running in #{Nagira.settings.environment} environment"
+    SimpleLogger.log "Starting Nagira application"
+    SimpleLogger.log "Version #{Nagira::VERSION}"
+    SimpleLogger.log "Running in #{Nagira.settings.environment} environment"
 
     $nagios.to_h.keys.each do |x|
-      puts "[#{Time.now}] -- Using nagios #{x} file: #{$nagios[x].path}"
+      SimpleLogger.log "Using nagios #{x} file: #{$nagios[x].path}"
     end
 
     $nagios[:status].parse
@@ -118,6 +118,7 @@ class Nagira < Sinatra::Base
   before do
 
     if Nagios::BackgroundParser.dead?
+      SimpleLogger.log("BackgroundParser is not running", :warning) if Nagios::BackgroundParser.configured?
       $nagios[:config].parse
       $nagios[:status].parse
       $nagios[:objects].parse

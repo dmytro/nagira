@@ -105,7 +105,7 @@ module Nagios
       def run
         if configured? && dead?
 
-          puts "[#{Time.now}] Starting background parser thread with interval #{@ttl} sec"
+          SimpleLogger.log "Starting background parser thread with interval #{@ttl} sec"
 
           @target.status_inflight = Nagios::Status.new(@target[:status].path)
           @target.objects_inflight = Nagios::Objects.new(@target[:objects].path)

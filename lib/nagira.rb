@@ -9,6 +9,7 @@ require 'json'
 require 'yaml'
 require 'sinatra'
 require 'sinatra/reloader'
+require 'singleton'
 
 $: << File.dirname(__FILE__) << File.dirname(File.dirname(__FILE__))
 
@@ -21,6 +22,9 @@ require "app/get/status"
 require "nagira/hostgroup"
 require "nagira/servicegroup"
 require "nagira/hostservice"
+
+require "nagira/simple_logger"
+
 
 #
 # environment file must go after default, some settings override

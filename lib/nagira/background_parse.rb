@@ -12,6 +12,12 @@ module Nagios
     def initialize
       @use_inflight_flag = false
     end
+
+    #  For large Nagios files there's a significant time required for
+    #  the parsing, if HTTP request comes during the parsing, data
+    #  could be missing. To prevent this from happening flag variable
+    #  defines two sets of the parsed data, which are parsed at
+    #  different sequential runs of the parser.
     attr_accessor :use_inflight_flag
 
     class << self
@@ -24,34 +30,39 @@ module Nagios
         @target = target
       end
 
+      ##
+      # Helper to parse multiple files (status, objects, config).
+      #
+      # @param [Array(Object)] files to parse
       def parse(*files)
         files.each do |f|
           f.send(:parse)
         end
       end
       ##
-      # @ttl (Fixint, seconds) defines re-parsing interval for the
+      # \@ttl (Fixint, seconds) defines re-parsing interval for the
       # BackgroundParser.
       #
-      # Set @@ttl after initialisation, to be able to pass
-      #  configuration varialbles.
+      # Set @@ttl after initialization, to be able to pass
+      #  configuration variables.
       #
       # @see start=
       #
       # Example:
       #     Nagios::BackgroundParser.ttl = ::DEFAULT[:ttl].to_i
       #     Nagios::BackgroundParser.start = ::DEFAULT[:start_background_parser]
-      #     Nagios::BackgroundParser.instance.run
+      #     Nagios::BackgroundParser.target = $nagios
+      #     Nagios::BackgroundParser.run
       #
       def ttl= ttl
         @ttl = ttl
       end
 
       ##
-      # @start (Boolean) defines whether BackgroundParser should be
+      # \@start (Boolean) defines whether BackgroundParser should be
       # started.
       #
-      # Set :start variable after initialisation, to be able to pass
+      # Set :start variable after initialization, to be able to pass
       #  configuration values.
       #
       # @see ttl=
@@ -59,7 +70,8 @@ module Nagios
       # Example:
       #     Nagios::BackgroundParser.ttl = ::DEFAULT[:ttl].to_i
       #     Nagios::BackgroundParser.start = ::DEFAULT[:start_background_parser]
-      #     Nagios::BackgroundParser.instance.run
+      #     Nagios::BackgroundParser.target = $nagios
+      #     Nagios::BackgroundParser.run
       #
       def start= start
         @start = start
@@ -114,7 +126,10 @@ module Nagios
         end
       end
 
-
+      private
+      ##
+      # Construct file symbol, based on in flight status.
+      # @see run
       def with_inflight?(file)
         inflight? ? "#{file}_inflight".to_sym : file
       end
@@ -122,3 +137,5 @@ module Nagios
     end
   end
 end
+
+#  LocalWords:  ttl BackgroundParser config param Fixint

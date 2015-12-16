@@ -9,9 +9,26 @@ module Nagios
   class BackgroundParser
     include Singleton
 
+    def initialize
+      @use_inflight_flag = false
+    end
     attr_accessor :use_inflight_flag
 
     class << self
+
+      ##
+      # Target data structure (i.e. $nagios hash for example) which is
+      # updated by BackgroundParser.
+      #
+      def target=(target)
+        @target = target
+      end
+
+      def parse(*files)
+        files.each do |f|
+          f.send(:parse)
+        end
+      end
       ##
       # @ttl (Fixint, seconds) defines re-parsing interval for the
       # BackgroundParser.
@@ -67,24 +84,40 @@ module Nagios
         !alive?
       end
 
+      def inflight?
+        @use_inflight_flag
+      end
+
       ##
       # Start BG Parser if it's configured to run and TTL is defined
       def run
         if configured? && dead?
+
           puts "[#{Time.now}] Starting background parser thread with interval #{@ttl} sec"
+
+          @target.status_inflight = Nagios::Status.new(@target[:status].path)
+          @target.objects_inflight = Nagios::Objects.new(@target[:objects].path)
+
+          parse(
+            @target[:status_inflight],
+            @target[:objects_inflight]
+          )
+
           @bg = Thread.new {
             loop {
-              if  @use_inflight_flag = !@use_inflight_flag
-                $nagios[:status].parse
-              else
-                $nagios[:status_inflight].parse
-              end
+              @target[with_inflight?(:status)].parse
+              @target[with_inflight?(:objects)].parse
               sleep @ttl
+              @use_inflight_flag = !@use_inflight_flag
             }
           }
         end
       end
 
+
+      def with_inflight?(file)
+        inflight? ? "#{file}_inflight".to_sym : file
+      end
 
     end
   end

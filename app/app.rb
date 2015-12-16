@@ -53,8 +53,6 @@ require 'nagira'
 class Nagira < Sinatra::Base
   set :app_file, __FILE__
 
-  Nagios::BackgroundParser.ttl = ::DEFAULT[:ttl].to_i
-  Nagios::BackgroundParser.start = ::DEFAULT[:start_background_parser]
 
   ##
   # Do some necessary tasks at start and then run Sinatra app.
@@ -63,43 +61,37 @@ class Nagira < Sinatra::Base
   # @overload before("Initial Config")
   configure do
 
-    $nagios = {  }
-    $nagios[:config]  = Nagios::Config.new Nagira.settings.nagios_cfg
-    $nagios[:config].parse
+    $nagios = OpenStruct.new({ config: Nagios::Config.new(Nagira.settings.nagios_cfg)})
 
-    status_file   = Nagira.settings.status_cfg   || $nagios[:config].status_file
-    objects_file  = Nagira.settings.objects_cfg  || $nagios[:config].object_cache_file
-    commands_file = Nagira.settings.command_file || $nagios[:config].command_file
+    $nagios.config.parse
 
-    $nagios.merge!({
-                    status: Nagios::Status.new(status_file),
-                    objects: Nagios::Objects.new(objects_file),
-                    commands: Nagios::ExternalCommands.new(commands_file)
-                  })
+    status_file   = Nagira.settings.status_cfg   || $nagios.config.status_file
+    objects_file  = Nagira.settings.objects_cfg  || $nagios.config.object_cache_file
+    commands_file = Nagira.settings.command_file || $nagios.config.command_file
+
+    $nagios.status = Nagios::Status.new(status_file)
+    $nagios.objects = Nagios::Objects.new(objects_file)
+    $nagios.commands = Nagios::ExternalCommands.new(commands_file)
+
+    Nagios::BackgroundParser.ttl    = ::DEFAULT[:ttl].to_i
+    Nagios::BackgroundParser.start  = ::DEFAULT[:start_background_parser]
+    Nagios::BackgroundParser.target = $nagios
 
     puts "[#{Time.now}] -- Starting Nagira application"
     puts "[#{Time.now}] -- Version #{Nagira::VERSION}"
     puts "[#{Time.now}] -- Running in #{Nagira.settings.environment} environment"
 
-    if  Nagios::BackgroundParser.configured?
-
-      Nagios::BackgroundParser.run
-      $nagios.merge!({
-                      status_inflight: Nagios::Status.new(status_file),
-                      objects_inflight: Nagios::Objects.new(objects_file)
-                    })
-    end
-
-    $nagios.keys.each do |x|
+    $nagios.to_h.keys.each do |x|
       puts "[#{Time.now}] -- Using nagios #{x} file: #{$nagios[x].path}"
     end
 
     $nagios[:status].parse
     $nagios[:objects].parse
 
+    Nagios::BackgroundParser.run if Nagios::BackgroundParser.configured?
+
     @status   = $nagios[:status].status['hosts']
     @objects  = $nagios[:objects].objects
-
   end
 
 
@@ -131,7 +123,7 @@ class Nagira < Sinatra::Base
       $nagios[:objects].parse
     end
 
-    flag = Nagios::BackgroundParser.instance.use_inflight_flag
+    flag = Nagios::BackgroundParser.inflight?
     @status  = $nagios[flag ? :status_inflight : :status ].status['hosts']
     @objects = $nagios[flag ? :objects_inflight : :objects].objects
 
@@ -322,7 +314,7 @@ class Nagira < Sinatra::Base
         environment: Nagira.settings.environment,
         home: ENV['HOME'],
         user: ENV['LOGNAME'],
-        nagiosFiles: $nagios.keys.map {  |x| {  x =>  $nagios[x].path }}
+        nagiosFiles: $nagios.to_h.keys.map {  |x| {  x =>  $nagios[x].path }}
       }
     }
     nil

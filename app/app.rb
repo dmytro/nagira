@@ -69,9 +69,9 @@ class Nagira < Sinatra::Base
     BackgroundParser.ttl    = ::DEFAULT[:ttl].to_i
     BackgroundParser.start  = ::DEFAULT[:start_background_parser]
 
-    SimpleLogger.log "Starting Nagira application"
-    SimpleLogger.log "Version #{Nagira::VERSION}"
-    SimpleLogger.log "Running in #{Nagira.settings.environment} environment"
+    Logger.log "Starting Nagira application"
+    Logger.log "Version #{Nagira::VERSION}"
+    Logger.log "Running in #{Nagira.settings.environment} environment"
 
     Parser.state.to_h.keys.each do |x|
       Logger.log "Using nagios #{x} file: #{Parser.state[x].path}"

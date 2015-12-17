@@ -1,3 +1,6 @@
+### v0.5.1
+* Thr Dec 17 2015 -- Dmytro Kovalov
+  - Refactored parsing of Nagios files, cleaner code. No functionality changes.
 ### v0.5.0
 * Fri Nov 6 2015 -- Dmytro Kovalov
   - Add support for Service groups, new route `GET /_status/_servicegroup/`

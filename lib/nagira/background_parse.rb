@@ -1,6 +1,3 @@
-require 'nagios'
-require 'singleton'
-
 class Nagira < Sinatra::Base
   ##
   # Background parsing of status.dat file in separate thread. Runs on
@@ -26,19 +23,10 @@ class Nagira < Sinatra::Base
       # Target data structure (i.e. $nagios hash for example) which is
       # updated by BackgroundParser.
       #
-      def target=(target)
-        @target = target
+      def target
+        @target ||= Parser.state
       end
 
-      ##
-      # Helper to parse multiple files (status, objects, config).
-      #
-      # @param [Array(Object)] files to parse
-      def parse(*files)
-        files.each do |f|
-          f.send(:parse)
-        end
-      end
       ##
       # \@ttl (Fixint, seconds) defines re-parsing interval for the
       # BackgroundParser.
@@ -51,7 +39,6 @@ class Nagira < Sinatra::Base
       # Example:
       #     Nagios::BackgroundParser.ttl = ::DEFAULT[:ttl].to_i
       #     Nagios::BackgroundParser.start = ::DEFAULT[:start_background_parser]
-      #     Nagios::BackgroundParser.target = $nagios
       #     Nagios::BackgroundParser.run
       #
       def ttl= ttl
@@ -70,7 +57,6 @@ class Nagira < Sinatra::Base
       # Example:
       #     Nagios::BackgroundParser.ttl = ::DEFAULT[:ttl].to_i
       #     Nagios::BackgroundParser.start = ::DEFAULT[:start_background_parser]
-      #     Nagios::BackgroundParser.target = $nagios
       #     Nagios::BackgroundParser.run
       #
       def start= start
@@ -96,29 +82,23 @@ class Nagira < Sinatra::Base
         !alive?
       end
 
-      def inflight?
-        @use_inflight_flag
-      end
 
       ##
       # Start BG Parser if it's configured to run and TTL is defined
       def run
         if configured? && dead?
 
-          SimpleLogger.log "Starting background parser thread with interval #{@ttl} sec"
+          Logger.log "Starting background parser thread with interval #{@ttl} sec"
 
-          @target.status_inflight = Nagios::Status.new(@target[:status].path)
-          @target.objects_inflight = Nagios::Objects.new(@target[:objects].path)
+          target.status_inflight = Nagios::Status.new(target[:status].path)
+          target.objects_inflight = Nagios::Objects.new(target[:objects].path)
 
-          parse(
-            @target[:status_inflight],
-            @target[:objects_inflight]
-          )
+          Parser.parse [:status_inflight,:objects_inflight]
 
           @bg = Thread.new {
             loop {
-              @target[with_inflight?(:status)].parse
-              @target[with_inflight?(:objects)].parse
+              target[with_inflight?(:status)].parse
+              target[with_inflight?(:objects)].parse
               sleep @ttl
               @use_inflight_flag = !@use_inflight_flag
             }
@@ -126,12 +106,14 @@ class Nagira < Sinatra::Base
         end
       end
 
-      private
+      def inflight?
+        @use_inflight_flag
+      end
       ##
       # Construct file symbol, based on in flight status.
       # @see run
       def with_inflight?(file)
-        inflight? ? "#{file}_inflight".to_sym : file
+        (inflight? ? "#{file}_inflight" : file).to_sym
       end
 
     end

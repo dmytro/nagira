@@ -31,7 +31,7 @@ class Nagira < Sinatra::Base
     #
     # FIXME: This only accepts single service. Modify to use Arrays too
     def put_update action, params
-      res = $nagios[:commands].write(params.merge({ :action => action }))
+      res = Parser.commands.write(params.merge({ :action => action }))
       { :result => res[:result], :object => res[:data]}
     end
   end
@@ -49,5 +49,5 @@ class Nagira < Sinatra::Base
     def update_host_status params
       put_update :PROCESS_HOST_CHECK_RESULT, params
     end
-  
+
 end

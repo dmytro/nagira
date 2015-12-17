@@ -56,7 +56,7 @@ module Nagios
     end
 
     attr_accessor :last_parsed, :parse_interval
-      
+
     def last_changed
       @last_changed = File.mtime(@path)
     end
@@ -65,13 +65,13 @@ module Nagios
     def changed?
       self.last_changed > self.last_parsed
     end
-    
+
     # Check if:
     # - file changed?
     # - was it parsed recently?
     def need_parsing?
       changed? && ((Time.now - self.last_parsed) > @parse_interval)
     end
-    
+
   end
 end

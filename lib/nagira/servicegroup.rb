@@ -33,7 +33,7 @@ class Nagira < Sinatra::Base
     attr_reader :name
 
     def objects
-      @objects ||= $nagios[:objects].objects
+      @objects ||= Parser.objects
     end
 
     def servicegroup

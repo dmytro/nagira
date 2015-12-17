@@ -31,9 +31,9 @@ namespace :debug do
       #
       # These files from parsed config.
       #
-      files << $nagios[:config].path
-      files << $nagios[:status].path
-      files << $nagios[:objects].path
+      files << Parser.config.path
+      files << Parser.status.path
+      files << Parser.objects.path
 
       open("#{dir}/sherlock.txt", "w")    { |f| f.puts os_info }
       open("#{dir}/permissions.txt", "w") { |f| f.puts permissions }

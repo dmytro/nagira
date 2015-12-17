@@ -18,7 +18,7 @@ class Nagira < Sinatra::Base
   # Get Nagios configuration hash form parsing main Nagios
   # configuration file nagios.cfg
   get "/_config" do
-    @data = $nagios[:config].configuration
+    @data = Parser.config.configuration
     nil
   end
 end

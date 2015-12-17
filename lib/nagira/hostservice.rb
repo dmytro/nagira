@@ -9,7 +9,7 @@ class Nagira < Sinatra::Base
 
     def status
       begin
-        $nagios[:status]
+        Parser
           .status['hosts'][hostname]['servicestatus'][servicename]
       rescue NoMethodError
         {  }

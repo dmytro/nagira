@@ -23,6 +23,8 @@ require "nagira/hostgroup"
 require "nagira/servicegroup"
 require "nagira/hostservice"
 
+require "nagira/background_parse"
+require "nagira/parser"
 require "nagira/simple_logger"
 
 

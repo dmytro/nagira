@@ -4,8 +4,8 @@ class Nagira < Sinatra::Base
 
     def initialize(name)
       @name      = name
-      @objects   = $nagios[:objects].objects
-      @status    = $nagios[:status].status['hosts']
+      @objects   = Parser.objects
+      @status    = Parser.status['hosts']
       @hostgroup = @objects[:hostgroup][name]
       @data  = {  }
     end

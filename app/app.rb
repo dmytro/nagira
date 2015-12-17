@@ -61,37 +61,23 @@ class Nagira < Sinatra::Base
   # @overload before("Initial Config")
   configure do
 
-    $nagios = OpenStruct.new({ config: Nagios::Config.new(Nagira.settings.nagios_cfg)})
-
-    $nagios.config.parse
-
-    status_file   = Nagira.settings.status_cfg   || $nagios.config.status_file
-    objects_file  = Nagira.settings.objects_cfg  || $nagios.config.object_cache_file
-    commands_file = Nagira.settings.command_file || $nagios.config.command_file
-
-    $nagios.status = Nagios::Status.new(status_file)
-    $nagios.objects = Nagios::Objects.new(objects_file)
-    $nagios.commands = Nagios::ExternalCommands.new(commands_file)
+    Parser.config   = settings.nagios_cfg
+    Parser.status   = settings.status_cfg   || Parser.config.status_file
+    Parser.objects  = settings.objects_cfg  || Parser.config.object_cache_file
+    Parser.commands = settings.command_file || Parser.config.command_file
 
     BackgroundParser.ttl    = ::DEFAULT[:ttl].to_i
     BackgroundParser.start  = ::DEFAULT[:start_background_parser]
-    BackgroundParser.target = $nagios
 
     SimpleLogger.log "Starting Nagira application"
     SimpleLogger.log "Version #{Nagira::VERSION}"
     SimpleLogger.log "Running in #{Nagira.settings.environment} environment"
 
-    $nagios.to_h.keys.each do |x|
-      SimpleLogger.log "Using nagios #{x} file: #{$nagios[x].path}"
+    Parser.state.to_h.keys.each do |x|
+      Logger.log "Using nagios #{x} file: #{Parser.state[x].path}"
     end
 
-    $nagios[:status].parse
-    $nagios[:objects].parse
-
     BackgroundParser.run if BackgroundParser.configured?
-
-    @status   = $nagios[:status].status['hosts']
-    @objects  = $nagios[:objects].objects
   end
 
 
@@ -114,19 +100,14 @@ class Nagira < Sinatra::Base
   #
   # @method   parse_nagios_files
   # @overload before("Parse Nagios files")
-
   before do
+    Logger.log("BackgroundParser is not running", :warning) if
+      BackgroundParser.configured? && BackgroundParser.dead?
 
-    if BackgroundParser.dead?
-      SimpleLogger.log("BackgroundParser is not running", :warning) if BackgroundParser.configured?
-      $nagios[:config].parse
-      $nagios[:status].parse
-      $nagios[:objects].parse
-    end
+    Parser.parse
 
-    flag = BackgroundParser.inflight?
-    @status  = $nagios[flag ? :status_inflight : :status ].status['hosts']
-    @objects = $nagios[flag ? :objects_inflight : :objects].objects
+    @status = Parser.status['hosts']
+    @objects = Parser.objects
 
     #
     # Add plural keys to use ActiveResource with Nagira
@@ -134,7 +115,6 @@ class Nagira < Sinatra::Base
     @objects.keys.each do |singular|
       @objects[singular.to_s.pluralize.to_sym] = @objects[singular]
     end
-
   end
 
   ##

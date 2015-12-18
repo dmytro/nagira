@@ -9,7 +9,7 @@ module Nagios
     # even if file changes often, we do not want to parse it more
     # often, then this number of seconds.
 
-    TTL = ::DEFAULT[:ttl] || 0
+    TTL = 0# FIXME ::DEFAULT[:ttl] || 0
 
     # Override constructor and parse method from ::Nagios::Objects or
     # ::Nagios::Status classes, add instance variables to handle

@@ -4,7 +4,7 @@ begin
   require 'app.rb'
 rescue LoadError => e
   require 'rubygems'
-  root = File.dirname(File.dirname(__FILE__))
+  root = File.dirname(__dir__)
   $: << (File.expand_path 'lib', root) << (File.expand_path 'app', root)
   require 'app'
 end

@@ -1,4 +1,4 @@
-$: << File.dirname(__FILE__) + '/../lib/'
+# $: << File.dirname(__FILE__) + '/../lib/'
 require_relative '../lib/nagira.rb'
 require_relative '../app/app.rb'
 require 'rack/test'
@@ -13,7 +13,9 @@ IMPLEMENTED = {
 
 RANDOM = %w{ _bla _foo bla foo ahdhjdjda }
 
-set :environment, ENV['RACK_ENV'] || :test
+class Nagira < Sinatra::Base
+  set :environment, ENV['RACK_ENV'] || :test
+end
 
 def dont_run_in_production(file)
   if Nagira.settings.environment == :production

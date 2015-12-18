@@ -7,37 +7,16 @@ require 'active_support/core_ext/hash/slice' # for Hash.slice
 
 require 'json'
 require 'yaml'
-require 'sinatra'
+require 'sinatra/base'
 require 'sinatra/reloader'
 require 'singleton'
 
-$: << File.dirname(__FILE__) << File.dirname(File.dirname(__FILE__))
-
-require 'config/defaults'
-
-require "app/get/config"
-require "app/get/objects"
-require "app/get/status"
-
-require "nagira/hostgroup"
-require "nagira/servicegroup"
-require "nagira/hostservice"
-
-require "nagira/background_parse"
-require "nagira/parser"
-require "nagira/simple_logger"
-
-
-#
-# environment file must go after default, some settings override
-# defaults.
-#
-require 'config/environment'
-require 'nagira/nagios'
+require_relative "../config/defaults"
+require_relative "../config/environment"
 
 class Nagira < Sinatra::Base
 
-  VERSION  = File.read(File.expand_path(File.dirname(__FILE__)) + '/../version.txt').strip
+  VERSION  = File.read("#{__dir__}/../version.txt").strip
   GITHUB   = "http://dmytro.github.com/nagira/"
 
   ##
@@ -65,3 +44,5 @@ class Nagira < Sinatra::Base
     api
   end
 end
+
+Dir.glob("#{__dir__}/../{lib,app}/**/*.rb").each { |file| require file }

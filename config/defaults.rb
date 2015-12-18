@@ -76,7 +76,7 @@ DEFAULT = {
 
 }
 
-require 'sinatra'
+# require 'sinatra'
 class Nagira < Sinatra::Base
 
 ##

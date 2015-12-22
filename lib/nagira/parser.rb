@@ -95,7 +95,7 @@ class Nagira < Sinatra::Base
       def objects
         state
           .send(with_inflight?(:objects))
-          .objects
+          .objects || []
       end
 
       def commands=(commands_file)

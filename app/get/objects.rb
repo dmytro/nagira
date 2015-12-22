@@ -2,7 +2,6 @@ class Nagira < Sinatra::Base
   #
   # Objects routes
   # ============================================================
-
   ##
   # @method get_objects
   #
@@ -14,13 +13,7 @@ class Nagira < Sinatra::Base
   # @macro list
   #
   get "/_objects" do
-
-    @data = begin
-              @output == :list ? @objects.keys : @objects
-            rescue NoMethodError
-              nil
-            end
-    nil
+    body_with_list @objects
   end
 
   ##
@@ -34,15 +27,7 @@ class Nagira < Sinatra::Base
   #
   #
   get "/_objects/:type" do |type|
-    begin
-      @data = @objects[type.to_sym]
-      @data = @data.keys if @output == :list
-
-    rescue NoMethodError
-      nil
-    end
-
-    nil
+      body_with_list @objects[type.to_sym]
   end
 
   ##
@@ -57,12 +42,6 @@ class Nagira < Sinatra::Base
   # * none
   #
   get "/_objects/:type/:name" do |type,name|
-    begin
-      @data = @objects[type.to_sym][name]
-    rescue NoMethodError
-      nil
-    end
-
-    nil
+    @objects[type.to_sym][name]
   end
 end

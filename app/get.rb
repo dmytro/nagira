@@ -7,8 +7,7 @@ class Nagira < Sinatra::Base
   # Provide information about API routes
   #
   get "/_api" do
-    @data = self.api
-    nil
+    Api.show
   end
 
   ##
@@ -17,17 +16,16 @@ class Nagira < Sinatra::Base
   #
   # Print out nagira runtime configuration
   get "/_runtime" do
-    @data = {
+    {
       application: self.class,
       version: VERSION,
       runtime: {
         environment: Nagira.settings.environment,
         home: ENV['HOME'],
         user: ENV['LOGNAME'],
-        nagiosFiles: $nagios.to_h.keys.map {  |x| {  x =>  $nagios[x].path }}
+        nagiosFiles: Parser.state.to_h.keys.map {  |x| {  x:  Parser.state.to_h[x].path }}
       }
     }
-    nil
   end
 
   # @method get_slash
@@ -35,20 +33,17 @@ class Nagira < Sinatra::Base
   #
   # Returns application information: name, version, github repository.
   get "/" do
-    @data = {
+    {
       :application => self.class,
       :version => VERSION,
       :source => GITHUB,
       :apiUrl => request.url.sub(/\/$/,'') + "/_api",
     }
-    nil
   end
   # Other resources in parsed status file. Supported are => ["hosts",
   # "info", "process", "contacts"]
   # get "/:resource" do |resource|
   #   respond_with $nagios.status[resource], @format
   # end
-
-
 
 end

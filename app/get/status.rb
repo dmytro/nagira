@@ -72,7 +72,7 @@ class Nagira < Sinatra::Base
         @data = @status[hostname]['servicestatus'][service]
       end
     end
-    nil
+    @data
   end
 
   ##
@@ -112,7 +112,7 @@ class Nagira < Sinatra::Base
       end
     end
 
-    nil
+    @data
   end
 
   ##
@@ -138,22 +138,22 @@ class Nagira < Sinatra::Base
   # - plural resources: N/A
   # - object access by ID: N/A
 
-  get /^\/_status(\/_hosts)?$/ do
+  get %r{^/_status(/_hosts)?$} do
 
     @data = @status.dup
 
-    case @output
-    when :state
+    case
+    when state?
       @data.each { |k,v| @data[k] = v['hoststatus'].slice("host_name", "current_state") }
-    when :list
+    when list?
       @data = @data.keys
-    when :full
+    when full?
       @data
     else
       @data.each { |k,v| @data[k] = v['hoststatus'] }
     end
 
-    nil
+    @data
   end
 
   # Hoststatus for single host
@@ -183,7 +183,7 @@ class Nagira < Sinatra::Base
       @data = @data.slice("host_name", "current_state")
     end
 
-    nil
+    @data
   end
 
 end

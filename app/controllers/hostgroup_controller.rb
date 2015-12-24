@@ -1,5 +1,5 @@
 class Nagira < Sinatra::Base
-  class Hostgroup
+  class HostgroupController
     attr_reader :objects, :status, :name, :hostgroup, :data
 
     def initialize(name)

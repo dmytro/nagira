@@ -14,7 +14,7 @@ require 'singleton'
 require_relative "../config/defaults"
 require_relative "../config/environment"
 
-Dir.glob("#{__dir__}/../{lib,app}/**/*.rb").each { |file| require file }
+Dir.glob("#{Nagira::BASE}/{lib,app}/**/*.rb").each { |file| require file }
 
 ##
 # Main class of Nagira application implementing RESTful API for

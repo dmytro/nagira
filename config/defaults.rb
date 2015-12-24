@@ -78,8 +78,10 @@ DEFAULT = {
 
 class Nagira < Sinatra::Base
 
-  VERSION  = File.read("#{__dir__}/../version.txt").strip
-  GITHUB   = "http://dmytro.github.com/nagira/"
+  BASE = File.dirname(__dir__).freeze
+
+  VERSION  = File.read("#{BASE}/version.txt").strip.freeze
+  GITHUB   = "http://dmytro.github.com/nagira/".freeze
   ##
   # For every key in the DEFAULT hash create setting with the same name
   # and value. Values can be overrriden in environment.rb file if

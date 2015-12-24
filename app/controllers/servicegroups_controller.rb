@@ -1,5 +1,5 @@
 class Nagira < Sinatra::Base
-  class Servicegroup
+  class ServicegroupController
 
     ##
     # Single member of servicegroup. In Nagios configuration it is

@@ -10,7 +10,7 @@ class Nagira < Sinatra::Base
   #
 
   get "/_status/_servicegroup/:servicegroup" do |group_name|
-    Servicegroup.new(group_name).send(@output)
+    ServicegroupController.new(group_name).send(@output)
   end
 
 end

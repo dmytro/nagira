@@ -3,8 +3,6 @@ require_relative 'status/servicegroups'
 
 class Nagira < Sinatra::Base
 
-  include OutputTypeable
-
   ##
   # @method get_status_hostname_services_service_name
   # @overload get("/_status/:hostname/_services/:service_name")
@@ -19,16 +17,9 @@ class Nagira < Sinatra::Base
   # @!macro state
   #
   get "/_status/:hostname/_services/:service_name" do |hostname,service|
-
-    hostname = hostname.to_i if hostname =~ /^\d+$/
-    if @status && @status[hostname]
-      if @output == :state
-        @data = @status[hostname]['servicestatus'][service].slice("hostname", "service_description", "current_state")
-      else
-        @data = @status[hostname]['servicestatus'][service]
-      end
-    end
-    @data
+    ServiceStatusController.new(
+      @status, hostname: hostname, service_name: service, output: @output
+    ).get
   end
 
   ##
@@ -47,28 +38,13 @@ class Nagira < Sinatra::Base
   # @!macro state
   # @!macro list
   # @!macro full
-  get %r{^/_status/(?<hostname>#{hostname_regex})/_(?<service>(services|hostcomments|servicecomments))$} do |hostname,service|
+  get %r{^/_status/(?<hostname>#{hostname_regex})/_(?<resource>(services|hostcomments|servicecomments))$} do |hostname,resource|
 
-    hostname = hostname.to_i if hostname =~ /^\d+$/
-    key = case service
-          when 'services'
-            'servicestatus'
-          else
-            service
-          end
+    # hostname = hostname.to_i if hostname =~ /^\d+$/
+    ResourceStatusController.new(
+      @status, hostname: hostname, output: @output, resource: resource
+    ).get
 
-    if @status && @status[hostname]
-      case @output
-      when :list
-        @data = @status[hostname][key].keys
-      when :state
-        @data = @status.each { |k,v| @data[k] = v.slice("host_name", "service_description", "current_state") }
-      else
-        @data = @status[hostname][key]
-      end
-    end
-
-    @data
   end
 
   ##
@@ -95,24 +71,10 @@ class Nagira < Sinatra::Base
   # - object access by ID: N/A
 
   get %r{^/_status(/_hosts)?$} do
-
-    @data = @status.dup
-
-    case
-    when state?
-      @data.each { |k,v| @data[k] = v['hoststatus'].slice("host_name", "current_state") }
-    when list?
-      @data = @data.keys
-    when full?
-      @data
-    else
-      @data.each { |k,v| @data[k] = v['hoststatus'] }
-    end
-
-    @data
+    HostStatusController.new(@status, output: @output).get
   end
 
-  # Hoststatus for single host
+  # Hoststatus for single host or all services.
   #
   # @method get_status_hostname
   #
@@ -130,16 +92,7 @@ class Nagira < Sinatra::Base
   # - object access by ID: NO (TODO)
 
   get %r{^/_status/(?<hostname>#{hostname_regex})$} do |hostname|
-
-
-    hostname = hostname.to_i if hostname =~ /^\d+$/
-    @data =  @status[hostname]['hoststatus'].dup if @status.has_key? hostname
-
-    if @output == :state
-      @data = @data.slice("host_name", "current_state")
-    end
-
-    @data
+    HostStatusController.new(@status, output: @output, hostname: hostname).get
   end
 
 end

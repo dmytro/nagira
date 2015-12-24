@@ -1,4 +1,5 @@
 class Nagira < Sinatra::Base
+  include OutputTypeable
   #
   # Objects routes
   # ============================================================
@@ -27,7 +28,7 @@ class Nagira < Sinatra::Base
   #
   #
   get "/_objects/:type" do |type|
-      body_with_list @objects[type.to_sym]
+    body_with_list @objects[type.to_sym]
   end
 
   ##

@@ -2,7 +2,7 @@ class Nagira < Sinatra::Base
 
   class ApiHelpController
     # Get all routes that Nagira provides.
-    def self.show
+    def self.get
       api = { }
 
       param_regex = Regexp.new '\(\[\^\\\\\/\?\#\]\+\)'

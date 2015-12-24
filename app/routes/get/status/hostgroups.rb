@@ -7,7 +7,7 @@ class Nagira < Sinatra::Base
   # service status.
   #
   get "/_status/_hostgroup/:hostgroup" do |hostgroup|
-    Hostgroup.new(hostgroup).full
+    HostgroupController.new(hostgroup).full
   end
 
   ##
@@ -17,7 +17,7 @@ class Nagira < Sinatra::Base
   # -  GET /_status/_hostgroup/:hostgroup/_service
   #
   get "/_status/_hostgroup/:hostgroup/_service" do |hostgroup|
-    Hostgroup.new(hostgroup).service_status
+    HostgroupController.new(hostgroup).service_status
   end
 
   ##
@@ -27,6 +27,6 @@ class Nagira < Sinatra::Base
   # Endpoint:
   # -  GET /_status/_hostgroup/:host
   get "/_status/_hostgroup/:hostgroup/_host" do |hostgroup|
-    Hostgroup.new(hostgroup).host_status
+    HostgroupController.new(hostgroup).host_status
   end
 end

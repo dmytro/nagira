@@ -12,10 +12,10 @@
 DEFAULT = {
 
   format_extensions: '\.(json|yaml|xml)$', #  Regex for available
-                                           #  formats: xml, json, yaml
+  #  formats: xml, json, yaml
 
   format: :xml, # default format for application to send output, if
-                # format is not specified
+  # format is not specified
 
 
   # No path to file configuration file by default. Main nagios config
@@ -76,18 +76,24 @@ DEFAULT = {
 
 }
 
-# require 'sinatra'
 class Nagira < Sinatra::Base
 
-##
-# For every key in the DEFAULT hash create setting with the same name
-# and value. Values can be overrriden in environment.rb file if
-# required.
-# @method define_methods_for_defaults
-configure do
-  ::DEFAULT.each do |key,val|
-    set key,val
+  VERSION  = File.read("#{__dir__}/../version.txt").strip
+  GITHUB   = "http://dmytro.github.com/nagira/"
+  ##
+  # For every key in the DEFAULT hash create setting with the same name
+  # and value. Values can be overrriden in environment.rb file if
+  # required.
+  # @method define_methods_for_defaults
+  configure do
+    ::DEFAULT.each do |key,val|
+      set key,val
+    end
   end
-end
 
+  ##
+  # When this prefix added to routes convert output to ActiveResource
+  # compatible format (basically Array instead of Hash).
+  #
+  AR_PREFIX = "/ar"
 end

@@ -1,4 +1,3 @@
-require 'pry'
 class Nagira < Sinatra::Base
 
 
@@ -21,6 +20,8 @@ class Nagira < Sinatra::Base
   # Development and test environments use local files located in the
   # development tree: ./test/data.
   configure :development, :test do
+    require 'pry'
+
     register Sinatra::Reloader
     also_reload("#{root}/*.rb")
     also_reload("#{root}/{config,app,lib}/**/*.rb")

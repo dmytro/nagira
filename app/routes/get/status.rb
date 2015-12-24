@@ -3,6 +3,8 @@ require_relative 'status/servicegroups'
 
 class Nagira < Sinatra::Base
 
+  include OutputTypeable
+
   ##
   # @method get_status_hostname_services_service_name
   # @overload get("/_status/:hostname/_services/:service_name")

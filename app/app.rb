@@ -1,10 +1,26 @@
-require_relative '../lib/nagira'
+require 'active_model/serialization'
+require 'active_model/serializers/xml' # for Hash.to_xml
+
+require 'active_support/inflector'
+require 'active_support/inflector/inflections'
+require 'active_support/core_ext/hash/slice' # for Hash.slice
+
+require 'json'
+require 'yaml'
+require 'sinatra/base'
+require 'sinatra/reloader'
+require 'singleton'
+
+require_relative "../config/defaults"
+require_relative "../config/environment"
+
+Dir.glob("#{__dir__}/../{lib,app}/**/*.rb").each { |file| require file }
+
 ##
 # Main class of Nagira application implementing RESTful API for
 # Nagios.
 #
 class Nagira < Sinatra::Base
-  include OutputTypeable
   # @!macro  [attach] sinatra.get
   #
   #    @overload get "$1"
@@ -48,5 +64,4 @@ class Nagira < Sinatra::Base
   #       servicestatus information for each host.
   #
   #
-
 end

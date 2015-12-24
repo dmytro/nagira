@@ -1,11 +1,6 @@
 class Nagira < Sinatra::Base
-  ##
-  # When this prefix added to routes convert output to ActiveResource
-  # compatible format (basically Array instead of Hash).
-  #
-  AR_PREFIX = "/ar"
 
-  class Api
+  class ApiHelpController
     # Get all routes that Nagira provides.
     def self.show
       api = { }

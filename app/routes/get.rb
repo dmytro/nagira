@@ -7,7 +7,7 @@ class Nagira < Sinatra::Base
   # Provide information about API routes
   #
   get "/_api" do
-    Api.show
+    ApiHelpController.show
   end
 
   ##
@@ -40,10 +40,5 @@ class Nagira < Sinatra::Base
       :apiUrl => request.url.sub(/\/$/,'') + "/_api",
     }
   end
-  # Other resources in parsed status file. Supported are => ["hosts",
-  # "info", "process", "contacts"]
-  # get "/:resource" do |resource|
-  #   respond_with $nagios.status[resource], @format
-  # end
 
 end

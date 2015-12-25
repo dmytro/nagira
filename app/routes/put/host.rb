@@ -33,10 +33,9 @@ class Nagira < Sinatra::Base
   #      "plugin_output" : "ping OK"
   #     }
   put "/_status/:host_name" do
-    @data = update_host_status @input.first.merge({
+    update_host_status @input.first.merge({
       'host_name' => params['host_name']
     })
-    nil
   end
 
   # Same as /_status/:host_name (Not implemented)

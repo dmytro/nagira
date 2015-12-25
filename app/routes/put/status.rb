@@ -58,31 +58,28 @@ class Nagira < Sinatra::Base
     @input.each do |datum|
       # FIXME - this calls update for each service. Should be batching them together
       update = update_service_status(
-                                      datum.merge({ 
-                                                    'host_name' => params['host_name']
-                                                  })
+        datum.merge({
+          'host_name' => params['host_name']
+        })
                                       )
       data << update[:object].first
       result &&= update[:result]
     end
-    @data = { result: result, object: data }
-    nil
-
+    { result: result, object: data }
   end
-  
+
   # Update single service on a single host by JSON data.
   put "/_status/:host_name/_services/:service_description" do
-    @data = update_service_status \
-    @input.first.merge({ 
-                         'service_description' => params['service_description'],
-                         'host_name' => params['host_name']
-                       })
-    nil
+    update_service_status \
+      @input.first.merge({
+      'service_description' => params['service_description'],
+      'host_name' => params['host_name']
+    })
   end
 
   # @method put_status_as_http_parms
   # @overload  put(/_status/:host_name/_services/:service_description/_return_code/:return_code/_plugin_output/:plugin_output)
-  # 
+  #
   # Update single service status on a single host. Use data provided
   # in RESTful path as parameters.
   #
@@ -90,9 +87,8 @@ class Nagira < Sinatra::Base
   #      curl  -d "test data" \
   #        -X PUT http://localhost:4567/_status/viy/_services/PING/_return_code/0/_plugin_output/OK
   #       # => ok
-  put "/_status/:host_name/_services/:service_description/_return_code/:return_code/_plugin_output/:plugin_output" do 
-    @data = update_service_status params
-    nil
+  put "/_status/:host_name/_services/:service_description/_return_code/:return_code/_plugin_output/:plugin_output" do
+    update_service_status params
   end
-  
+
 end

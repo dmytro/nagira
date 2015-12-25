@@ -30,6 +30,17 @@ class Nagira < Sinatra::Base
       end
     end
 
+    def put(params)
+      Writer.new(:PROCESS_SERVICE_CHECK_RESULT).put with_service_and_host(params)
+    end
+
+    def with_service_and_host(params)
+      params.merge({
+        'service_description' => @service_name,
+        'host_name' => @hostname
+        })
+    end
+
     private
     include HostStatusNameConcerneable
 

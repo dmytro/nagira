@@ -70,11 +70,10 @@ class Nagira < Sinatra::Base
 
   # Update single service on a single host by JSON data.
   put "/_status/:host_name/_services/:service_description" do
-    update_service_status \
-      @input.first.merge({
-      'service_description' => params['service_description'],
-      'host_name' => params['host_name']
-    })
+    ServiceStatusController.new({  },
+      hostname: params['host_name'],
+      service_name: params['service_description'])
+      .put @input.first
   end
 
   # @method put_status_as_http_parms

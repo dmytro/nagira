@@ -26,6 +26,16 @@ class Nagira < Sinatra::Base
       end
     end
 
+    # Update host status
+    def put(params)
+      Writer.new(:PROCESS_HOST_CHECK_RESULT)
+        .put(with_host(params))
+    end
+
+    def with_host(params)
+      params.merge({'host_name' => hostname})
+    end
+
     # Status data: for all hosts or single host if hostname provided.
     #
     # @return [Hash] Nagios parsed data (Parser.status)

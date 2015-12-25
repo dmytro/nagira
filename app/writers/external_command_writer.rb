@@ -6,10 +6,28 @@ class Nagira < Sinatra::Base
   #    Writer.commands = <path to the external command execution file>
   #
   class Writer
-    include Singleton
 
-    def initialize
-      @commands = nil
+    @@commands = nil
+
+    def initialize(action)
+      @action = action
+    end
+
+    # Send PUT update to Nagios::ExternalCommands
+    #
+    # @param action [Symbol] Nagios external command name
+    # @param params [Hash] Parsed Hash from PUT request input.
+    #
+    # FIXME: This only accepts single service. Modify to use Arrays too
+    def put(params)
+
+      res = @@commands.write(
+        params.merge({ :action => @action })
+      )
+      { :result => res[:result], :object => res[:data]}
+    end
+
+    def write
     end
 
     # State structure keep all the Nagios parsed state information for
@@ -19,15 +37,15 @@ class Nagira < Sinatra::Base
     class << self
 
       def commands=(commands_file)
-        @commands = Nagios::ExternalCommands.new(commands_file)
+        @@commands = Nagios::ExternalCommands.new(commands_file)
       end
 
       def commands
-        @commands
+        @@commands
       end
 
-      def write
-      end
+
+
 
     end
   end

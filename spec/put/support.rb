@@ -52,7 +52,7 @@ shared_examples_for :write_to_nagios_cmd_file do
   end
 
   after (:each) do
-      File.delete ::Nagira::Writer.commands.path rescue nil
+    File.delete ::Nagira::Writer.commands.path rescue nil
   end
 end
 

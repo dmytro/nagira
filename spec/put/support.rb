@@ -42,9 +42,9 @@ end
 
 shared_examples_for :write_to_nagios_cmd_file do
   before (:all) do
-    File.delete ::Nagira::Parser.commands.path rescue nil
+    File.delete ::Nagira::Writer.commands.path rescue nil
   end
-  let (:cmd) { ::Nagira::Parser.commands.path }
+  let (:cmd) { ::Nagira::Writer.commands.path }
 
   it "writes to nagios.cmd file" do
     expect(File).to exist(cmd)
@@ -52,7 +52,7 @@ shared_examples_for :write_to_nagios_cmd_file do
   end
 
   after (:each) do
-      File.delete ::Nagira::Parser.commands.path rescue nil
+      File.delete ::Nagira::Writer.commands.path rescue nil
   end
 end
 

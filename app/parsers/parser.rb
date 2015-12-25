@@ -8,7 +8,6 @@ class Nagira < Sinatra::Base
   #    Parser.config   = < path to nagios.cfg file>
   #    Parser.status   = < path to status.cfg file>
   #    Parser.objects  = < path to object_cache file>
-  #    Parser.commands = < path to the external command execution file >
   #
   class Parser
     include Singleton
@@ -98,13 +97,6 @@ class Nagira < Sinatra::Base
           .objects || []
       end
 
-      def commands=(commands_file)
-        state.commands = Nagios::ExternalCommands.new(commands_file)
-      end
-
-      def commands
-        state.commands
-      end
     end
   end
 end

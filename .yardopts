@@ -1,6 +1,8 @@
+--private
 app.rb
 app/**/*.rb
 lib/**/*.rb
+config/*.rb
 - 
 README.md
 docs/FEATURES.md

@@ -1,19 +1,23 @@
 ### v0.5.1
 * Thr Dec 17 2015 -- Dmytro Kovalov
   - Refactored parsing of Nagios files, cleaner code. No functionality changes.
+
 ### v0.5.0
 * Fri Nov 6 2015 -- Dmytro Kovalov
   - Add support for Service groups, new route `GET /_status/_servicegroup/`
   - Vagrantfile for Ubuntu development
+
 ### v0.4.2
 * Fri Oct 9 2015 -- Dmytro Kovalov
   - init.d script fixes
     - Fix for not detecting PID of the running Nagira, when ruby bibnary
       is like ruby1.9.1
     - Sanity checks for nagios user and log directory
+
 ### v0.4.1
 * Wed Dec 26 2014 -- Dmytro Kovalov (birthday release, NAgira tuns 4 years today :)
   - Added puma support, puma is default now
+
 ### v0.4.0
 * Wed Dec 24 2014 -- Dmytro Kovalov
   - new API endpoints
@@ -45,6 +49,7 @@
 * July, Aug 2013
   - RSpec tests
     - GET endpoints checks
+
 ### v.0.2.10, v.0.2.11
 * Fri Jul 19 2013 -- Dmytro Kovalov
   - Gem versions fixes in gemspec, use gemspec in Gemfile.
@@ -56,8 +61,10 @@
       - JSON structure specs for PUT methods
       - return 400 if PUT not success
       - specs for nagios.cmd writes
+
 ### v.0.2.9
   - Bugfix - library loading order change, for @format processing in PUT routes.
+
 ### v.0.2.8
 * Wed Apr 17 2013 -- Dmytro Kovalov
   - Bugfix - prevent tracedumps on nonexisting hostnames

@@ -35,13 +35,17 @@ class Nagira < Sinatra::Base
     end
 
     def state
-      normal.map { |x|
-        x.slice("host_name", "current_state")
+      normal.inject({  }) { |hash,elem|
+        hash[elem.first] = elem.last.slice("host_name", "current_state")
+        hash
       }
     end
 
     def normal
-      status.map {  |x| x.last['hoststatus']}
+      status.inject({  }) do |hash,elem|
+        hash[elem.first] = elem.last['hoststatus']
+        hash
+      end
     end
 
   end

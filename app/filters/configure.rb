@@ -1,7 +1,7 @@
 class Nagira < Sinatra::Base
   set :app_file, __FILE__
 
-  Dir["#{Nagira::BASE}/app/parsers/*.rb"].each { |file| require file }
+  Dir["#{Nagira::BASE}/app/{parsers,loggers}/*.rb"].each { |file| require file }
 
   ##
   # Do some necessary tasks at start and then run Sinatra app.

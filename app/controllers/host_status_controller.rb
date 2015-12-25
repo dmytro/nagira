@@ -64,3 +64,5 @@ class Nagira < Sinatra::Base
   end
 
 end
+
+#  LocalWords:  hoststate hoststatus

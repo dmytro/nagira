@@ -1,5 +1,7 @@
 class Nagira < Sinatra::Base
 
+  # Parse routes, exposed by Sinatra and build human readable list of
+  # API endpoints.
   class ApiHelpController
     # Get all routes that Nagira provides.
     def self.get

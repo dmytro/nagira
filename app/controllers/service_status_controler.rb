@@ -3,6 +3,10 @@ class Nagira < Sinatra::Base
 
     include OutputTypeable
 
+    # @param nagios_status [Hash] output of  the Nagios status file parser
+    # @param output [Symbol(:state)] Output data: full or short state
+    # @param hostname [String]
+    # @param service_name [String]
     def initialize(nagios_status, output: nil, hostname: nil, service_name: nil)
 
       @nagios_status = nagios_status
@@ -12,6 +16,8 @@ class Nagira < Sinatra::Base
       @resource = "servicestatus"
     end
 
+    # Read all statuses of the hosts' services. Format output: full
+    # service state hash, or state only: name and state.
     def get
       case
       when state?
@@ -29,3 +35,5 @@ class Nagira < Sinatra::Base
 
   end
 end
+
+#  LocalWords:  param servicestatus

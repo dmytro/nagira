@@ -1,7 +1,7 @@
 require 'spec_helper'
 require_relative 'support'
 
-describe Nagira do
+describe "PUT service status" do
 
   dont_run_in_production(__FILE__) and break
 
@@ -42,7 +42,7 @@ describe Nagira do
   # Tests
   #
 
-  context "/_status/:host/_services" do
+  context "PUT /_status/:host/_services" do
 
     context :single do
 
@@ -87,7 +87,7 @@ describe Nagira do
 
       it_should_behave_like :put_status
 
-      context "data check" do
+      context "PUT data check" do
         subject {  out["object"] }
 
         it {  expect(subject).to be_a_kind_of Array }
@@ -96,7 +96,7 @@ describe Nagira do
     end
   end
 
-  context "/_status/:host_name/_services/:service_description" do
+  context "PUT /_status/:host_name/_services/:service_description" do
     let(:url) { "/_status/#{host}/_services/PING" }
     before do
       put url, [{ return_code: 0, plugin_output: "All OK"}].to_json, content_type
@@ -126,7 +126,7 @@ describe Nagira do
 #   end                         # host does not exist
 
 
-  context "/_status/:host_name/_services/:service_description/_return_code/:return_code/_plugin_output/:plugin_output" do
+  context "PUT /_status/:host_name/_services/:service_description/_return_code/:return_code/_plugin_output/:plugin_output" do
     it { pending "To be depreciated "; fail}
   end
 

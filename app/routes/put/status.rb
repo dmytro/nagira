@@ -51,7 +51,7 @@ class Nagira < Sinatra::Base
   #       ]
   #
   #
-  put "/_status/:host_name/_services" do
+  put "/_status/:host_name/_services" do |hostname|
 
     data, result = [], true
 
@@ -59,7 +59,7 @@ class Nagira < Sinatra::Base
       # FIXME - this calls update for each service. Should be batching them together
       update = update_service_status(
         datum.merge({
-          'host_name' => params['host_name']
+          'host_name' => hostname
         })
                                       )
       data << update[:object].first
@@ -69,10 +69,8 @@ class Nagira < Sinatra::Base
   end
 
   # Update single service on a single host by JSON data.
-  put "/_status/:host_name/_services/:service_description" do
-    ServiceStatusController.new({  },
-      hostname: params['host_name'],
-      service_name: params['service_description'])
+  put "/_status/:host_name/_services/:service_description" do |hostname,service|
+    ServiceStatusController.new({  }, hostname: hostname, service_name: service)
       .put @input.first
   end
 

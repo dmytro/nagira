@@ -7,7 +7,7 @@ describe Nagira do
     @app ||= Nagira
   end
 
-  context "/_hosts" do
+  context "GET /_hosts" do
 
     before :each do
       get "/_status/_list"

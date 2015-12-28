@@ -16,7 +16,7 @@ describe Nagira do
 
   context "simple page load" do
     TOP_PAGES.each do |page|
-      it "/#{page} should load" do
+      it "GET /#{page} " do
         get "/#{page}"
         expect(last_response).to be_ok
       end
@@ -25,7 +25,7 @@ describe Nagira do
         # Check 3 different formats
         FORMATS.each do |format|
 
-          it "should load '#{page}.#{format}' page" do
+          it "loads '#{page}.#{format}'" do
             get "/#{page}.#{format}"
             expect(last_response).to be_ok
           end
@@ -53,11 +53,11 @@ describe Nagira do
               expect(@header['Content-Type']).to match(/^application\/#{format}.*/)
             end
 
-            it "body should have content" do
+            it "body has content" do
               expect(@body).to_not be_empty
             end
 
-            it "#{format} should be parseable" do
+            it "#{format} is parseable" do
               case format
               when 'json'
                 expect { JSON.parse    @body }.not_to raise_error
@@ -71,8 +71,8 @@ describe Nagira do
 
         end
 
-        context 'default format' do
-          it "/#{page}.#{Nagira.settings.format} response should be the same as /#{page}" do
+        context 'With the default format' do
+          it "/#{page}.#{Nagira.settings.format} response is the same as /#{page}" do
             get "/#{page}.#{Nagira.settings.format}"
             a = last_response.body
             get "/#{page}"

@@ -23,7 +23,8 @@ class Nagira < Sinatra::Base
         environment: Nagira.settings.environment,
         home: ENV['HOME'],
         user: ENV['LOGNAME'],
-        nagiosFiles: Parser.state.to_h.keys.map {  |x| {  x:  Parser.state.to_h[x].path }}
+        nagiosFiles: Parser.state.to_h.keys.map {  |x| {  x:  Parser.state.to_h[x].path }},
+        commandFile: Writer.commands.path
       }
     }
   end

@@ -34,7 +34,7 @@ EOF
   s.add_dependency 'activemodel', '~> 3.2'
   s.add_dependency 'activesupport', '~> 3.2'
   s.add_dependency 'json', '~> 1.8'
-  s.add_dependency 'rspec', '~> 3.1'
+  s.add_dependency 'rspec', '~> 3.4'
   s.add_dependency 'sherlock_os', '~> 0.0'
   s.add_dependency 'rspec-core', '~> 3.1'
   s.add_dependency 'rspec-expectations', '~> 3.1'

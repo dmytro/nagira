@@ -42,7 +42,7 @@ end
 
 shared_examples_for :write_to_nagios_cmd_file do
   before (:all) do
-    File.delete ::Nagira::Writer.commands.path rescue nil
+    FileUtils.rm_f ::Nagira::Writer.commands.path
   end
   let (:cmd) { ::Nagira::Writer.commands.path }
 
@@ -52,7 +52,7 @@ shared_examples_for :write_to_nagios_cmd_file do
   end
 
   after (:each) do
-    File.delete ::Nagira::Writer.commands.path rescue nil
+    FileUtils.rm_f ::Nagira::Writer.commands.path
   end
 end
 

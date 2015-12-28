@@ -50,7 +50,7 @@ describe Nagira do
     @app ||= Nagira
   end
 
-  context "API endpoints" do
+  context "GET API endpoints" do
 
     host   = IMPLEMENTED[:hosts].first
     hostgroup = 'all'
@@ -63,17 +63,17 @@ describe Nagira do
     end
 
 
-    context "/_status" do
+    context "GET /_status" do
       it_should_behave_like :respond_to_valid_url,  "/_status", IMPLEMENTED[:hosts]
       it_should_behave_like :respond_to_valid_url,  "/_status", IMPLEMENTED[:output] + ["_hosts"]
       it_should_behave_like :fail_on_random_url, '/_status'
     end
 
-    context "/_status/:host" do
+    context "GET /_status/:host" do
       it_should_behave_like :respond_to_valid_url,  "/_status/#{host}", IMPLEMENTED[:status]
       it_should_behave_like :fail_on_random_url,    "/_status/#{host}"
 
-      context "hostname with space" do
+      context "GET hostname with space" do
         it_should_behave_like :fail_on_bad_url,  "/_status/#{spaces}"
       end
 
@@ -83,33 +83,33 @@ describe Nagira do
       end
     end                         # /_status/:host
 
-    context "/_status/:host/_services" do
+    context "GET /_status/:host/_services" do
       it_should_behave_like :respond_to_valid_url,  "/_status/#{host}/_services"
       it_should_behave_like :respond_to_valid_url,  "/_status/#{host}/_services", ["SSH", "PING"]
 
-      context "hostname with space" do
+      context "GET hostname with space" do
         it_should_behave_like :fail_on_bad_url,  "/_status/#{spaces}/_services"
       end
     end
 
 
-    context "custom hostname regex - host with spaces" do
+    context "GET custom hostname regex - host with spaces" do
 
       it { pending "Need to figure out how to change hostname regex on the fly"; fail }
         #it_should_behave_like :respond_to_valid_url,  "/_status/#{spaces}", nil, '\w[(%20)\w\-\.]+'
         #it_should_behave_like :respond_to_valid_url,  "/_status/#{spaces}/_services"
     end                         # custom hostname regex
 
-    context "Hostgroups" do
+    context "GET Hostgroups" do
 
-      context "/_status/_hostgroups/:hostgroup" do
+      context "GET /_status/_hostgroups/:hostgroup" do
         it_should_behave_like :respond_to_valid_url,  "/_status/_hostgroup/#{hostgroup}"
       end
 
-      context "/_status/_hostgroups/:hostgroup/_service" do
+      context "GET /_status/_hostgroups/:hostgroup/_service" do
         it_should_behave_like :respond_to_valid_url,  "/_status/_hostgroup/#{hostgroup}/_service"
       end
-      context "/_status/_hostgroups/:hostgroup/_host" do
+      context "GET /_status/_hostgroups/:hostgroup/_host" do
         it_should_behave_like :respond_to_valid_url,  "/_status/_hostgroup/#{hostgroup}/_host"
       end
     end                         # Hostgroup

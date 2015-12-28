@@ -16,7 +16,7 @@ describe Nagira do
     @host = JSON.parse(last_response.body).first
   end
 
-  context "/_hosts/:host/_services" do
+  context "GET /_hosts/:host/_services" do
 
     before :each do
       get "/_status/#{@host}/_services"

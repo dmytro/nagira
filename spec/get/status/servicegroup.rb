@@ -11,7 +11,7 @@ describe Nagira do
     @hosts = %w{archive kurobka airport}.sort
   end
 
-  context  "/_status/_servicegroup/@servicegroup " do
+  context "GET /_status/_servicegroup/@servicegroup " do
 
     before do
       get "/_status/_servicegroup/#{ @servicegroup }"
@@ -29,7 +29,7 @@ describe Nagira do
   end
 
 
-  context  "/_status/_servicegroup/@servicegroup/_list" do
+  context "GET /_status/_servicegroup/@servicegroup/_list" do
 
     before do
       get "/_status/_servicegroup/#{ @servicegroup }/_list"
@@ -46,7 +46,7 @@ describe Nagira do
 
   end
 
-  context  "/_status/_servicegroup/@servicegroup/_state" do
+  context "GET /_status/_servicegroup/@servicegroup/_state" do
 
     before do
       get "/_status/_servicegroup/#{ @servicegroup }/_state"
@@ -67,7 +67,7 @@ describe Nagira do
 
   end
 
-  context  "Data completeness /_status/_servicegroup/@servicegroup" do
+  context "Data completeness of GET /_status/_servicegroup/@servicegroup" do
 
     before do
       get "/_status/_servicegroup/#{ @servicegroup }"

@@ -2,7 +2,7 @@ require 'spec_helper'
 require_relative 'support'
 require 'pp'
 
-describe Nagira do
+describe "PUT hoststatus" do
 
   dont_run_in_production(__FILE__) and break
 
@@ -29,11 +29,11 @@ describe Nagira do
   # Tests
   #
 
-  context "/_status" do
+  context "PUT /_status" do
     it { pending "Not implemented"; fail }
   end                           # ----------- "/_status" do
 
-  context "/_status/:host_name" do
+  context "PUT /_status/:host_name" do
     let (:url) { "/_status/#{host}"}
 
     before (:each) do
@@ -50,7 +50,7 @@ describe Nagira do
       end
     end
 
-    context "/_host_status/:host_name" do
+    context "PUT /_host_status/:host_name" do
       it { pending "Not implemented" ; fail }
     end                         # ----------- "/_host_status/:host_name"
 

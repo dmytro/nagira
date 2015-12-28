@@ -1,3 +1,6 @@
 --color
 --no-drb
 --format progress
+--order defined
+--seed 1234
+spec/put

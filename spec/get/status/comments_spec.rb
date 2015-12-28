@@ -34,13 +34,13 @@ describe Nagira do
     @host = JSON.parse(last_response.body).first
   end
 
-  context "/_status/:host/_hostcomments" do
+  context "GET /_status/:host/_hostcomments" do
     before {  get "/_status/#{@host}/_hostcomments.json" }
     it_should_behave_like :comment_data
   end
 
 
-  context "/_status/:host/_servicecomments" do
+  context "GET /_status/:host/_servicecomments" do
     before { get "/_status/#{@host}/_servicecomments.json" }
 
     it_should_behave_like :comment_data

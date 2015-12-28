@@ -26,6 +26,7 @@ class Nagira < Sinatra::Base
     Parser.state.to_h.keys.each do |x|
       Logger.log "Using nagios #{x} file: #{Parser.state[x].path}"
     end
+    Logger.log "Using nagios command file: #{Writer.commands.path}"
 
     BackgroundParser.run if BackgroundParser.configured?
   end

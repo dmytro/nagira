@@ -27,7 +27,7 @@ describe Nagira do
   #
   # GET /objects/...
   # ----------------------------------------
-  context "/objects" do
+  context "GET /objects" do
 
     before :all do
       get "/_objects"
@@ -39,7 +39,7 @@ describe Nagira do
     end
 
 
-    context 'hash key' do
+    context 'GET hash key' do
       %w{host service contact timeperiod}.each do |obj|
         it "objects[#{obj}] should exist" do
           expect(@data[obj]).to be_a_kind_of Hash
@@ -48,7 +48,7 @@ describe Nagira do
     end
 
       %w{host service contact timeperiod}.each do |obj|
-      context "/_objects/#{obj}" do
+      context "GET /_objects/#{obj}" do
 
         it "should respond to HTTP resuest" do
           get "/_objects/#{obj}.json"
@@ -69,7 +69,7 @@ describe Nagira do
   # GET /status
   # -----------------------------
 
-  context '/status' do
+  context 'GET /status' do
     before :all do
       get "/_status"
       @data = JSON.parse last_response.body
@@ -81,16 +81,16 @@ describe Nagira do
       @state = JSON.parse last_response.body
     end
 
-    context "list of hosts should be the same" do
-      it "full and state" do
+    context "Compare list of hostsnames" do
+      it "full and state are the same " do
         expect(@data.keys).to eq @state.keys
       end
 
-      it "list and state" do
+      it "list and state are the same " do
         expect(@list).to eq @state.keys
       end
 
-      it "list and data" do
+      it "list and data are the same " do
         expect(@list).to eq @data.keys
       end
     end

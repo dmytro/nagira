@@ -13,7 +13,7 @@ describe Nagira do
 
 
 
-  context "API data" do
+  context "GET API help" do
     before :all do
       get "/_api.json"
       @data = JSON.parse last_response.body
@@ -30,11 +30,11 @@ describe Nagira do
       METHODS.each do |method|
 
         context method do
-          it "routes should be an Array" do
+          it "routes are Array" do
             expect(@data[method]).to be_a_kind_of Array if @data[method]
           end
 
-          it "should star with slash" do
+          it "starts with slash" do
             if @data[method]
               @data[method].each do |path|
                 expect(path).to match( /^\//)

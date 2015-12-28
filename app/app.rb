@@ -7,6 +7,7 @@ require 'active_support/core_ext/hash/slice' # for Hash.slice
 
 require 'json'
 require 'yaml'
+require 'fileutils'
 require 'sinatra/base'
 require 'sinatra/reloader'
 require 'singleton'

@@ -14,4 +14,4 @@ env:
 branches:
   only:
     - master
-script: bundle exec rspec spec
+script: bundle exec rspec spec --format doc

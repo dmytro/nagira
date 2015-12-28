@@ -15,7 +15,7 @@ describe Nagira do
 
   end
 
-  context  "/_status/_hostgroup/@hostgroup " do
+  context "GET /_status/_hostgroup/@hostgroup " do
 
     before do
       get "/_status/_hostgroup/#{ @hostgroup }"
@@ -37,7 +37,7 @@ describe Nagira do
   end
 
 
-  context  "/_status/_hostgroup/@hostgroup/_host" do
+  context "GET /_status/_hostgroup/@hostgroup/_host" do
 
     before do
       get "/_status/_hostgroup/#{ @hostgroup }/_host"
@@ -54,7 +54,7 @@ describe Nagira do
 
   end
 
-  context  "/_status/_hostgroup/@hostgroup/_service" do
+  context "GET /_status/_hostgroup/@hostgroup/_service" do
 
     before do
       get "/_status/_hostgroup/#{ @hostgroup }/_service"

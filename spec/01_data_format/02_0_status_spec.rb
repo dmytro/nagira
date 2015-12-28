@@ -39,7 +39,7 @@ describe Nagira do
       "/_status/_list" => Array
     }.each do |url,klas|
 
-      it "#{url} should return #{klas}" do
+      it "GET #{url} returns #{klas}" do
         get "#{url}.json"
         expect(JSON.parse(last_response.body)).to be_a_kind_of klas
       end

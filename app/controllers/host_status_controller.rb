@@ -6,7 +6,9 @@ class Nagira < Sinatra::Base
       @status = status
       @output = output
       @hostname = hostname
+      @http_status = 200
     end
+    attr_accessor :http_status
 
     # Type of the output for data: full, normal, state or list
     attr_accessor :output
@@ -17,13 +19,14 @@ class Nagira < Sinatra::Base
     # Get host status, depending on the type of output required: full,
     # normal, state or list.
     def get
-      case
-      when full?  ; then status
-      when state? ; then state
-      when list?  ; then list
+      body = case
+             when full?  ; then status
+             when state? ; then state
+             when list?  ; then list
 
-      else normal
-      end
+             else normal
+             end
+      [@http_status, body]
     end
 
     # Update host status
@@ -45,6 +48,7 @@ class Nagira < Sinatra::Base
       else
         @status
       end
+        .tap { |x| @http_status = 404 if x.values.compact.empty? }
     end
 
     private
@@ -66,7 +70,7 @@ class Nagira < Sinatra::Base
     # hoststate
     def normal
       status.inject({  }) do |hash,elem|
-        hash[elem.first] = elem.last['hoststatus']
+        hash[elem.first] = elem.last.try(:[], 'hoststatus')
         hash
       end
     end

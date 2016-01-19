@@ -6,5 +6,5 @@ FROM ruby:2.0
 # -v /var/lib/nagios3:/var/lib/nagios3 ortym/nagira
 #
 MAINTAINER Dmytro Kovalov <dmytro.kovalov@gmail.com>
-RUN gem install nagira
+RUN gem install --no-document nagira
 CMD RACK_ENV=production /usr/local/bundle/bin/nagira -p 4567

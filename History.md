@@ -1,3 +1,7 @@
+### v0.5.2
+* Tue Jan 19 2016 -- Dmytro Kovalov
+  - More refactoring
+
 ### v0.5.1
 * Thr Dec 17 2015 -- Dmytro Kovalov
   - Refactored parsing of Nagios files, cleaner code. No functionality changes.

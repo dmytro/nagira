@@ -1,5 +1,5 @@
 require 'fileutils'
-require_relative 'lib/nagira'
+require_relative 'app/app'
 
 Dir.glob(File.join(Nagira.root, 'lib', 'tasks','*.rake')).each do |rake|
   load rake
